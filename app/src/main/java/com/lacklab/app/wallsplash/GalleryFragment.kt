@@ -25,7 +25,7 @@ class GalleryFragment : Fragment() {
 
     private val galleryAdapter = GalleryAdapter()
     private val galleryViewModel: GalleryViewModel by viewModels()
-    private var viewBinding: FragmentGalleryBinding? = null
+    private lateinit var viewBinding: FragmentGalleryBinding
 
     private var searchJob: Job? = null
 
@@ -46,10 +46,10 @@ class GalleryFragment : Fragment() {
     ): View? {
         Log.v(TAG, "onCreateView")
         viewBinding = FragmentGalleryBinding.inflate(inflater, container, false)
-        viewBinding!!.recyclerViewPhoto.adapter = galleryAdapter
+        viewBinding.recyclerViewPhoto.adapter = galleryAdapter
 
 
-        return viewBinding?.root
+        return viewBinding.root
 //        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -89,7 +89,6 @@ class GalleryFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         Log.v(TAG, "onDestroyView")
-        viewBinding = null
     }
 
     override fun onDestroy() {
