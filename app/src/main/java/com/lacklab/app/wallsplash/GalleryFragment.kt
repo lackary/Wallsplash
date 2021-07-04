@@ -48,7 +48,6 @@ class GalleryFragment : Fragment() {
         viewBinding = FragmentGalleryBinding.inflate(inflater, container, false)
         viewBinding.recyclerViewPhoto.adapter = galleryAdapter
 
-
         return viewBinding.root
 //        return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -56,7 +55,6 @@ class GalleryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.v(TAG, "onViewCreated")
-        getPhotos()
 //        testRunBlocking()
         Log.i(TAG, "done")
     }
@@ -69,6 +67,7 @@ class GalleryFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         Log.v(TAG, "onResume")
+        getPhotos()
     }
 
     override fun onPause() {
@@ -102,6 +101,9 @@ class GalleryFragment : Fragment() {
     }
 
     private fun getPhotos() {
+//        galleryViewModel.allUnpslashPhotos.observe(viewLifecycleOwner) {
+//            galleryAdapter.submitList(it)
+//        }
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
             galleryViewModel.searchPhotos("Japan").collectLatest{
