@@ -1,9 +1,6 @@
 package com.lacklab.app.wallsplash.viewmodels
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.lacklab.app.wallsplash.api.UnsplashService
@@ -19,7 +16,11 @@ class GalleryViewModel @Inject constructor(
     private val unsplashRepository: UnsplashRepository
 ): ViewModel() {
 
+    val allUnpslashPhotos: LiveData<List<UnsplashPhoto>> =
+        unsplashRepository.fetchPhotos().asLiveData()
+
     private var currentQueryValue: String? = null
+
     private var currentSearchResult: Flow<PagingData<UnsplashPhoto>>? = null
 
     fun getPhotos(): Flow<PagingData<UnsplashPhoto>> {

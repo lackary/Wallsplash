@@ -6,6 +6,7 @@ import com.lacklab.app.wallsplash.data.UnsplashPhoto
 import com.lacklab.app.wallsplash.data.UnsplashSearchPhotos
 import com.lacklab.app.wallsplash.factory.LiveDataCallAdapterFactory
 import com.lacklab.app.wallsplash.util.LiveDataCallAdapter
+import kotlinx.coroutines.flow.Flow
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
@@ -17,11 +18,11 @@ import retrofit2.http.Query
 
 interface UnsplashService {
     @GET("photos")
-    suspend fun getPhotos(
+    fun getPhotos(
         @Query("page") page: Int,
         @Query("per_page") prePage: Int = 10,
         @Query("client_id") clientId: String = BuildConfig.UNSPLASH_ACCESS_KEY
-    ) : Response<List<UnsplashPhoto>>
+    ) : List<UnsplashPhoto>
 
     @GET("search/photos")
     suspend fun searchPhotos(
