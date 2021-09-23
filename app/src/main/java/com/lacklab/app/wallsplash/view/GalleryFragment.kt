@@ -1,4 +1,4 @@
-package com.lacklab.app.wallsplash
+package com.lacklab.app.wallsplash.view
 
 import android.content.Context
 import android.os.Bundle
