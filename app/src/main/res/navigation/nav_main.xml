@@ -6,6 +6,6 @@
 
     <fragment
         android:id="@+id/galleryFragment"
-        android:name="com.lacklab.app.wallsplash.GalleryFragment"
+        android:name="com.lacklab.app.wallsplash.view.GalleryFragment"
         android:label="GalleryFragment" />
 </navigation>
