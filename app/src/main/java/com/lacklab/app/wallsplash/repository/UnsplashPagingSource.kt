@@ -1,8 +1,9 @@
-package com.lacklab.app.wallsplash.data
+package com.lacklab.app.wallsplash.repository
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.lacklab.app.wallsplash.api.UnsplashService
+import com.lacklab.app.wallsplash.data.UnsplashPhoto
 
 private const val UNSPLASH_STARTING_PAGE_INDEX = 1
 

@@ -3,6 +3,7 @@ package com.lacklab.app.wallsplash.viewmodels
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.lacklab.app.wallsplash.api.ApiResponse
 import com.lacklab.app.wallsplash.api.UnsplashService
 import com.lacklab.app.wallsplash.data.UnsplashPhoto
 import com.lacklab.app.wallsplash.repository.UnsplashRepository
@@ -16,7 +17,7 @@ class GalleryViewModel @Inject constructor(
     private val unsplashRepository: UnsplashRepository
 ): ViewModel() {
 
-    val allUnpslashPhotos: LiveData<List<UnsplashPhoto>> =
+    val allUnpslashPhotos: LiveData<ApiResponse<List<UnsplashPhoto>>> =
         unsplashRepository.fetchPhotos().asLiveData()
 
     private var currentQueryValue: String? = null
