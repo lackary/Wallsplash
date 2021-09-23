@@ -22,7 +22,7 @@ interface UnsplashService {
         @Query("page") page: Int,
         @Query("per_page") prePage: Int = 10,
         @Query("client_id") clientId: String = BuildConfig.UNSPLASH_ACCESS_KEY
-    ) : List<UnsplashPhoto>
+    ) : ApiResponse<List<UnsplashPhoto>>
 
     @GET("search/photos")
     suspend fun searchPhotos(
