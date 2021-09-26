@@ -7,6 +7,7 @@ import com.lacklab.app.wallsplash.api.ApiResponse
 import com.lacklab.app.wallsplash.api.UnsplashService
 import com.lacklab.app.wallsplash.data.UnsplashPhoto
 import com.lacklab.app.wallsplash.repository.UnsplashRepository
+import com.lacklab.app.wallsplash.vo.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -17,12 +18,18 @@ class GalleryViewModel @Inject constructor(
     private val unsplashRepository: UnsplashRepository
 ): ViewModel() {
 
-    val allUnpslashPhotos: LiveData<ApiResponse<List<UnsplashPhoto>>> =
-        unsplashRepository.fetchPhotos().asLiveData()
+    private var allUnpslashPhotos: Flow<LiveData<ApiResponse<List<UnsplashPhoto>>>>? =null
 
     private var currentQueryValue: String? = null
 
     private var currentSearchResult: Flow<PagingData<UnsplashPhoto>>? = null
+
+    fun getAllUnsplashPhotos() : Flow<LiveData<ApiResponse<List<UnsplashPhoto>>>> {
+        val newResult: Flow<LiveData<ApiResponse<List<UnsplashPhoto>>>> =
+            unsplashRepository.fetchPhotos()
+        allUnpslashPhotos = newResult
+        return newResult
+    }
 
     fun getPhotos(): Flow<PagingData<UnsplashPhoto>> {
         currentQueryValue = "Japan"
@@ -33,7 +40,6 @@ class GalleryViewModel @Inject constructor(
     }
 
     fun searchPhotos(queryString:String): Flow<PagingData<UnsplashPhoto>> {
-        currentQueryValue = queryString
         val newResult: Flow<PagingData<UnsplashPhoto>> =
             unsplashRepository.getSearchResultStream(queryString).cachedIn(viewModelScope)
         currentSearchResult = newResult

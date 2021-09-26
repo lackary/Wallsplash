@@ -7,7 +7,7 @@ import com.lacklab.app.wallsplash.data.UnsplashPhoto
 
 private const val UNSPLASH_STARTING_PAGE_INDEX = 1
 
-class UnsplashPagingSource(
+class UnsplashSearchPhotosPagingSource(
     private val service: UnsplashService,
     private val query: String
 ) : PagingSource<Int, UnsplashPhoto>() {
