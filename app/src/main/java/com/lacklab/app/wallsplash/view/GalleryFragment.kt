@@ -101,10 +101,13 @@ class GalleryFragment : Fragment() {
     }
 
     private fun getPhotos() {
-//        galleryViewModel.allUnpslashPhotos.observe(viewLifecycleOwner) {
-//            galleryAdapter.submitList(it)
-//        }
         searchJob?.cancel()
+//        searchJob = lifecycleScope.launch {
+//            galleryViewModel.getAllUnsplashPhotos().collectLatest {
+//
+//            }
+//        }
+
         searchJob = lifecycleScope.launch {
             galleryViewModel.searchPhotos("Japan").collectLatest{
                 galleryAdapter.submitData(it)

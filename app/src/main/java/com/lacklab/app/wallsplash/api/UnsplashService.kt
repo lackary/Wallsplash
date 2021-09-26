@@ -5,7 +5,6 @@ import com.lacklab.app.wallsplash.BuildConfig
 import com.lacklab.app.wallsplash.data.UnsplashPhoto
 import com.lacklab.app.wallsplash.data.UnsplashSearchPhotos
 import com.lacklab.app.wallsplash.factory.LiveDataCallAdapterFactory
-import com.lacklab.app.wallsplash.util.LiveDataCallAdapter
 import kotlinx.coroutines.flow.Flow
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -22,7 +21,7 @@ interface UnsplashService {
         @Query("page") page: Int,
         @Query("per_page") prePage: Int = 10,
         @Query("client_id") clientId: String = BuildConfig.UNSPLASH_ACCESS_KEY
-    ) : ApiResponse<List<UnsplashPhoto>>
+    ) : LiveData<ApiResponse<List<UnsplashPhoto>>>
 
     @GET("search/photos")
     suspend fun searchPhotos(

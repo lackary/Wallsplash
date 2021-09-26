@@ -2,6 +2,7 @@ package com.lacklab.app.wallsplash.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -16,17 +17,17 @@ import javax.inject.Inject
 class UnsplashRepository @Inject constructor(
     private val service: UnsplashService) {
 
-    fun fetchPhotos(): Flow<ApiResponse<List<UnsplashPhoto>>> {
+    fun fetchPhotos(): Flow<LiveData<ApiResponse<List<UnsplashPhoto>>>> {
         return flow {
-            val photos = service.getPhotos(1, 10)
+            val photos = service.getPhotos(1, NETWORK_PAGE_SIZE)
             emit(photos)
         }
     }
 
     fun getSearchResultStream(query: String): Flow<PagingData<UnsplashPhoto>> {
         return Pager(
-            config = PagingConfig(enablePlaceholders = false, pageSize = NETWORK_PAGE_SIZE),
-            pagingSourceFactory = { UnsplashPagingSource(service, query) }
+            config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
+            pagingSourceFactory = { UnsplashSearchPhotosPagingSource(service, query) }
         ).flow
     }
 
