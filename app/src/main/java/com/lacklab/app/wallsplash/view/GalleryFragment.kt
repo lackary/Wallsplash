@@ -104,7 +104,7 @@ class GalleryFragment : Fragment() {
         searchJob?.cancel()
 //        searchJob = lifecycleScope.launch {
 //            galleryViewModel.getAllUnsplashPhotos().collectLatest {
-//
+//              galleryAdapter.submitData(it)
 //            }
 //        }
 
