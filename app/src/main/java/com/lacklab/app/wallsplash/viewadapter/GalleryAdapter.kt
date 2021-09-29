@@ -41,7 +41,7 @@ class GalleryAdapter :
 
             fun bind(item:UnsplashPhoto) {
                 unsplashPhoto = item
-                val url = item.urls.regular
+                val url = item.urls.full
                 Glide.with(viewBinding.root)
                     .load(url)
                     .into(viewBinding.imageViewPhoto)
