@@ -1,4 +1,4 @@
-package com.lacklab.app.wallsplash.repository
+package com.lacklab.app.wallsplash.pagingSource
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
