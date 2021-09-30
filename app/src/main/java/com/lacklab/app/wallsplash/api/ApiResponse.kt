@@ -18,6 +18,7 @@ package com.lacklab.app.wallsplash.api
 
 import android.util.Log
 import retrofit2.Response
+import timber.log.Timber
 //import timber.log.Timber
 import java.util.regex.Pattern
 
@@ -78,7 +79,7 @@ data class ApiSuccessResponse<T>(
                 try {
                     Integer.parseInt(matcher.group(1)!!)
                 } catch (ex: NumberFormatException) {
-//                    Timber.w("cannot parse next page from %s", next)
+                    Timber.w("cannot parse next page from $value")
                     Log.w("ApiResponse","cannot parse last page from $value", )
                     null
                 }
@@ -94,7 +95,7 @@ data class ApiSuccessResponse<T>(
                 try {
                     Integer.parseInt(matcher.group(1)!!)
                 } catch (ex: NumberFormatException) {
-//                    Timber.w("cannot parse next page from %s", next)
+                    Timber.w("cannot parse next page from %s", next)
                     Log.w("ApiResponse","cannot parse next page from $next", )
                     null
                 }
