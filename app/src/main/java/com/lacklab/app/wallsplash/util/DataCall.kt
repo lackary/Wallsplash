@@ -7,6 +7,7 @@ import okio.Timeout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import timber.log.Timber
 
 class DataCall<T>constructor(
     private val call: Call<T>
@@ -15,6 +16,7 @@ class DataCall<T>constructor(
         call.enqueue(object: Callback<T>{
             override fun onResponse(call: Call<T>, response: Response<T>) {
                 val apiResponse = ApiResponse.create(response)
+                Timber.d("ApiResponse")
                 Log.i("Test", "ApiResponse")
                 callback.onResponse(this@DataCall, Response.success(apiResponse))
             }

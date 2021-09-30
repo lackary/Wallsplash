@@ -6,6 +6,7 @@ import androidx.paging.PagingState
 import com.lacklab.app.wallsplash.api.*
 import com.lacklab.app.wallsplash.data.UnsplashPhoto
 import com.lacklab.app.wallsplash.data.UnsplashSearchPhotos
+import timber.log.Timber
 
 private const val UNSPLASH_STARTING_PAGE_INDEX = 1
 
@@ -29,6 +30,7 @@ class UnsplashPhotosPagingSource (
                             results = apiSuccessResponse.body, totalPages = it
                         )
                     }
+                    Timber.d("ApiSuccessResponse")
                     Log.i("Test", "ApiSuccessResponse")
                 }
             }
