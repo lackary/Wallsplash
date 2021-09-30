@@ -69,7 +69,22 @@ data class ApiSuccessResponse<T>(
         body = body,
         links = linkHeader?.extractLinks() ?: emptyMap()
     )
-
+    val totalPages: Int? by lazy(LazyThreadSafetyMode.NONE) {
+        links[LAST_LINK]?.let {value->
+            val matcher = PAGE_PATTERN.matcher(value)
+            if (!matcher.find() || matcher.groupCount() != 1) {
+                null
+            } else {
+                try {
+                    Integer.parseInt(matcher.group(1)!!)
+                } catch (ex: NumberFormatException) {
+//                    Timber.w("cannot parse next page from %s", next)
+                    Log.w("ApiResponse","cannot parse last page from $value", )
+                    null
+                }
+            }
+        }
+    }
     val nextPage: Int? by lazy(LazyThreadSafetyMode.NONE) {
         links[NEXT_LINK]?.let { next ->
             val matcher = PAGE_PATTERN.matcher(next)
@@ -91,11 +106,11 @@ data class ApiSuccessResponse<T>(
         private val LINK_PATTERN = Pattern.compile("<([^>]*)>[\\s]*;[\\s]*rel=\"([a-zA-Z0-9]+)\"")
         private val PAGE_PATTERN = Pattern.compile("\\bpage=(\\d+)")
         private const val NEXT_LINK = "next"
+        private const val LAST_LINK = "last"
 
         private fun String.extractLinks(): Map<String, String> {
             val links = mutableMapOf<String, String>()
             val matcher = LINK_PATTERN.matcher(this)
-
             while (matcher.find()) {
                 val count = matcher.groupCount()
                 if (count == 2) {

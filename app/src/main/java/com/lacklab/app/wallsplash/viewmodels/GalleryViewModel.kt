@@ -3,11 +3,8 @@ package com.lacklab.app.wallsplash.viewmodels
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.lacklab.app.wallsplash.api.ApiResponse
-import com.lacklab.app.wallsplash.api.UnsplashService
 import com.lacklab.app.wallsplash.data.UnsplashPhoto
 import com.lacklab.app.wallsplash.repository.UnsplashRepository
-import com.lacklab.app.wallsplash.vo.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

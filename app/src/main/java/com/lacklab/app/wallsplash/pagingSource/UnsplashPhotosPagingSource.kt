@@ -1,13 +1,11 @@
 package com.lacklab.app.wallsplash.pagingSource
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import androidx.paging.RemoteMediator
-import com.lacklab.app.wallsplash.api.ApiResponse
-import com.lacklab.app.wallsplash.api.UnsplashService
+import com.lacklab.app.wallsplash.api.*
 import com.lacklab.app.wallsplash.data.UnsplashPhoto
 import com.lacklab.app.wallsplash.data.UnsplashSearchPhotos
-import com.lacklab.app.wallsplash.repository.UnsplashMediator
 
 private const val UNSPLASH_STARTING_PAGE_INDEX = 1
 
@@ -20,9 +18,21 @@ class UnsplashPhotosPagingSource (
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UnsplashPhoto> {
         val page = params.key ?: UNSPLASH_STARTING_PAGE_INDEX
+        var data: UnsplashSearchPhotos? = null
         return try {
-            val result = service.getPhotos(page, params.loadSize)
-            val data: UnsplashSearchPhotos? = null
+            val response = service.getPhotos(page, params.loadSize)
+            when(response) {
+                is ApiSuccessResponse -> {
+                    val apiSuccessResponse = response as ApiSuccessResponse
+                    data = apiSuccessResponse.totalPages?.let {
+                        UnsplashSearchPhotos(
+                            results = apiSuccessResponse.body, totalPages = it
+                        )
+                    }
+                    Log.i("Test", "ApiSuccessResponse")
+                }
+            }
+
             LoadResult.Page(
                 data = data!!.results,
                 prevKey = if (page == UNSPLASH_STARTING_PAGE_INDEX) null else page - 1,

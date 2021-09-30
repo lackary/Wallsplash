@@ -1,5 +1,6 @@
 package com.lacklab.app.wallsplash.util
 
+import android.util.Log
 import com.lacklab.app.wallsplash.api.ApiResponse
 import okhttp3.Request
 import okio.Timeout
@@ -10,10 +11,12 @@ import retrofit2.Response
 class DataCall<T>constructor(
     private val call: Call<T>
 ) : Call<ApiResponse<T>> {
-    override fun enqueue(callback: Callback<ApiResponse<T>>) {
+    override fun enqueue(callback: Callback<ApiResponse<T>>) =
         call.enqueue(object: Callback<T>{
             override fun onResponse(call: Call<T>, response: Response<T>) {
-                ApiResponse.create(response)
+                val apiResponse = ApiResponse.create(response)
+                Log.i("Test", "ApiResponse")
+                callback.onResponse(this@DataCall, Response.success(apiResponse))
             }
 
             override fun onFailure(call: Call<T>, throwable: Throwable) {
@@ -21,7 +24,6 @@ class DataCall<T>constructor(
             }
 
         })
-    }
 
     override fun clone(): Call<ApiResponse<T>> {
         TODO("Not yet implemented")

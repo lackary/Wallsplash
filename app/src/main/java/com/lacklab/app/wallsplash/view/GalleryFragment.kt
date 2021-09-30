@@ -102,17 +102,17 @@ class GalleryFragment : Fragment() {
 
     private fun getPhotos() {
         searchJob?.cancel()
-//        searchJob = lifecycleScope.launch {
-//            galleryViewModel.getAllUnsplashPhotos().collectLatest {
-//              galleryAdapter.submitData(it)
-//            }
-//        }
-
         searchJob = lifecycleScope.launch {
-            galleryViewModel.searchPhotos("Japan").collectLatest{
-                galleryAdapter.submitData(it)
+            galleryViewModel.getAllUnsplashPhotos().collectLatest {
+              galleryAdapter.submitData(it)
             }
         }
+
+//        searchJob = lifecycleScope.launch {
+//            galleryViewModel.searchPhotos("Japan").collectLatest{
+//                galleryAdapter.submitData(it)
+//            }
+//        }
     }
 
     private fun testRunBlocking() = runBlocking {
