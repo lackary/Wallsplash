@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Wallsplash</string>
+    <string name="title_photo_library">Gallery</string>
+    <string name="title_image_search">Search</string>
 </resources>

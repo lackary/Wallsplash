@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
-    app:startDestination="@id/galleryFragment">
+    app:startDestination="@id/navigation_photo_library">
 
     <fragment
-        android:id="@+id/galleryFragment"
+        android:id="@+id/navigation_photo_library"
         android:name="com.lacklab.app.wallsplash.view.GalleryFragment"
-        android:label="GalleryFragment" />
+        android:label="Gallery"
+        tools:layout="@layout/fragment_gallery" />
+    <fragment
+        android:id="@+id/navigation_image_search"
+        android:name="com.lacklab.app.wallsplash.view.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search" />
 </navigation>
