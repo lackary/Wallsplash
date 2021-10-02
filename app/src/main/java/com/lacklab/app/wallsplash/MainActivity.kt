@@ -3,6 +3,11 @@ package com.lacklab.app.wallsplash
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lacklab.app.wallsplash.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,10 +21,19 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val funName = object{}.javaClass.enclosingMethod.name
-        Log.v(TAG, funName)
+        Log.v(TAG, "test $funName")
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
-        val view = viewBinding.root
-        setContentView(view)
+        setContentView(viewBinding.root)
+
+        val navView: BottomNavigationView = viewBinding.bottomNavBar
+        val navController = findNavController(R.id.nav_host)
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.navigation_photo_library, R.id.navigation_image_search)
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
 //        setContentView(R.layout.activity_main)
 
 //        binding.txtViewHello.text = "shit lift"
