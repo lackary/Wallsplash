@@ -39,6 +39,7 @@ class SearchFragment : Fragment() {
         viewBinding.imageSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
+                    viewBinding.imageSearchView.clearFocus()
                     searchPhotos(it)
                     return true
                 }?: return false
@@ -54,7 +55,7 @@ class SearchFragment : Fragment() {
     private fun searchPhotos(query: String) {
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
-            galleryViewModel.searchPhotos("Japan").collectLatest{
+            galleryViewModel.searchPhotos(query).collectLatest{
                 imageAdapter.submitData(it)
             }
         }

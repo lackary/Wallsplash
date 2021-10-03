@@ -17,29 +17,10 @@ class GalleryViewModel @Inject constructor(
 
     private var allUnpslashPhotos: Flow<PagingData<UnsplashPhoto>>? =null
 
-    private var currentQueryValue: String? = null
-
-    private var currentSearchResult: Flow<PagingData<UnsplashPhoto>>? = null
-
     fun getAllUnsplashPhotos() : Flow<PagingData<UnsplashPhoto>> {
         val newResult: Flow<PagingData<UnsplashPhoto>> =
             unsplashRepository.getPhotosStream().cachedIn(viewModelScope)
         allUnpslashPhotos = newResult
-        return newResult
-    }
-
-    fun getPhotos(): Flow<PagingData<UnsplashPhoto>> {
-        currentQueryValue = "Japan"
-        val newResult: Flow<PagingData<UnsplashPhoto>> =
-            unsplashRepository.getSearchPhotosStream(currentQueryValue!!).cachedIn(viewModelScope)
-        currentSearchResult = newResult
-        return newResult
-    }
-
-    fun searchPhotos(queryString:String): Flow<PagingData<UnsplashPhoto>> {
-        val newResult: Flow<PagingData<UnsplashPhoto>> =
-            unsplashRepository.getSearchPhotosStream(queryString).cachedIn(viewModelScope)
-        currentSearchResult = newResult
         return newResult
     }
 }
