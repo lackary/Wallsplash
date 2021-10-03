@@ -11,8 +11,8 @@ import com.bumptech.glide.Glide
 import com.lacklab.app.wallsplash.data.UnsplashPhoto
 import com.lacklab.app.wallsplash.databinding.ItemGalleryBinding
 
-class GalleryAdapter :
-    PagingDataAdapter<UnsplashPhoto, GalleryAdapter.GalleryViewHolder>(GalleryDiffCallback()) {
+class ImageAdapter :
+    PagingDataAdapter<UnsplashPhoto, ImageAdapter.GalleryViewHolder>(GalleryDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GalleryViewHolder {
         val viewBinding =
