@@ -81,14 +81,14 @@ dependencies {
     kapt 'com.google.dagger:dagger-compiler:2.36'
     kapt 'com.google.dagger:dagger-android-processor:2.35.1'
 
+    // Hilt
+    implementation 'com.google.dagger:hilt-android:2.36'
+    kapt 'com.google.dagger:hilt-compiler:2.36'
+
     // room
     implementation 'androidx.room:room-runtime:2.3.0'
     implementation 'androidx.room:room-ktx:2.3.0'
     kapt 'androidx.room:room-compiler:2.3.0'
-
-    // Hilt
-    implementation 'com.google.dagger:hilt-android:2.36'
-    kapt 'com.google.dagger:hilt-compiler:2.36'
 
     // Squareup
     implementation 'com.squareup.okhttp3:logging-interceptor:4.7.2'
