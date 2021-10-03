@@ -6,6 +6,8 @@ import androidx.lifecycle.asLiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.liveData
+import com.lacklab.app.wallsplash.AppExecutors
 import com.lacklab.app.wallsplash.api.UnsplashService
 import com.lacklab.app.wallsplash.data.UnsplashPhoto
 import com.lacklab.app.wallsplash.pagingSource.UnsplashPhotosPagingSource
@@ -14,13 +16,14 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class UnsplashRepository @Inject constructor(
+    private val appExecutors: AppExecutors,
     private val service: UnsplashService
 ) {
 
     fun getPhotosStream(): Flow<PagingData<UnsplashPhoto>> {
         return Pager(
             config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
-            pagingSourceFactory = { UnsplashPhotosPagingSource(service) }
+            pagingSourceFactory = { UnsplashPhotosPagingSource(appExecutors, service) }
         ).flow
     }
 

@@ -103,11 +103,18 @@ class GalleryFragment : Fragment() {
 
     private fun getPhotos() {
         searchJob?.cancel()
+        // Flow
         searchJob = lifecycleScope.launch {
             galleryViewModel.getAllUnsplashPhotos().collectLatest {
                 imageAdapter.submitData(it)
             }
         }
+        // LiveData
+//        searchJob = lifecycleScope.launch {
+//            galleryViewModel.getAllUnsplashPhotos().observe(viewLifecycleOwner, {
+//                imageAdapter.submitData(lifecycle, it)
+//            })
+//        }
     }
 
     private fun testRunBlocking() = runBlocking {

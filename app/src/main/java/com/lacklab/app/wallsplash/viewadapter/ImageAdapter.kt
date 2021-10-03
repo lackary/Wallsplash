@@ -1,7 +1,5 @@
 package com.lacklab.app.wallsplash.viewadapter
 
-import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -10,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lacklab.app.wallsplash.data.UnsplashPhoto
 import com.lacklab.app.wallsplash.databinding.ItemGalleryBinding
+import timber.log.Timber
 
 class ImageAdapter :
     PagingDataAdapter<UnsplashPhoto, ImageAdapter.GalleryViewHolder>(GalleryDiffCallback()) {
@@ -24,7 +23,7 @@ class ImageAdapter :
 
     override fun onBindViewHolder(holder: GalleryViewHolder, position: Int) {
         val gallery = getItem(position)
-        Log.i("GalleryAdapter", "position: $position")
+        Timber.d("position: $position")
         if (gallery != null) {
             holder.bind(gallery)
         }
