@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.lacklab.app.wallsplash.databinding.FragmentGalleryBinding
-import com.lacklab.app.wallsplash.viewadapter.GalleryAdapter
+import com.lacklab.app.wallsplash.viewadapter.ImageAdapter
 import com.lacklab.app.wallsplash.viewmodels.GalleryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -23,9 +23,10 @@ class GalleryFragment : Fragment() {
 
     private val TAG = GalleryFragment::class.java.simpleName
 
-    private val galleryAdapter = GalleryAdapter()
-    private val galleryViewModel: GalleryViewModel by viewModels()
     private lateinit var viewBinding: FragmentGalleryBinding
+
+    private val imageAdapter = ImageAdapter()
+    private val galleryViewModel: GalleryViewModel by viewModels()
 
     private var searchJob: Job? = null
 
@@ -46,7 +47,7 @@ class GalleryFragment : Fragment() {
     ): View? {
         Log.v(TAG, "onCreateView")
         viewBinding = FragmentGalleryBinding.inflate(inflater, container, false)
-        viewBinding.recyclerViewPhoto.adapter = galleryAdapter
+        viewBinding.recyclerViewPhoto.adapter = imageAdapter
 
         return viewBinding.root
 //        return super.onCreateView(inflater, container, savedInstanceState)
@@ -104,18 +105,13 @@ class GalleryFragment : Fragment() {
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
             galleryViewModel.getAllUnsplashPhotos().collectLatest {
-              galleryAdapter.submitData(it)
+                imageAdapter.submitData(it)
             }
         }
-
-//        searchJob = lifecycleScope.launch {
-//            galleryViewModel.searchPhotos("Japan").collectLatest{
-//                galleryAdapter.submitData(it)
-//            }
-//        }
     }
 
     private fun testRunBlocking() = runBlocking {
+        searchJob?.cancel()
         Log.i(TAG, "testRunBlocking")
         Log.i(TAG, "current job ${coroutineContext[Job]}")
         val job = launch {
