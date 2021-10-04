@@ -16,6 +16,7 @@ Wallsplash is a simple demo application base on the Android MVVM architecture. T
 
 
 ## Tech Stack and Open Source Libraries
+- Target SDK level 30
 - Minimum SDK level 28
 - Kotlin base
 - Coroutine for asynchronous
@@ -32,5 +33,10 @@ Wallsplash is a simple demo application base on the Android MVVM architecture. T
   - OKHttp3 & Retrofit2
   - Glide
   - Timber
+
+## Open API
+Wallsplash used the Unsplash API for constructing the RESTful API
+https://unsplash.com/developers
+
 
   
