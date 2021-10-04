@@ -2,13 +2,21 @@
 
 Wallsplash is a simple demo application base on the Android MVVM architecture. This App Fetch data from network and render data via Paging3
 
+## Screenshot
+<p align="center">
+<img src="/preview/preview.gif" width="40%"/>
+</p>
+
+</p>
+## MAD Score
+
+
 ## Tech Stack and Open Source Libraries
 - Minimum SDK level 28
 - Kotlin base
 - Coroutine for asynchronous
 - Dragger2 for dependency injection
 - Android Jetpack
-  - appcompat -
   - Navigation -  Build and structure your in-app UI, handle deep links, and navigate between screens.
   - Hilt - Extend the functionality of Dagger Hilt to enable dependency injection of certain classes from the androidx libraries.
   - Paging3 - Load data in pages, and present it in a RecyclerView.
