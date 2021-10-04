@@ -7,8 +7,12 @@ Wallsplash is a simple demo application base on the Android MVVM architecture. T
 <img src="/preview/preview.gif" width="40%"/>
 </p>
 
-</p>
 ## MAD Score
+<p align="center">
+<img src="/MAD/summary.png"/>
+<img src="/MAD/jetpack.png"/>
+<img src="/MAD/kotlin.png"/>
+</p>
 
 
 ## Tech Stack and Open Source Libraries
