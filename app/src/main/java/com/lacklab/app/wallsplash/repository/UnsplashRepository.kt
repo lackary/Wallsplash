@@ -1,12 +1,8 @@
 package com.lacklab.app.wallsplash.repository
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.liveData
 import com.lacklab.app.wallsplash.AppExecutors
 import com.lacklab.app.wallsplash.api.UnsplashService
 import com.lacklab.app.wallsplash.data.UnsplashPhoto
