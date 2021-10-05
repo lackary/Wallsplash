@@ -1,8 +1,10 @@
 package com.lacklab.app.wallsplash.repository
 
+import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.liveData
 import com.lacklab.app.wallsplash.AppExecutors
 import com.lacklab.app.wallsplash.api.UnsplashService
 import com.lacklab.app.wallsplash.data.UnsplashPhoto
@@ -23,11 +25,25 @@ class UnsplashRepository @Inject constructor(
         ).flow
     }
 
+    fun getPhotoStream(): LiveData<PagingData<UnsplashPhoto>> {
+        return Pager(
+            config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
+            pagingSourceFactory = { UnsplashPhotosPagingSource(appExecutors,service) }
+        ).liveData
+    }
+
     fun getSearchPhotosStream(query: String): Flow<PagingData<UnsplashPhoto>> {
         return Pager(
             config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
             pagingSourceFactory = { UnsplashSearchPhotosPagingSource(service, query) }
         ).flow
+    }
+
+    fun getSearchPhotoStream(query: String): LiveData<PagingData<UnsplashPhoto>> {
+        return Pager(
+            config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
+            pagingSourceFactory = { UnsplashSearchPhotosPagingSource(service, query)}
+        ).liveData
     }
 
     companion object {

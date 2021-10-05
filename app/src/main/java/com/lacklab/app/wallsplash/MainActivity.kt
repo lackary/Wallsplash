@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val funName = object{}.javaClass.enclosingMethod.name
-        Log.v(TAG, "test $funName")
+        Timber.d(funName)
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
@@ -43,30 +43,37 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        Log.v(TAG, "onStart")
+        val funName = object{}.javaClass.enclosingMethod.name
+        Timber.d(funName)
     }
 
     override fun onResume() {
         super.onResume()
-        Log.v(TAG, "onResume")
+        val funName = object{}.javaClass.enclosingMethod.name
+        Timber.d(funName)
     }
 
     override fun onPause() {
         super.onPause()
-        Log.v(TAG, "onPause")
+        val funName = object{}.javaClass.enclosingMethod.name
+        Timber.d(funName)
     }
 
     override fun onStop() {
         super.onStop()
-        Log.v(TAG, "onStop")
+        val funName = object{}.javaClass.enclosingMethod.name
+        Timber.d(funName)
     }
 
     override fun onRestart() {
         super.onRestart()
+        val funName = object{}.javaClass.enclosingMethod.name
+        Timber.d(funName)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.v(TAG, "onDestroy")
+        val funName = object{}.javaClass.enclosingMethod.name
+        Timber.d(funName)
     }
 }

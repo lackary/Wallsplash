@@ -6,6 +6,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.lacklab.app.wallsplash.data.UnsplashPhoto
 import com.lacklab.app.wallsplash.databinding.ItemGalleryBinding
 import timber.log.Timber
@@ -22,29 +23,33 @@ class ImageAdapter :
     }
 
     override fun onBindViewHolder(holder: GalleryViewHolder, position: Int) {
-        val gallery = getItem(position)
         Timber.d("position: $position")
-        if (gallery != null) {
-            holder.bind(gallery)
+        getItem(position)?.let {
+            holder.bind(it)
         }
+//        val gallery = getItem(position)
+//        if (gallery != null) {
+//            holder.bind(gallery)
+//        }
     }
 
-    class GalleryViewHolder(private val viewBinding: ItemGalleryBinding) :
+    inner class GalleryViewHolder(private val viewBinding: ItemGalleryBinding) :
         RecyclerView.ViewHolder(viewBinding.root) {
         private lateinit var unsplashPhoto: UnsplashPhoto
-            init {
-                viewBinding.imageViewPhoto.setOnClickListener {
-
-                }
+        init {
+            viewBinding.imageViewPhoto.setOnClickListener {
+                val photoItem = getItem(absoluteAdapterPosition)
             }
+        }
 
-            fun bind(item:UnsplashPhoto) {
-                unsplashPhoto = item
-                val url = item.urls.regular
-                Glide.with(viewBinding.root)
-                    .load(url)
-                    .into(viewBinding.imageViewPhoto)
-            }
+        fun bind(item:UnsplashPhoto) {
+            unsplashPhoto = item
+            val url = item.urls.regular
+            Glide.with(viewBinding.root)
+                .load(url)
+                .override(SIZE_ORIGINAL) 
+                .into(viewBinding.imageViewPhoto)
+        }
 
     }
 }
