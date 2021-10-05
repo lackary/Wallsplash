@@ -13,14 +13,22 @@ import javax.inject.Inject
 class GalleryViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val unsplashRepository: UnsplashRepository
-): ViewModel() {
+) : ViewModel() {
 
     private var allUnpslashPhotos: Flow<PagingData<UnsplashPhoto>>? =null
+    private var unsplashPhotosLiveData = MutableLiveData<PagingData<UnsplashPhoto>>()
 
     fun getAllUnsplashPhotos() : Flow<PagingData<UnsplashPhoto>> {
         val newResult: Flow<PagingData<UnsplashPhoto>> =
             unsplashRepository.getPhotosStream().cachedIn(viewModelScope)
         allUnpslashPhotos = newResult
+        return newResult
+    }
+
+    suspend fun getAllUnsplashPhotosLiveData() : LiveData<PagingData<UnsplashPhoto>> {
+        val newResult: LiveData<PagingData<UnsplashPhoto>> =
+            unsplashRepository.getPhotoStream().cachedIn(viewModelScope)
+        unsplashPhotosLiveData.value = newResult.value
         return newResult
     }
 }
