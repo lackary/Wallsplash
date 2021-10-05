@@ -47,7 +47,7 @@ class ImageAdapter :
             val url = item.urls.regular
             Glide.with(viewBinding.root)
                 .load(url)
-                .override(SIZE_ORIGINAL) 
+                .override(SIZE_ORIGINAL)
                 .into(viewBinding.imageViewPhoto)
         }
 

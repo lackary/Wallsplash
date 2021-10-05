@@ -1,14 +1,12 @@
 package com.lacklab.app.wallsplash.pagingSource
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.lacklab.app.wallsplash.AppExecutors
 import com.lacklab.app.wallsplash.api.*
 import com.lacklab.app.wallsplash.data.UnsplashPhoto
 import com.lacklab.app.wallsplash.data.UnsplashSearchPhotos
-import com.lacklab.app.wallsplash.repository.UnsplashMediator
-import okhttp3.internal.wait
+import com.lacklab.app.wallsplash.repository.UnsplashRepository.Companion.NETWORK_PAGE_SIZE
 import timber.log.Timber
 
 private const val UNSPLASH_STARTING_PAGE_INDEX = 1
@@ -39,14 +37,17 @@ class UnsplashPhotosPagingSource (
                         )
                     }
                     Timber.d("ApiSuccessResponse")
-                    Log.i("Test", "ApiSuccessResponse")
                 }
             }
 
+            // by default, init loadSize is 3 x NETWORK_PAGE_SIZE
+            // Ensure we don't retrieve duplicating items at 2nd time request
+            val nextPage = page + (params.loadSize / NETWORK_PAGE_SIZE)
             LoadResult.Page(
                 data = data!!.results,
-                prevKey = if (page == UNSPLASH_STARTING_PAGE_INDEX) null else page - 1,
-                nextKey = if (page == data.totalPages) null else page + 1
+//                prevKey = if (page == UNSPLASH_STARTING_PAGE_INDEX) null else page - 1,
+                prevKey = null,
+                nextKey = if (page == data.totalPages) null else nextPage
             )
         } catch (e: Exception) {
             LoadResult.Error(e)
