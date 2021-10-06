@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -46,7 +47,7 @@ class ImageAdapter :
         init {
             binding.imageViewPhoto.setOnClickListener {
                 val photoItem = getItem(absoluteAdapterPosition)
-                navigateToPhoto(photoItem!!, it)
+                navigateToPhoto(photoItem!!, binding.imageViewPhoto)
             }
 
             binding.textViewName.setOnClickListener {
@@ -68,7 +69,9 @@ class ImageAdapter :
         private fun navigateToPhoto(photoItem: UnsplashPhoto, view: View) {
             val direction =
                 GalleryFragmentDirections.actionNavigationPhotoLibraryToNavigationPhoto(photoItem)
-            view.findNavController().navigate(direction)
+            val extras = FragmentNavigatorExtras(view to photoItem.id )
+            view.findNavController()
+                .navigate(direction, extras)
         }
 
     }
