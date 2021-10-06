@@ -1,8 +1,10 @@
 package com.lacklab.app.wallsplash.viewadapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +13,7 @@ import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.data.UnsplashPhoto
 import com.lacklab.app.wallsplash.databinding.ItemGalleryBinding
+import com.lacklab.app.wallsplash.view.GalleryFragmentDirections
 import timber.log.Timber
 
 class ImageAdapter :
@@ -43,6 +46,7 @@ class ImageAdapter :
         init {
             binding.imageViewPhoto.setOnClickListener {
                 val photoItem = getItem(absoluteAdapterPosition)
+                navigateToPhoto(photoItem!!, it)
             }
 
             binding.textViewName.setOnClickListener {
@@ -59,6 +63,12 @@ class ImageAdapter :
                 .load(url)
                 .override(SIZE_ORIGINAL)
                 .into(binding.imageViewPhoto)
+        }
+
+        private fun navigateToPhoto(photoItem: UnsplashPhoto, view: View) {
+            val direction =
+                GalleryFragmentDirections.actionNavigationPhotoLibraryToNavigationPhoto(photoItem)
+            view.findNavController().navigate(direction)
         }
 
     }

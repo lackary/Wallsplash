@@ -1,6 +1,7 @@
 package com.lacklab.app.wallsplash.data
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class UnsplashPhoto(
     @field:SerializedName("id") val id: String,
@@ -21,4 +22,4 @@ data class UnsplashPhoto(
     @field:SerializedName("liked_by_user") val likedByUser: Boolean,
 //    more ...
     @field:SerializedName("user") val user: UnsplashUser,
-)
+) : Serializable
