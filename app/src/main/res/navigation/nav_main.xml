@@ -9,10 +9,26 @@
         android:id="@+id/navigation_photo_library"
         android:name="com.lacklab.app.wallsplash.view.GalleryFragment"
         android:label="Gallery"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_gallery" >
+        <action
+            android:id="@+id/action_navigation_photo_library_to_navigation_photo"
+            app:destination="@id/navigation_photo" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_image_search"
         android:name="com.lacklab.app.wallsplash.view.SearchFragment"
         android:label="Search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_navigation_image_search_to_navigation_photo"
+            app:destination="@id/navigation_photo" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_photo"
+        android:name="com.lacklab.app.wallsplash.view.PhotoFragment"
+        android:label="Photo" >
+        <argument
+            android:name="photo"
+            app:argType="com.lacklab.app.wallsplash.data.UnsplashPhoto"/>
+    </fragment>
 </navigation>

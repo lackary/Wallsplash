@@ -22,8 +22,6 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 
-    private lateinit var viewBinding: FragmentSearchBinding
-
     private val imageAdapter = ImageAdapter()
     private val galleryViewModel: SearchViewModel by viewModels()
 
