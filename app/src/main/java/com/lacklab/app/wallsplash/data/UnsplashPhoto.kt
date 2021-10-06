@@ -20,4 +20,5 @@ data class UnsplashPhoto(
     val likes: Long,
     @field:SerializedName("liked_by_user") val likedByUser: Boolean,
 //    more ...
+    @field:SerializedName("user") val user: UnsplashUser,
 )

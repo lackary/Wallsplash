@@ -5,11 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.viewbinding.ViewBinding
 import timber.log.Timber
 
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment<Binding: ViewDataBinding> : Fragment() {
+
+    protected lateinit var binding: Binding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -30,7 +33,9 @@ abstract class BaseFragment : Fragment() {
     ): View? {
         val funName = object{}.javaClass.enclosingMethod.name
         Timber.d(funName)
-        return super.onCreateView(inflater, container, savedInstanceState)
+        binding = DataBindingUtil.inflate(inflater, layout(), container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -81,6 +86,8 @@ abstract class BaseFragment : Fragment() {
         val funName = object{}.javaClass.enclosingMethod.name
         Timber.d(funName)
     }
+
+    abstract fun layout(): Int
 
     abstract fun init()
 }
