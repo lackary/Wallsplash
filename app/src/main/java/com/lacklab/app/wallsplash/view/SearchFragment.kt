@@ -5,15 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.SearchRecentSuggestions
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.lacklab.app.wallsplash.MySuggestionProvider
 import com.lacklab.app.wallsplash.R
+import com.lacklab.app.wallsplash.base.BaseFragment
 import com.lacklab.app.wallsplash.databinding.FragmentSearchBinding
 import com.lacklab.app.wallsplash.viewadapter.ImageAdapter
 import com.lacklab.app.wallsplash.viewmodels.SearchViewModel
@@ -21,10 +18,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
-class SearchFragment : Fragment() {
+class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 
     private lateinit var viewBinding: FragmentSearchBinding
 
@@ -33,30 +29,35 @@ class SearchFragment : Fragment() {
 
     private var searchJob: Job? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val funName = object{}.javaClass.enclosingMethod.name
-        Timber.d(funName)
-        viewBinding = FragmentSearchBinding.inflate(inflater, container, false)
-        viewBinding.recyclerViewPhoto.adapter = imageAdapter
+    override fun layout() = R.layout.fragment_search
+
+    override fun init() {
+        initView()
+        initAction()
+    }
+
+    private fun initView() {
+        // Adapter
+        binding.recyclerViewPhoto.apply {
+            adapter = imageAdapter
+        }
 
         // SearchView
 //        val searchManager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        viewBinding.imageSearchView.apply {
+        binding.imageSearchView.apply {
 //            setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
             setIconifiedByDefault(false)
             queryHint = getString(R.string.ex_search)
             suggestionsAdapter
         }
+    }
 
-        viewBinding.imageSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+    private fun initAction(){
+        binding.imageSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
                     // Hide search keyboard
-                    viewBinding.imageSearchView.clearFocus()
+                    binding.imageSearchView.clearFocus()
                     searchPhotos(it)
 
                     // set currentData
@@ -76,7 +77,6 @@ class SearchFragment : Fragment() {
                 return false
             }
         })
-        return viewBinding.root
     }
 
     private fun searchPhotos(query: String) {
