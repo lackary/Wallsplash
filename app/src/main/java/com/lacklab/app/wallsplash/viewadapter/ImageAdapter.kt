@@ -17,7 +17,10 @@ import com.lacklab.app.wallsplash.databinding.ItemGalleryBinding
 import com.lacklab.app.wallsplash.view.GalleryFragmentDirections
 import timber.log.Timber
 
-class ImageAdapter :
+class ImageAdapter(
+    private val photoClickListener: (photoItem: UnsplashPhoto, view: View) -> Unit,
+//    private val nameClickListener: (photoItem: UnsplashPhoto, view: View) -> Unit
+) :
     PagingDataAdapter<UnsplashPhoto, ImageAdapter.GalleryViewHolder>(GalleryDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GalleryViewHolder {
@@ -47,12 +50,13 @@ class ImageAdapter :
         init {
             binding.imageViewPhoto.setOnClickListener {
                 val photoItem = getItem(absoluteAdapterPosition)
-                navigateToPhoto(photoItem!!, binding.imageViewPhoto)
+                photoClickListener(photoItem!!, it)
             }
 
-            binding.textViewName.setOnClickListener {
-
-            }
+//            binding.textViewName.setOnClickListener {
+//                val photoItem = getItem(absoluteAdapterPosition)
+//                nameClickListener(photoItem!!, it)
+//            }
         }
 
         fun bind(item:UnsplashPhoto) {
@@ -65,15 +69,6 @@ class ImageAdapter :
                 .override(SIZE_ORIGINAL)
                 .into(binding.imageViewPhoto)
         }
-
-        private fun navigateToPhoto(photoItem: UnsplashPhoto, view: View) {
-            val direction =
-                GalleryFragmentDirections.actionNavigationPhotoLibraryToNavigationPhoto(photoItem)
-            val extras = FragmentNavigatorExtras(view to photoItem.id )
-            view.findNavController()
-                .navigate(direction, extras)
-        }
-
     }
 }
 

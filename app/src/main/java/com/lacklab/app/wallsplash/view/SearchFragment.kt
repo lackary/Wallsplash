@@ -1,13 +1,13 @@
 package com.lacklab.app.wallsplash.view
 
-import android.app.SearchManager
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.SearchRecentSuggestions
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.lacklab.app.wallsplash.MySuggestionProvider
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
@@ -22,7 +22,16 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 
-    private val imageAdapter = ImageAdapter()
+    private val imageAdapter by lazy {
+        ImageAdapter { photoItem, view ->
+            val direction =
+                SearchFragmentDirections.actionNavigationImageSearchToNavigationPhoto(photoItem)
+            val extras = FragmentNavigatorExtras(view to photoItem.id)
+            view.findNavController()
+                .navigate(direction, extras)
+        }
+    }
+
     private val galleryViewModel: SearchViewModel by viewModels()
 
     private var searchJob: Job? = null

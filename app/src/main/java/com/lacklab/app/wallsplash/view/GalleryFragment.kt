@@ -2,13 +2,11 @@ package com.lacklab.app.wallsplash.view
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
 import com.lacklab.app.wallsplash.databinding.FragmentGalleryBinding
@@ -23,9 +21,16 @@ import kotlinx.coroutines.runBlocking
 @AndroidEntryPoint
 class GalleryFragment : BaseFragment<FragmentGalleryBinding>() {
 
-//    private lateinit var viewBinding: FragmentGalleryBinding
+    private val imageAdapter by lazy {
+        ImageAdapter { photoItem, view ->
+            val direction =
+            GalleryFragmentDirections.actionNavigationPhotoLibraryToNavigationPhoto(photoItem)
+            val extras = FragmentNavigatorExtras(view to photoItem.id )
+            view.findNavController()
+                .navigate(direction, extras)
 
-    private val imageAdapter = ImageAdapter()
+        }
+    }
     private val galleryViewModel: GalleryViewModel by viewModels()
 
     private var retrievePhotoJob: Job? = null
