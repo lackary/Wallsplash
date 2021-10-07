@@ -1,9 +1,7 @@
 package com.lacklab.app.wallsplash
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -16,7 +14,7 @@ import timber.log.Timber
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val TAG = MainActivity::class.java.simpleName
+//    private val TAG = MainActivity::class.java.simpleName
 
     private lateinit var viewBinding: ActivityMainBinding
 
@@ -27,15 +25,17 @@ class MainActivity : AppCompatActivity() {
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        val navView: BottomNavigationView = viewBinding.bottomNavBar
+        // Use fragment tag
         val navController = findNavController(R.id.nav_host)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(R.id.navigation_photo_library, R.id.navigation_image_search)
         )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+
+//        setupActionBarWithNavController(navController, appBarConfiguration)
+        viewBinding.bottomNavBar.setupWithNavController(navController)
+        viewBinding.materialToolBar.setupWithNavController(navController, appBarConfiguration)
 //        setContentView(R.layout.activity_main)
 
 //        binding.txtViewHello.text = "shit lift"
