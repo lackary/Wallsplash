@@ -33,9 +33,9 @@ class MainActivity : AppCompatActivity() {
             setOf(R.id.navigation_photo_library, R.id.navigation_image_search)
         )
 
-//        setupActionBarWithNavController(navController, appBarConfiguration)
+        setupActionBarWithNavController(navController, appBarConfiguration)
         viewBinding.bottomNavBar.setupWithNavController(navController)
-        viewBinding.materialToolBar.setupWithNavController(navController, appBarConfiguration)
+//        viewBinding.materialToolBar.setupWithNavController(navController, appBarConfiguration)
 //        setContentView(R.layout.activity_main)
 
 //        binding.txtViewHello.text = "shit lift"
