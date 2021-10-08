@@ -19,7 +19,7 @@ import timber.log.Timber
 
 class ImageAdapter(
     private val photoClickListener: (photoItem: UnsplashPhoto, view: View) -> Unit,
-//    private val nameClickListener: (photoItem: UnsplashPhoto, view: View) -> Unit
+    private val nameClickListener: (photoItem: UnsplashPhoto, view: View) -> Unit
 ) :
     PagingDataAdapter<UnsplashPhoto, ImageAdapter.GalleryViewHolder>(GalleryDiffCallback()) {
 
@@ -53,10 +53,10 @@ class ImageAdapter(
                 photoClickListener(photoItem!!, it)
             }
 
-//            binding.textViewName.setOnClickListener {
-//                val photoItem = getItem(absoluteAdapterPosition)
-//                nameClickListener(photoItem!!, it)
-//            }
+            binding.textViewName.setOnClickListener {
+                val photoItem = getItem(absoluteAdapterPosition)
+                nameClickListener(photoItem!!, it)
+            }
         }
 
         fun bind(item:UnsplashPhoto) {

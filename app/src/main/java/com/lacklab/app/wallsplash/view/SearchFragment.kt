@@ -18,18 +18,24 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 
     private val imageAdapter by lazy {
-        ImageAdapter { photoItem, view ->
-            val direction =
-                SearchFragmentDirections.actionNavigationImageSearchToNavigationPhoto(photoItem)
-            val extras = FragmentNavigatorExtras(view to photoItem.id)
-            view.findNavController()
-                .navigate(direction, extras)
-        }
+        ImageAdapter(
+            photoClickListener = { photoItem, view ->
+                val direction =
+                    SearchFragmentDirections.actionNavigationImageSearchToNavigationPhoto(photoItem)
+                val extras = FragmentNavigatorExtras(view to photoItem.id)
+                view.findNavController()
+                    .navigate(direction, extras)
+            },
+            nameClickListener = { photoItem, view ->
+                Timber.d("click name")
+            }
+        )
     }
 
     private val galleryViewModel: SearchViewModel by viewModels()
@@ -60,6 +66,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
     }
 
     private fun initAction(){
+
         binding.imageSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
