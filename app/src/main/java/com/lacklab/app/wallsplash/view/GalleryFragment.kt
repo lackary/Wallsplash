@@ -17,20 +17,28 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import timber.log.Timber
 
 @AndroidEntryPoint
 class GalleryFragment : BaseFragment<FragmentGalleryBinding>() {
 
     private val imageAdapter by lazy {
-        ImageAdapter { photoItem, view ->
-            val direction =
-            GalleryFragmentDirections.actionNavigationPhotoLibraryToNavigationPhoto(photoItem)
-            val extras = FragmentNavigatorExtras(view to photoItem.id )
-            view.findNavController()
-                .navigate(direction, extras)
-
-        }
+        ImageAdapter(
+            photoClickListener = { photoItem, view ->
+                val direction =
+                    GalleryFragmentDirections.actionNavigationPhotoLibraryToNavigationPhoto(photoItem)
+                val extras = FragmentNavigatorExtras(view to photoItem.id )
+                view.findNavController()
+                    .navigate(direction, extras)
+            },
+            nameClickListener = { photoItem, view ->
+                Timber.d("click name")
+            }
+        )
     }
+
+
+
     private val galleryViewModel: GalleryViewModel by viewModels()
 
     private var retrievePhotoJob: Job? = null
