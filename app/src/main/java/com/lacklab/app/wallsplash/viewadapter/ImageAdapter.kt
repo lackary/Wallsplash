@@ -10,6 +10,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.data.UnsplashPhoto
@@ -66,7 +67,10 @@ class ImageAdapter(
             val url = item.urls.regular
             Glide.with(binding.root)
                 .load(url)
+                .centerCrop()
+                .fitCenter()
                 .override(SIZE_ORIGINAL)
+                .transition(DrawableTransitionOptions.withCrossFade())
                 .into(binding.imageViewPhoto)
         }
     }
