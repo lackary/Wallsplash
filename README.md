@@ -35,8 +35,15 @@ Wallsplash is a simple demo application base on the Android MVVM architecture. T
   - Timber
 
 ## Open API
-Wallsplash used the Unsplash API for constructing the RESTful API
-https://unsplash.com/developers
+Wallsplash used the Unsplash API for constructing the RESTful API https://unsplash.com/developers
+
+### How to run the api
+- Register the Unsplash Api
+- Open gradle.properties
+- input the unsplash api key that you register
+```
+unsplash_access_key=qiwopeiqpowieqdkvirodn732848927349827
+```
 
 
   
