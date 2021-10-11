@@ -40,7 +40,7 @@ Wallsplash used the Unsplash API for constructing the RESTful API https://unspla
 ### How to run the api
 - Register the Unsplash Api
 - Open gradle.properties
-- input the unsplash api key that you register
+- input the unsplash api key that you register like below
 ```
 unsplash_access_key=qiwopeiqpowieqdkvirodn732848927349827
 ```
