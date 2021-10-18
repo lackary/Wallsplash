@@ -24,10 +24,6 @@ class WallsplashFirebaseMessageService : FirebaseMessagingService() {
     override fun onMessageReceived(p0: RemoteMessage) {
         super.onMessageReceived(p0)
         Timber.d("From: ${p0.from}")
-        if (p0.data.isNotEmpty()) {
-            Timber.d("Message data payload: ${p0.data}")
-        }
-
         // For the stack overflow
         // https://stackoverflow.com/questions/37711082/
         // 1. Display Messages: These messages trigger the onMessageReceived()
@@ -39,7 +35,7 @@ class WallsplashFirebaseMessageService : FirebaseMessagingService() {
         // instead of  https://fcm.googleapis.com/fcm/send
         // Check if message contains a data payload.
         if (p0.data.isNotEmpty()) {
-            Timber.d("data is not Empty")
+            Timber.d("Message data payload: ${p0.data}")
         }
 
         // Check if message contains a notification payload.
@@ -54,7 +50,6 @@ class WallsplashFirebaseMessageService : FirebaseMessagingService() {
     }
 
     private fun sendNotification(notification: RemoteMessage.Notification) {
-
         // Set the notification's tap action
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
