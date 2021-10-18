@@ -44,12 +44,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '1.8'
     }
 }
 
@@ -104,6 +104,9 @@ dependencies {
 
     // Other
     implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    // Debug
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 
     // Test dependencies
     testImplementation 'junit:junit:4.13.2'
