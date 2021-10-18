@@ -2,11 +2,14 @@ package com.lacklab.app.wallsplash
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.messaging.FirebaseMessaging
 import com.lacklab.app.wallsplash.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -24,6 +27,21 @@ class MainActivity : AppCompatActivity() {
         Timber.d(funName)
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
+
+//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+//            if (!task.isSuccessful) {
+//                Timber.w("Fetching FCM registration token failed %s", task.exception)
+//                return@OnCompleteListener
+//            }
+//
+//            // Get new FCM registration token
+//            val token = task.result
+//
+//            // Log and toast
+//            val msg = getString(R.string.msg_token_fmt, token)
+//            Timber.d("msg: $msg")
+//            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+//        })
 
         // Use fragment tag
         val navController = findNavController(R.id.nav_host)
