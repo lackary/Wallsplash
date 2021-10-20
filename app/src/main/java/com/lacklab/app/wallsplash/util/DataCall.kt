@@ -17,7 +17,6 @@ class DataCall<T>constructor(
             override fun onResponse(call: Call<T>, response: Response<T>) {
                 val apiResponse = ApiResponse.create(response)
                 Timber.d("ApiResponse")
-                Log.i("Test", "ApiResponse")
                 callback.onResponse(this@DataCall, Response.success(apiResponse))
             }
 
