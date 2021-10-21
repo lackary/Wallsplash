@@ -28,7 +28,14 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
-
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image_view_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintStart_toStartOf="@id/image_view_photo"
+                app:layout_constraintBottom_toBottomOf="@id/image_view_photo"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/text_view_name"
                 android:layout_width="wrap_content"
@@ -36,10 +43,10 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="16dp"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:autoSizeTextType="uniform"
                 android:text="@{photoItem.user.name}"
                 app:layout_constraintBottom_toBottomOf="@id/image_view_photo"
-                app:layout_constraintStart_toStartOf="@id/image_view_photo" />
+                app:layout_constraintStart_toEndOf="@id/image_view_user" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

@@ -92,6 +92,7 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>() {
     override fun init() {
         initView()
         initObserve()
+        initAction()
         initPageDataAdapter()
     }
 
@@ -109,10 +110,27 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>() {
         }
     }
 
+    private fun initAction() {
+        // init bottom appbar action
+        binding.bottomAppbar.setNavigationOnClickListener {
+            // GO TO About
+        }
+        binding.bottomAppbar.setOnMenuItemClickListener {
+            when(it.itemId) {
+                R.id.item_search -> {
+                    true
+                }
+                else -> false
+            }
+        }
+
+    }
+
     private fun initPageDataAdapter() {
-//        imageAdapter.addLoadStateListener {
-//
-//        }
+        // init image adapter action
+        imageAdapter.addLoadStateListener {
+
+        }
     }
 
     private fun getPhotos() {

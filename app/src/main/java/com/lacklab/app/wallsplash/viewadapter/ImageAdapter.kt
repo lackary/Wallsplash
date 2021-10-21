@@ -64,14 +64,19 @@ class ImageAdapter(
             with(binding) {
                 photoItem = item
             }
-            val url = item.urls.regular
             Glide.with(binding.root)
-                .load(url)
+                .load(item.urls.regular)
                 .centerCrop()
                 .fitCenter()
                 .override(SIZE_ORIGINAL)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(binding.imageViewPhoto)
+            Glide.with(binding.root)
+                .load(item.user.profileImage.large)
+                .circleCrop()
+                .override(SIZE_ORIGINAL)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(binding.imageViewUser)
         }
     }
 }
