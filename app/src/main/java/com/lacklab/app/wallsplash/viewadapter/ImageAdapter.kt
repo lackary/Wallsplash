@@ -64,6 +64,13 @@ class ImageAdapter(
             with(binding) {
                 photoItem = item
             }
+//            val cardViewItemLayout = binding.cardViewItem.layoutParams
+//            val ratio: Float = item.height.toFloat() / item.width.toFloat()
+//            Timber.d("ratio: %f", ratio)
+//            cardViewItemLayout.height = (cardViewItemLayout.width.toFloat() * ratio).toInt()
+//            Timber.d("height: %d", cardViewItemLayout.height)
+//            Timber.d("height: %d", cardViewItemLayout.width)
+//            binding.cardViewItem.layoutParams = cardViewItemLayout
             Glide.with(binding.root)
                 .load(item.urls.regular)
                 .centerCrop()

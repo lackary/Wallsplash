@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
 import com.lacklab.app.wallsplash.databinding.FragmentGalleryBinding
@@ -118,6 +119,10 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>() {
         binding.bottomAppbar.setOnMenuItemClickListener {
             when(it.itemId) {
                 R.id.item_search -> {
+                    val direction =
+                        GalleryFragmentDirections
+                            .actionNavigationPhotoLibraryToNavigationImageSearch()
+                    findNavController().navigate(direction)
                     true
                 }
                 else -> false

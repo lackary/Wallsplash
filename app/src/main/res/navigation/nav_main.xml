@@ -13,6 +13,10 @@
         <action
             android:id="@+id/action_navigation_photo_library_to_navigation_photo"
             app:destination="@id/navigation_photo" />
+        <action
+            android:id="@+id/action_navigation_photo_library_to_navigation_image_search"
+            app:destination="@id/navigation_image_search"
+            />
     </fragment>
     <fragment
         android:id="@+id/navigation_image_search"

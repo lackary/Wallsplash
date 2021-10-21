@@ -11,6 +11,8 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+import androidx.recyclerview.widget.StaggeredGridLayoutManager.GAP_HANDLING_NONE
 import com.lacklab.app.wallsplash.MySuggestionProvider
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
@@ -71,6 +73,15 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
     }
 
     private fun initAction(){
+
+//        binding.recyclerViewPhoto.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//                super.onScrollStateChanged(recyclerView, newState)
+//                Timber.d("ScrollStateChanged")
+//                val layoutManager = recyclerView.layoutManager as StaggeredGridLayoutManager
+//                layoutManager.invalidateSpanAssignments()
+//            }
+//        })
 
         binding.imageSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
