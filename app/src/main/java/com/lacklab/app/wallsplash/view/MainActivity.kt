@@ -14,8 +14,6 @@ import timber.log.Timber
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-//    private val TAG = MainActivity::class.java.simpleName
-
     private lateinit var viewBinding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,26 +38,15 @@ class MainActivity : AppCompatActivity() {
 //            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
 //        })
 
-        // Use fragment tag
-        val navController = findNavController(R.id.nav_host)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.navigation_photo_library, R.id.navigation_image_search)
-        )
-
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        viewBinding.bottomNavBar.setupWithNavController(navController)
-//        viewBinding.materialToolBar.setupWithNavController(navController, appBarConfiguration)
 //        setContentView(R.layout.activity_main)
 
-//        binding.txtViewHello.text = "shit lift"
     }
 
     override fun onStart() {
         super.onStart()
         val funName = object{}.javaClass.enclosingMethod.name
         Timber.d(funName)
+        initView()
     }
 
     override fun onResume() {
@@ -90,5 +77,17 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         val funName = object{}.javaClass.enclosingMethod.name
         Timber.d(funName)
+    }
+
+    private fun initView() {
+//        // init Bottom Navigation bar
+//        val navController = findNavController(R.id.nav_host)
+//        // Passing each menu ID as a set of Ids because each
+//        // menu should be considered as top level destinations.
+//        val appBarConfiguration = AppBarConfiguration(
+//            setOf(R.id.navigation_photo_library, R.id.navigation_image_search)
+//        )
+//        setupActionBarWithNavController(navController, appBarConfiguration)
+//        viewBinding.bottomNavBar.setupWithNavController(navController)
     }
 }

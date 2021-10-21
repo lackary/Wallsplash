@@ -13,4 +13,5 @@ data class UnsplashUser(
     @field:SerializedName("first_name") val firstName: String,
     @field:SerializedName("last_name") val lastName: String,
     @field:SerializedName("location") val location: String,
+    @field:SerializedName("profile_image") val profileImage: UnsplashProfileImage
 ) : Parcelable {}
