@@ -2,7 +2,7 @@
     <string name="app_name">Wallsplash</string>
     <string name="title_photo_library">Gallery</string>
     <string name="title_image_search">Search</string>
-    <string name="ex_search">ex: Taipei</string>
+    <string name="ex_search">Taipei</string>
     <string name="search">search</string>
     <string name="content_description_search">search photos, user, or collection</string>
     <string name="more">more</string>
