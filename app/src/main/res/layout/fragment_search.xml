@@ -15,6 +15,7 @@
             android:id="@+id/image_search_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:queryHint="@string/ex_search"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

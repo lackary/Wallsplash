@@ -80,14 +80,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-//        // init Bottom Navigation bar
-//        val navController = findNavController(R.id.nav_host)
-//        // Passing each menu ID as a set of Ids because each
-//        // menu should be considered as top level destinations.
-//        val appBarConfiguration = AppBarConfiguration(
-//            setOf(R.id.navigation_photo_library, R.id.navigation_image_search)
-//        )
+        // init Bottom Navigation bar
+        val navController = findNavController(R.id.nav_host_main)
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.navigation_photo_library, R.id.navigation_image_search)
+        )
+
+        viewBinding.bottomNavBar.setupWithNavController(navController)
+        // if we have the appbar, this will show the title of appbar
 //        setupActionBarWithNavController(navController, appBarConfiguration)
-//        viewBinding.bottomNavBar.setupWithNavController(navController)
+
     }
 }

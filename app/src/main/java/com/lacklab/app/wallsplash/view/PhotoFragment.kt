@@ -12,10 +12,11 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
+import com.lacklab.app.wallsplash.data.UnsplashPhoto
 import com.lacklab.app.wallsplash.databinding.FragmentPhotoBinding
 
 class PhotoFragment : BaseFragment<FragmentPhotoBinding>() {
-    private val args: PhotoFragmentArgs by navArgs()
+//    private val args: PhotoFragmentArgs by navArgs()
     override fun layout() = R.layout.fragment_photo
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,10 +43,12 @@ class PhotoFragment : BaseFragment<FragmentPhotoBinding>() {
     }
 
     private fun initView() {
-        binding.imageViewPhoto.transitionName = args.photo.id
-        val url = args.photo.urls.regular
+        val bundle = requireActivity().intent.getBundleExtra("photoItemBundle")!!
+        val photo = bundle.getParcelable<UnsplashPhoto>("photoItem")
+        binding.photoItem = photo
+//        val url = args.photo.urls.regular
         Glide.with(binding.root)
-            .load(url)
+            .load(photo!!.urls!!.regular)
             .override(Target.SIZE_ORIGINAL)
 //            .addListener(object: RequestListener<Drawable>{
 //                override fun onLoadFailed(
