@@ -15,6 +15,7 @@ import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface UnsplashService {
+
     @GET("photos")
     suspend fun getPhotos(
         @Query("page") page: Int,
@@ -22,6 +23,13 @@ interface UnsplashService {
         @Header("Authorization")
         clientId: String = "Client-ID " + BuildConfig.UNSPLASH_ACCESS_KEY,
     ) : ApiResponse<List<UnsplashPhoto>>
+
+//    suspend fun getCollections(
+//        @Query("page") page: Int,
+//        @Query("per_page") prePage: Int = 10,
+//        @Header("Authorization")
+//        clientId: String = "Client-ID " + BuildConfig.UNSPLASH_ACCESS_KEY,
+//    ) : ApiResponse<List<U>>
 
     @GET("search/photos")
     suspend fun searchPhotos(

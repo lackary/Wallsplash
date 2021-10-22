@@ -1,8 +1,10 @@
 package com.lacklab.app.wallsplash.view
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -26,19 +28,30 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>() {
     private val imageAdapter by lazy {
         ImageAdapter(
             photoClickListener = { photoItem, view ->
-                val direction =
-                    GalleryFragmentDirections.actionNavigationPhotoLibraryToNavigationPhoto(photoItem)
-                val extras = FragmentNavigatorExtras(view to photoItem.id )
-                view.findNavController()
-                    .navigate(direction, extras)
+//                val direction =
+//                    GalleryFragmentDirections.actionNavigationPhotoLibraryToNavigationPhoto(photoItem)
+//                // use shareElement
+//                val extras = FragmentNavigatorExtras(view to photoItem.id )
+//                view.findNavController()
+//                    .navigate(direction, extras)
+                val intent = Intent(requireActivity(), PhotoActivity::class.java)
+                val bundle = Bundle().apply {
+                    putParcelable("photoItem", photoItem)
+                }
+                intent.putExtra("photoItemBundle", bundle)
+                val activityOptionsCompat =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this@GalleryFragment.requireActivity(),
+                        view,
+                        photoItem.id
+                    )
+                startActivity(intent, activityOptionsCompat.toBundle())
             },
             nameClickListener = { photoItem, view ->
                 Timber.d("click name")
             }
         )
     }
-
-
 
     private val galleryViewModel: GalleryViewModel by viewModels()
 
@@ -112,22 +125,24 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>() {
     }
 
     private fun initAction() {
-        // init bottom appbar action
-        binding.bottomAppbar.setNavigationOnClickListener {
-            // GO TO About
-        }
-        binding.bottomAppbar.setOnMenuItemClickListener {
-            when(it.itemId) {
-                R.id.item_search -> {
-                    val direction =
-                        GalleryFragmentDirections
-                            .actionNavigationPhotoLibraryToNavigationImageSearch()
-                    findNavController().navigate(direction)
-                    true
-                }
-                else -> false
-            }
-        }
+//        // init bottom appbar action
+//        binding.bottomAppbar.setNavigationOnClickListener {
+//            // GO TO About
+//        }
+//        binding.bottomAppbar.setOnMenuItemClickListener {
+//            when(it.itemId) {
+//                R.id.item_search -> {
+////                    val direction =
+////                        GalleryFragmentDirections
+////                            .actionNavigationPhotoLibraryToNavigationImageSearch()
+////                    findNavController().navigate(direction)
+//                    val intent = Intent(activity, SearchActivity::class.java)
+//                    startActivity(intent);
+//                    true
+//                }
+//                else -> false
+//            }
+//        }
 
     }
 

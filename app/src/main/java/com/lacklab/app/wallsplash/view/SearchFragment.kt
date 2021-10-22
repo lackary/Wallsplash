@@ -67,7 +67,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
         binding.imageSearchView.apply {
 //            setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
             setIconifiedByDefault(false)
-            queryHint = getString(R.string.ex_search)
             suggestionsAdapter
         }
     }
