@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.SearchRecentSuggestions
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -31,11 +32,23 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
     private val imageAdapter by lazy {
         ImageAdapter(
             photoClickListener = { photoItem, view ->
-                val direction =
-                    SearchFragmentDirections.actionNavigationImageSearchToNavigationPhoto(photoItem)
-                val extras = FragmentNavigatorExtras(view to photoItem.id)
-                view.findNavController()
-                    .navigate(direction, extras)
+//                val direction =
+//                    SearchFragmentDirections.actionNavigationImageSearchToNavigationPhoto(photoItem)
+//                val extras = FragmentNavigatorExtras(view to photoItem.id)
+//                view.findNavController()
+//                    .navigate(direction, extras)
+                val intent = Intent(requireActivity(), PhotoActivity::class.java)
+                val bundle = Bundle().apply {
+                    putParcelable("photoItem", photoItem)
+                }
+                intent.putExtra("photoItemBundle", bundle)
+                val activityOptionsCompat =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this@SearchFragment.requireActivity(),
+                        view,
+                        photoItem.id
+                    )
+                startActivity(intent, activityOptionsCompat.toBundle())
             },
             nameClickListener = { photoItem, view ->
                 Timber.d("click name")
@@ -51,14 +64,14 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 
     override fun init() {
         initView()
-        initAction()
+        bindEvents()
     }
 
     private fun initView() {
         // Adapter
-        binding.recyclerViewPhoto.apply {
-            layoutManager =
-                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        binding.recyclerViewItems.apply {
+//            layoutManager =
+//                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = imageAdapter
         }
 
@@ -71,7 +84,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
         }
     }
 
-    private fun initAction(){
+    private fun bindEvents(){
 
 //        binding.recyclerViewPhoto.addOnScrollListener(object: RecyclerView.OnScrollListener() {
 //            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
