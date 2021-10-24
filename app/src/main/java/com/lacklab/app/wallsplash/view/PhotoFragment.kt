@@ -30,23 +30,17 @@ class PhotoFragment : BaseFragment<FragmentPhotoBinding>() {
             TransitionInflater
                 .from(context)
                 .inflateTransition(android.R.transition.move)
-
-//        sharedElementEnterTransition =
-//            TransitionInflater
-//                .from(context)
-//                .inflateTransition(R.transition.shared_element_transition)
-//        postponeEnterTransition()
     }
 
     override fun init() {
         initView()
+        bindEvents()
     }
 
     private fun initView() {
         val bundle = requireActivity().intent.getBundleExtra("photoItemBundle")!!
         val photo = bundle.getParcelable<UnsplashPhoto>("photoItem")
         binding.photoItem = photo
-//        val url = args.photo.urls.regular
         Glide.with(binding.root)
             .load(photo!!.urls!!.regular)
             .override(Target.SIZE_ORIGINAL)
@@ -74,5 +68,17 @@ class PhotoFragment : BaseFragment<FragmentPhotoBinding>() {
 //
 //            })
             .into(binding.imageViewPhoto)
+    }
+
+    private fun bindEvents() {
+        with(binding) {
+            // set toolbar action
+            toolbarTop.setNavigationOnClickListener {
+                requireActivity().onBackPressed();
+            }
+
+            // set info action
+            imageViewInfo.setOnClickListener {  }
+        }
     }
 }

@@ -5,11 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
 import com.lacklab.app.wallsplash.databinding.FragmentGalleryBinding
@@ -106,14 +108,16 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>() {
     override fun init() {
         initView()
         initObserve()
-        initAction()
+        bindEvents()
         initPageDataAdapter()
     }
 
     override fun layout() = R.layout.fragment_gallery
 
     private fun initView() {
-        binding.recyclerViewPhoto.adapter = imageAdapter
+        binding.recyclerViewItems.apply {
+            adapter = imageAdapter
+        }
     }
 
     private fun initObserve() {
@@ -124,7 +128,7 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>() {
         }
     }
 
-    private fun initAction() {
+    private fun bindEvents() {
 //        // init bottom appbar action
 //        binding.bottomAppbar.setNavigationOnClickListener {
 //            // GO TO About
@@ -143,13 +147,38 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>() {
 //                else -> false
 //            }
 //        }
+        with(binding) {
+            swipeRefresh.setOnRefreshListener {
+                imageAdapter.refresh()
+            }
+        }
 
     }
 
     private fun initPageDataAdapter() {
         // init image adapter action
-        imageAdapter.addLoadStateListener {
+        imageAdapter.addLoadStateListener { loadStates ->
+            val isItemEmpty =
+                loadStates.refresh is LoadState.NotLoading && imageAdapter.itemCount == 0
+            binding.textViewNoResults.isVisible = isItemEmpty
 
+            binding.recyclerViewItems.isVisible = loadStates.source.refresh is LoadState.NotLoading
+
+            // show the swiper during init
+            handleLoading(loadStates.source.refresh is LoadState.Loading)
+
+            val test = loadStates.source.refresh is LoadState.Error
+
+            // If we have an error, show a toast
+            val errorState = when {
+                loadStates.append is LoadState.Error -> loadStates.append as LoadState.Error
+                loadStates.prepend is LoadState.Error -> loadStates.prepend as LoadState.Error
+                loadStates.refresh is LoadState.Error -> loadStates.refresh as LoadState.Error
+                else -> null
+            }
+            errorState?.let {
+                showToastMessage(it.error.message.toString())
+            }
         }
     }
 
@@ -165,5 +194,11 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>() {
 
     private fun testRunBlocking() = runBlocking {
 
+    }
+
+    private fun handleLoading(loading: Boolean) {
+        with(binding) {
+            swipeRefresh.isRefreshing = loading == true
+        }
     }
 }
