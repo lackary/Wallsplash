@@ -5,24 +5,16 @@
     <data>
         <variable
             name="viewModel"
-            type="com.lacklab.app.wallsplash.viewmodels.GalleryViewModel" />
+            type="com.lacklab.app.wallsplash.viewmodels.UsersViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs_gallery"
-            android:layout_width="match_parent"
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/no_results"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:tabMode="fixed"/>
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/view_pager_gallery"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/tabs_gallery"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
