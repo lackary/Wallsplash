@@ -18,7 +18,7 @@ import com.lacklab.app.wallsplash.MySuggestionProvider
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
 import com.lacklab.app.wallsplash.databinding.FragmentSearchBinding
-import com.lacklab.app.wallsplash.viewadapter.ImageAdapter
+import com.lacklab.app.wallsplash.viewadapter.PhotoAdapter
 import com.lacklab.app.wallsplash.viewmodels.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -29,8 +29,8 @@ import timber.log.Timber
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 
-    private val imageAdapter by lazy {
-        ImageAdapter(
+    private val photoAdapter by lazy {
+        PhotoAdapter(
             photoClickListener = { photoItem, view ->
 //                val direction =
 //                    SearchFragmentDirections.actionNavigationImageSearchToNavigationPhoto(photoItem)
@@ -72,7 +72,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
         binding.recyclerViewItems.apply {
 //            layoutManager =
 //                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-            adapter = imageAdapter
+            adapter = photoAdapter
         }
 
         // SearchView
@@ -125,7 +125,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
             galleryViewModel.searchPhotos(query).collectLatest{
-                imageAdapter.submitData(it)
+                photoAdapter.submitData(it)
             }
         }
     }

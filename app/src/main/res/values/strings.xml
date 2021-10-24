@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">Wallsplash</string>
-    <string name="title_photo_library">Gallery</string>
-    <string name="title_image_search">Search</string>
+    <string name="title_Gallery">Gallery</string>
+    <string name="title_search">Search</string>
+    <string name="title_photos">Photos</string>
+    <string name="title_collections">Collections</string>
+    <string name="title_users">Users</string>
     <string name="ex_search">Taipei</string>
     <string name="no_results">no results</string>
     <string name="retry">retry</string>

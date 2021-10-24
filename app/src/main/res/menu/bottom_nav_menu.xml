@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/navigation_photo_library"
+        android:id="@+id/navigation_gallery"
         android:icon="@drawable/ic_outline_photo_library_24"
-        android:title="@string/title_photo_library"
+        android:title="@string/title_Gallery"
         />
     <item
-        android:id="@+id/navigation_image_search"
+        android:id="@+id/navigation_search"
         android:icon="@drawable/ic_outline_search_white_24"
-        android:title="@string/title_image_search"
+        android:title="@string/title_search"
         />
 </menu>

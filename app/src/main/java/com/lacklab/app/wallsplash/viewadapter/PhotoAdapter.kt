@@ -18,13 +18,13 @@ import com.lacklab.app.wallsplash.databinding.ItemGalleryBinding
 import com.lacklab.app.wallsplash.view.GalleryFragmentDirections
 import timber.log.Timber
 
-class ImageAdapter(
+class PhotoAdapter(
     private val photoClickListener: (photoItem: UnsplashPhoto, view: View) -> Unit,
     private val nameClickListener: (photoItem: UnsplashPhoto, view: View) -> Unit
 ) :
-    PagingDataAdapter<UnsplashPhoto, ImageAdapter.GalleryViewHolder>(GalleryDiffCallback()) {
+    PagingDataAdapter<UnsplashPhoto, PhotoAdapter.PhotoViewHolder>(GalleryDiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GalleryViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
         val binding =
             DataBindingUtil.inflate<ItemGalleryBinding>(
                 LayoutInflater.from(parent.context),
@@ -36,17 +36,17 @@ class ImageAdapter(
 //            ItemGalleryBinding.inflate(
 //                LayoutInflater.from(parent.context),
 //                parent, false)
-        return GalleryViewHolder(binding)
+        return PhotoViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: GalleryViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
         Timber.d("position: $position")
         getItem(position)?.let {
             holder.bind(it)
         }
     }
 
-    inner class GalleryViewHolder(private val binding: ItemGalleryBinding) :
+    inner class PhotoViewHolder(private val binding: ItemGalleryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.imageViewPhoto.setOnClickListener {
