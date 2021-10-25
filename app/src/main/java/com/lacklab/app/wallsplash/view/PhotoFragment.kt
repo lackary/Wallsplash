@@ -17,6 +17,8 @@ import com.lacklab.app.wallsplash.databinding.FragmentPhotoBinding
 
 class PhotoFragment : BaseFragment<FragmentPhotoBinding>() {
 //    private val args: PhotoFragmentArgs by navArgs()
+    private var photoItemBundle: Bundle? = null
+    private var photo: UnsplashPhoto? = null
     override fun layout() = R.layout.fragment_photo
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,13 +39,20 @@ class PhotoFragment : BaseFragment<FragmentPhotoBinding>() {
         bindEvents()
     }
 
+    override fun clear() {
+        binding = null
+        photoItemBundle = null
+        photo = null
+    }
+
     private fun initView() {
-        val bundle = requireActivity().intent.getBundleExtra("photoItemBundle")!!
-        val photo = bundle.getParcelable<UnsplashPhoto>("photoItem")
-        binding.photoItem = photo
-        Glide.with(binding.root)
-            .load(photo!!.urls!!.regular)
-            .override(Target.SIZE_ORIGINAL)
+        photoItemBundle = requireActivity().intent.getBundleExtra("photoItemBundle")!!
+        photo = photoItemBundle!!.getParcelable<UnsplashPhoto>("photoItem")
+        with(binding!!) {
+            photoItem = photo
+            Glide.with(root)
+                .load(photo!!.urls!!.regular)
+                .override(Target.SIZE_ORIGINAL)
 //            .addListener(object: RequestListener<Drawable>{
 //                override fun onLoadFailed(
 //                    e: GlideException?,
@@ -67,11 +76,13 @@ class PhotoFragment : BaseFragment<FragmentPhotoBinding>() {
 //                }
 //
 //            })
-            .into(binding.imageViewPhoto)
+                .into(imageViewPhoto)
+        }
+
     }
 
     private fun bindEvents() {
-        with(binding) {
+        with(binding!!) {
             // set toolbar action
             toolbarTop.setNavigationOnClickListener {
                 requireActivity().onBackPressed();

@@ -13,7 +13,7 @@ import timber.log.Timber
 
 abstract class BaseFragment<Binding: ViewDataBinding> : Fragment() {
 
-    protected lateinit var binding: Binding
+    protected var binding: Binding? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -35,8 +35,8 @@ abstract class BaseFragment<Binding: ViewDataBinding> : Fragment() {
         val funName = object{}.javaClass.enclosingMethod.name
         Timber.d(funName)
         binding = DataBindingUtil.inflate(inflater, layout(), container, false)
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
+        binding!!.lifecycleOwner = viewLifecycleOwner
+        return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,6 +74,7 @@ abstract class BaseFragment<Binding: ViewDataBinding> : Fragment() {
         super.onDestroyView()
         val funName = object{}.javaClass.enclosingMethod.name
         Timber.d(funName)
+        clear()
     }
 
     override fun onDestroy() {
@@ -92,6 +93,8 @@ abstract class BaseFragment<Binding: ViewDataBinding> : Fragment() {
     abstract fun layout(): Int
 
     abstract fun init()
+
+    abstract fun clear()
 
     protected open fun showToastMessage(message: String?) {
         Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()

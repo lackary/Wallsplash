@@ -34,7 +34,10 @@ import timber.log.Timber
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 
-    private lateinit var viewPagerAdapter: ViewPagerAdapter
+    private val galleryViewModel: SearchViewModel by viewModels()
+    private var searchJob: Job? = null
+    private var viewPagerAdapter: ViewPagerAdapter? = null
+    private var tabLayoutMediator: TabLayoutMediator? = null
 
     private val photoPagingAdapter by lazy {
         PhotoPagingAdapter(
@@ -63,10 +66,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
         )
     }
 
-    private val galleryViewModel: SearchViewModel by viewModels()
-
-    private var searchJob: Job? = null
-
     override fun layout() = R.layout.fragment_search
 
     override fun init() {
@@ -74,8 +73,18 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
         bindEvents()
     }
 
+    override fun clear() {
+        tabLayoutMediator?.detach()
+        tabLayoutMediator = null
+        with(binding!!) {
+            viewPagerGallery.adapter = null
+        }
+        binding = null
+        viewPagerAdapter = null
+    }
+
     private fun initView() {
-        with(binding) {
+        with(binding!!) {
             // Adapter
 //            binding.recyclerViewItems.apply {
 //    //            layoutManager =
@@ -95,13 +104,14 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
                 adapter = viewPagerAdapter
             }
             // connect tab layout and view pager
-            TabLayoutMediator(tabsGallery, viewPagerGallery) { tab, position ->
+            tabLayoutMediator = TabLayoutMediator(tabsGallery, viewPagerGallery) { tab, position ->
                 when(position) {
                     TAB_PHOTOS -> tab.text = getString(R.string.title_photos)
                     TAB_COLLECTIONS -> tab.text = getString(R.string.title_collections)
                     TAB_USERS -> tab.text = getString(R.string.title_users)
                 }
-            }.attach()
+            }
+            tabLayoutMediator!!.attach()
         }
 
 
@@ -118,15 +128,15 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 //                layoutManager.invalidateSpanAssignments()
 //            }
 //        })
+        with(binding!!) {
+            imageSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    query?.let {
+                        // Hide search keyboard
+                        imageSearchView.clearFocus()
+                        searchPhotos(it)
 
-        binding.imageSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let {
-                    // Hide search keyboard
-                    binding.imageSearchView.clearFocus()
-                    searchPhotos(it)
-
-                    // set currentData
+                        // set currentData
 //                    saveCurrentData(query)
 //                    viewBinding.imageSearchView.post {
 //                        // Important! Make sure searchView has been initialized
@@ -135,14 +145,16 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 //                        // variable value null.
 //                        viewBinding.imageSearchView.setQuery(query, false)
 //                    }
-                    return true
-                }?: return false
-            }
+                        return true
+                    }?: return false
+                }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return false
-            }
-        })
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    return false
+                }
+            })
+        }
+
     }
 
     private fun searchPhotos(query: String) {
