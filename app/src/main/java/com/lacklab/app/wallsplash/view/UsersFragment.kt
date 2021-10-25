@@ -12,6 +12,10 @@ class UsersFragment : BaseFragment<FragmentUsersBinding>() {
     }
 
     override fun clear() {
+
+    }
+
+    override fun clearView() {
         binding = null
     }
 }

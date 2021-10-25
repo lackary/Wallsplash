@@ -74,13 +74,14 @@ abstract class BaseFragment<Binding: ViewDataBinding> : Fragment() {
         super.onDestroyView()
         val funName = object{}.javaClass.enclosingMethod.name
         Timber.d(funName)
-        clear()
+        clearView()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         val funName = object{}.javaClass.enclosingMethod.name
         Timber.d(funName)
+        clear()
     }
 
     override fun onDetach() {
@@ -95,6 +96,8 @@ abstract class BaseFragment<Binding: ViewDataBinding> : Fragment() {
     abstract fun init()
 
     abstract fun clear()
+
+    abstract fun clearView()
 
     protected open fun showToastMessage(message: String?) {
         Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()

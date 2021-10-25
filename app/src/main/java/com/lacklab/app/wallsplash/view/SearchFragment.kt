@@ -3,9 +3,11 @@ package com.lacklab.app.wallsplash.view
 import android.content.Intent
 import android.os.Bundle
 import android.provider.SearchRecentSuggestions
+import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -33,8 +35,7 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>() {
-
-    private val galleryViewModel: SearchViewModel by viewModels()
+    private lateinit var searchViewModel: SearchViewModel
     private var searchJob: Job? = null
     private var viewPagerAdapter: ViewPagerAdapter? = null
     private var tabLayoutMediator: TabLayoutMediator? = null
@@ -74,16 +75,20 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
     }
 
     override fun clear() {
+        viewPagerAdapter = null
+    }
+
+    override fun clearView() {
         tabLayoutMediator?.detach()
         tabLayoutMediator = null
         with(binding!!) {
             viewPagerGallery.adapter = null
         }
         binding = null
-        viewPagerAdapter = null
     }
 
     private fun initView() {
+        searchViewModel = ViewModelProvider(requireActivity()).get(SearchViewModel::class.java)
         with(binding!!) {
             // Adapter
 //            binding.recyclerViewItems.apply {
@@ -134,7 +139,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
                     query?.let {
                         // Hide search keyboard
                         imageSearchView.clearFocus()
-                        searchPhotos(it)
+                        Timber.d("queryString: $it")
+                        searchViewModel.queryString.value = it
+//                        searchPhotos(it)
 
                         // set currentData
 //                    saveCurrentData(query)
@@ -160,7 +167,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
     private fun searchPhotos(query: String) {
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
-            galleryViewModel.searchPhotos(query).collectLatest{
+            searchViewModel.searchPhotos(query).collectLatest{
                 photoPagingAdapter.submitData(it)
             }
         }
