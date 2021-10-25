@@ -9,9 +9,12 @@
     <string name="no_results">no results</string>
     <string name="retry">retry</string>
     <string name="search">search</string>
+    <string name="collection_photos">%d Photos</string>
     <string name="content_description_search">search photos, user, or collection</string>
     <string name="more">more</string>
     <string name="content_description_more">more</string>
+
+    <string name="not_implement">not implement</string>
 
     <!-- Firebase -->
     <string name="msg_token_fmt" translatable="false">FCM registration Token: %s</string>

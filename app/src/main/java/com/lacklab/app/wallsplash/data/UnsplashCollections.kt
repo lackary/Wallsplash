@@ -1,5 +1,6 @@
 package com.lacklab.app.wallsplash.data
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
-
+data class UnsplashCollections(
+    val totalPages: Int,
+    val results: List<UnsplashCollection>
+)

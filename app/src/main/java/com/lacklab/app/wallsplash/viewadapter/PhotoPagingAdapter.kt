@@ -4,8 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -14,21 +12,19 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.data.UnsplashPhoto
-import com.lacklab.app.wallsplash.databinding.ItemGalleryBinding
-import com.lacklab.app.wallsplash.view.GalleryFragmentDirections
+import com.lacklab.app.wallsplash.databinding.ItemPhotoBinding
 import timber.log.Timber
 
-class PhotoAdapter(
+class PhotoPagingAdapter(
     private val photoClickListener: (photoItem: UnsplashPhoto, view: View) -> Unit,
     private val nameClickListener: (photoItem: UnsplashPhoto, view: View) -> Unit
-) :
-    PagingDataAdapter<UnsplashPhoto, PhotoAdapter.PhotoViewHolder>(GalleryDiffCallback()) {
+) : PagingDataAdapter<UnsplashPhoto, PhotoPagingAdapter.PhotoViewHolder>(PhotoDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
         val binding =
-            DataBindingUtil.inflate<ItemGalleryBinding>(
+            DataBindingUtil.inflate<ItemPhotoBinding>(
                 LayoutInflater.from(parent.context),
-                R.layout.item_gallery,
+                R.layout.item_photo,
                 parent,
                 false
             )
@@ -46,23 +42,39 @@ class PhotoAdapter(
         }
     }
 
-    inner class PhotoViewHolder(private val binding: ItemGalleryBinding) :
+    inner class PhotoViewHolder(private val binding: ItemPhotoBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.imageViewPhoto.setOnClickListener {
-                val photoItem = getItem(absoluteAdapterPosition)
-                photoClickListener(photoItem!!, it)
-            }
+            with(binding) {
+                imageViewPhoto.setOnClickListener {
+                    val photoItem = getItem(absoluteAdapterPosition)
+                    photoClickListener(photoItem!!, it)
+                }
 
-            binding.textViewName.setOnClickListener {
-                val photoItem = getItem(absoluteAdapterPosition)
-                nameClickListener(photoItem!!, it)
+                textViewName.setOnClickListener {
+                    val photoItem = getItem(absoluteAdapterPosition)
+                    nameClickListener(photoItem!!, it)
+                }
             }
         }
 
         fun bind(item:UnsplashPhoto) {
             with(binding) {
                 photoItem = item
+
+                Glide.with(root)
+                    .load(item.urls!!.regular)
+                    .centerCrop()
+                    .fitCenter()
+                    .override(SIZE_ORIGINAL)
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(imageViewPhoto)
+                Glide.with(root)
+                    .load(item.user!!.profileImage!!.large)
+                    .circleCrop()
+                    .override(SIZE_ORIGINAL)
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(imageViewUser)
             }
 //            val cardViewItemLayout = binding.cardViewItem.layoutParams
 //            val ratio: Float = item.height.toFloat() / item.width.toFloat()
@@ -71,24 +83,12 @@ class PhotoAdapter(
 //            Timber.d("height: %d", cardViewItemLayout.height)
 //            Timber.d("height: %d", cardViewItemLayout.width)
 //            binding.cardViewItem.layoutParams = cardViewItemLayout
-            Glide.with(binding.root)
-                .load(item.urls!!.regular)
-                .centerCrop()
-                .fitCenter()
-                .override(SIZE_ORIGINAL)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(binding.imageViewPhoto)
-            Glide.with(binding.root)
-                .load(item.user!!.profileImage!!.large)
-                .circleCrop()
-                .override(SIZE_ORIGINAL)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(binding.imageViewUser)
+
         }
     }
 }
 
-private class GalleryDiffCallback : DiffUtil.ItemCallback<UnsplashPhoto>() {
+private class PhotoDiffCallback : DiffUtil.ItemCallback<UnsplashPhoto>() {
     override fun areItemsTheSame(oldItem: UnsplashPhoto, newItem: UnsplashPhoto): Boolean {
         return oldItem.id == newItem.id
     }

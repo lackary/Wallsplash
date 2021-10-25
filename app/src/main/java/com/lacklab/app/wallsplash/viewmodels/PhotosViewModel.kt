@@ -5,9 +5,12 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.lacklab.app.wallsplash.data.UnsplashPhoto
 import com.lacklab.app.wallsplash.repository.UnsplashRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class PhotosViewModel(
+@HiltViewModel
+class PhotosViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val unsplashRepository: UnsplashRepository
 ) : ViewModel() {
@@ -21,9 +24,9 @@ class PhotosViewModel(
         return newResult
     }
 
-    suspend fun getAllUnsplashPhotosLiveData() : LiveData<PagingData<UnsplashPhoto>> {
+    fun getAllUnsplashPhotosLiveData() : LiveData<PagingData<UnsplashPhoto>> {
         val newResult: LiveData<PagingData<UnsplashPhoto>> =
-            unsplashRepository.getPhotoStream().cachedIn(viewModelScope)
+            unsplashRepository.getPhotosLiveData().cachedIn(viewModelScope)
         unsplashPhotosLiveData.value = newResult.value
         return newResult
     }

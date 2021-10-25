@@ -27,7 +27,7 @@ class GalleryViewModel @Inject constructor(
 
     suspend fun getAllUnsplashPhotosLiveData() : LiveData<PagingData<UnsplashPhoto>> {
         val newResult: LiveData<PagingData<UnsplashPhoto>> =
-            unsplashRepository.getPhotoStream().cachedIn(viewModelScope)
+            unsplashRepository.getPhotosLiveData().cachedIn(viewModelScope)
         unsplashPhotosLiveData.value = newResult.value
         return newResult
     }

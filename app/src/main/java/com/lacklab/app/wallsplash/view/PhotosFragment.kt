@@ -12,8 +12,8 @@ import androidx.paging.LoadState
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
 import com.lacklab.app.wallsplash.databinding.FragmentPhotosBinding
-import com.lacklab.app.wallsplash.viewadapter.PhotoAdapter
-import com.lacklab.app.wallsplash.viewmodels.GalleryViewModel
+import com.lacklab.app.wallsplash.viewadapter.PhotoPagingAdapter
+import com.lacklab.app.wallsplash.viewmodels.PhotosViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
@@ -23,8 +23,11 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class PhotosFragment : BaseFragment<FragmentPhotosBinding>() {
-    private val photoAdapter by lazy {
-        PhotoAdapter(
+
+    private val photosViewModel: PhotosViewModel by viewModels()
+    private var retrievePhotosJob: Job? = null
+    private val photoPagingAdapter by lazy {
+        PhotoPagingAdapter(
             photoClickListener = { photoItem, view ->
 //                val direction =
 //                    GalleryFragmentDirections.actionNavigationPhotoLibraryToNavigationPhoto(photoItem)
@@ -50,10 +53,6 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>() {
             }
         )
     }
-
-    private val galleryViewModel: GalleryViewModel by viewModels()
-
-    private var retrievePhotoJob: Job? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -105,85 +104,66 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>() {
         initView()
         initObserve()
         bindEvents()
-        initPageDataAdapter()
     }
 
     override fun layout() = R.layout.fragment_photos
 
     private fun initView() {
-        binding.recyclerViewItems.apply {
-            adapter = photoAdapter
+        with(binding) {
+            recyclerViewItems.apply {
+                adapter = photoPagingAdapter
+            }
         }
     }
 
     private fun initObserve() {
-        retrievePhotoJob = lifecycleScope.launch {
-            galleryViewModel.getAllUnsplashPhotosLiveData().observe(viewLifecycleOwner, {
-                photoAdapter.submitData(lifecycle, it)
+        retrievePhotosJob?.cancel()
+        retrievePhotosJob = lifecycleScope.launch {
+            photosViewModel.getAllUnsplashPhotosLiveData().observe(viewLifecycleOwner, {
+                photoPagingAdapter.submitData(lifecycle, it)
             })
         }
     }
 
     private fun bindEvents() {
-//        // init bottom appbar action
-//        binding.bottomAppbar.setNavigationOnClickListener {
-//            // GO TO About
-//        }
-//        binding.bottomAppbar.setOnMenuItemClickListener {
-//            when(it.itemId) {
-//                R.id.item_search -> {
-////                    val direction =
-////                        GalleryFragmentDirections
-////                            .actionNavigationPhotoLibraryToNavigationImageSearch()
-////                    findNavController().navigate(direction)
-//                    val intent = Intent(activity, SearchActivity::class.java)
-//                    startActivity(intent);
-//                    true
-//                }
-//                else -> false
-//            }
-//        }
         with(binding) {
             swipeRefresh.setOnRefreshListener {
-                photoAdapter.refresh()
+                photoPagingAdapter.refresh()
             }
-        }
 
-    }
+            // init photo paging adapter action
+            photoPagingAdapter.addLoadStateListener { loadStates ->
+                val isItemEmpty =
+                    loadStates.refresh is LoadState.NotLoading && photoPagingAdapter.itemCount == 0
+                textViewNoResults.isVisible = isItemEmpty
 
-    private fun initPageDataAdapter() {
-        // init image adapter action
-        photoAdapter.addLoadStateListener { loadStates ->
-            val isItemEmpty =
-                loadStates.refresh is LoadState.NotLoading && photoAdapter.itemCount == 0
-            binding.textViewNoResults.isVisible = isItemEmpty
+                recyclerViewItems.isVisible = loadStates.source.refresh is LoadState.NotLoading
 
-            binding.recyclerViewItems.isVisible = loadStates.source.refresh is LoadState.NotLoading
+                // show the swiper during init
+                handleLoading(loadStates.source.refresh is LoadState.Loading)
 
-            // show the swiper during init
-            handleLoading(loadStates.source.refresh is LoadState.Loading)
+                val test = loadStates.source.refresh is LoadState.Error
 
-            val test = loadStates.source.refresh is LoadState.Error
-
-            // If we have an error, show a toast
-            val errorState = when {
-                loadStates.append is LoadState.Error -> loadStates.append as LoadState.Error
-                loadStates.prepend is LoadState.Error -> loadStates.prepend as LoadState.Error
-                loadStates.refresh is LoadState.Error -> loadStates.refresh as LoadState.Error
-                else -> null
-            }
-            errorState?.let {
-                showToastMessage(it.error.message.toString())
+                // If we have an error, show a toast
+                val errorState = when {
+                    loadStates.append is LoadState.Error -> loadStates.append as LoadState.Error
+                    loadStates.prepend is LoadState.Error -> loadStates.prepend as LoadState.Error
+                    loadStates.refresh is LoadState.Error -> loadStates.refresh as LoadState.Error
+                    else -> null
+                }
+                errorState?.let {
+                    showToastMessage(it.error.message.toString())
+                }
             }
         }
     }
 
     private fun getPhotos() {
-        retrievePhotoJob?.cancel()
+        retrievePhotosJob?.cancel()
         // Flow
-        retrievePhotoJob = lifecycleScope.launch {
-            galleryViewModel.getAllUnsplashPhotos().collectLatest {
-                photoAdapter.submitData(it)
+        retrievePhotosJob = lifecycleScope.launch {
+            photosViewModel.getAllUnsplashPhotos().collectLatest {
+                photoPagingAdapter.submitData(it)
             }
         }
     }
