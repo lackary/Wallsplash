@@ -2,6 +2,7 @@ package com.lacklab.app.wallsplash.view
 
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.lacklab.app.wallsplash.R
@@ -9,6 +10,7 @@ import com.lacklab.app.wallsplash.base.BaseFragment
 import com.lacklab.app.wallsplash.databinding.FragmentCollectionsBinding
 import com.lacklab.app.wallsplash.viewadapter.CollectionPagingAdapter
 import com.lacklab.app.wallsplash.viewmodels.CollectionsViewModel
+import com.lacklab.app.wallsplash.viewmodels.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -17,8 +19,10 @@ import timber.log.Timber
 @AndroidEntryPoint
 class CollectionsFragment : BaseFragment<FragmentCollectionsBinding>() {
 
+    private lateinit var searchViewModel: SearchViewModel
     private val collectionsViewModel: CollectionsViewModel by viewModels()
     private var retrieveCollectionsJob: Job? = null
+    private var searchCollectionJob: Job? = null
     private var collectionPagingAdapter: CollectionPagingAdapter? = null
 
     override fun layout(): Int = R.layout.fragment_collections
@@ -34,7 +38,21 @@ class CollectionsFragment : BaseFragment<FragmentCollectionsBinding>() {
         bindEvents()
     }
 
+    override fun clear() {
+        collectionPagingAdapter = null
+        retrieveCollectionsJob?.cancel()
+        retrieveCollectionsJob = null
+    }
+
+    override fun clearView() {
+        with(binding!!) {
+            recyclerViewItems.adapter = null
+        }
+        binding = null
+    }
+
     private fun initView() {
+        searchViewModel = ViewModelProvider(requireActivity()).get(SearchViewModel::class.java)
         collectionPagingAdapter = CollectionPagingAdapter(
             photoClickListener = { photoItem, view ->
                 Timber.d("click photo")
@@ -50,23 +68,21 @@ class CollectionsFragment : BaseFragment<FragmentCollectionsBinding>() {
         }
     }
 
-    override fun clear() {
-        with(binding!!) {
-            recyclerViewItems.adapter = null
-        }
-        binding = null
-        collectionPagingAdapter = null
-        retrieveCollectionsJob?.cancel()
-        retrieveCollectionsJob = null
-    }
-
     private fun initObserve() {
-        retrieveCollectionsJob?.cancel()
-        if(parentFragment is SearchFragment) return
-        retrieveCollectionsJob = lifecycleScope.launch {
-            collectionsViewModel.getCollectionsLiveData().observe(viewLifecycleOwner, {
-                collectionPagingAdapter?.submitData(lifecycle, it)
+        if(parentFragment is SearchFragment) {
+            searchViewModel.queryString.observe(viewLifecycleOwner, {
+                searchCollectionJob?.cancel()
+                searchCollectionJob = lifecycleScope.launch {
+
+                }
             })
+        } else {
+            retrieveCollectionsJob?.cancel()
+            retrieveCollectionsJob = lifecycleScope.launch {
+                collectionsViewModel.getCollectionsLiveData().observe(viewLifecycleOwner, {
+                    collectionPagingAdapter?.submitData(lifecycle, it)
+                })
+            }
         }
     }
 

@@ -40,9 +40,12 @@ class PhotoFragment : BaseFragment<FragmentPhotoBinding>() {
     }
 
     override fun clear() {
-        binding = null
         photoItemBundle = null
         photo = null
+    }
+
+    override fun clearView() {
+        binding = null
     }
 
     private fun initView() {

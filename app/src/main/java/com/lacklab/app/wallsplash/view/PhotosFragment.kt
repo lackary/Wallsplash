@@ -7,6 +7,7 @@ import android.view.View
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.lacklab.app.wallsplash.R
@@ -14,6 +15,7 @@ import com.lacklab.app.wallsplash.base.BaseFragment
 import com.lacklab.app.wallsplash.databinding.FragmentPhotosBinding
 import com.lacklab.app.wallsplash.viewadapter.PhotoPagingAdapter
 import com.lacklab.app.wallsplash.viewmodels.PhotosViewModel
+import com.lacklab.app.wallsplash.viewmodels.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
@@ -24,8 +26,10 @@ import timber.log.Timber
 @AndroidEntryPoint
 class PhotosFragment : BaseFragment<FragmentPhotosBinding>() {
 
+    private lateinit var searchViewModel: SearchViewModel
     private val photosViewModel: PhotosViewModel by viewModels()
     private var retrievePhotosJob: Job? = null
+    private var searchPhotosJob: Job? = null
     private var photoPagingAdapter: PhotoPagingAdapter? = null
 
     override fun onAttach(context: Context) {
@@ -38,8 +42,6 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        getPhotos()
-//        testRunBlocking()
     }
 
     override fun onStart() {
@@ -81,18 +83,23 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>() {
     }
 
     override fun clear() {
+        photoPagingAdapter = null
+        retrievePhotosJob?.cancel()
+        retrievePhotosJob = null
+        searchPhotosJob?.cancel()
+    }
+
+    override fun clearView() {
         with(binding!!) {
             recyclerViewItems.adapter = null
         }
         binding = null
-        photoPagingAdapter = null
-        retrievePhotosJob?.cancel()
-        retrievePhotosJob = null
     }
 
     override fun layout() = R.layout.fragment_photos
 
     private fun initView() {
+        searchViewModel = ViewModelProvider(requireActivity()).get(SearchViewModel::class.java)
         photoPagingAdapter = PhotoPagingAdapter(
             photoClickListener = { photoItem, view ->
 //                val direction =
@@ -101,12 +108,12 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>() {
 //                val extras = FragmentNavigatorExtras(view to photoItem.id )
 //                view.findNavController()
 //                    .navigate(direction, extras)
-                var intent = Intent(requireActivity(), PhotoActivity::class.java)
-                var bundle = Bundle().apply {
+                val intent = Intent(requireActivity(), PhotoActivity::class.java)
+                val bundle = Bundle().apply {
                     putParcelable("photoItem", photoItem)
                 }
                 intent.putExtra("photoItemBundle", bundle)
-                var activityOptionsCompat =
+                val activityOptionsCompat =
                     ActivityOptionsCompat.makeSceneTransitionAnimation(
                         requireActivity(),
                         view,
@@ -126,13 +133,25 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>() {
     }
 
     private fun initObserve() {
-        retrievePhotosJob?.cancel()
-        if(parentFragment is SearchFragment) return
-        retrievePhotosJob = lifecycleScope.launch {
-            photosViewModel.getAllUnsplashPhotosLiveData().observe(viewLifecycleOwner, {
-                photoPagingAdapter?.submitData(lifecycle, it)
+        if(parentFragment is SearchFragment) {
+            searchViewModel.queryString.observe(viewLifecycleOwner, {
+                searchPhotosJob?.cancel()
+                searchPhotosJob = lifecycleScope.launch {
+                    Timber.d("queryString: $it")
+                    searchViewModel.searchPhotos(it).collectLatest {
+                        photoPagingAdapter?.submitData(it)
+                    }
+                }
             })
+        } else {
+            retrievePhotosJob?.cancel()
+            retrievePhotosJob = lifecycleScope.launch {
+                photosViewModel.getAllUnsplashPhotosLiveData().observe(viewLifecycleOwner, {
+                    photoPagingAdapter?.submitData(lifecycle, it)
+                })
+            }
         }
+
     }
 
     private fun bindEvents() {
