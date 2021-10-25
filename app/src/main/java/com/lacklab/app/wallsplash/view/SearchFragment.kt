@@ -14,11 +14,16 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.GAP_HANDLING_NONE
+import com.google.android.material.tabs.TabLayoutMediator
 import com.lacklab.app.wallsplash.MySuggestionProvider
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
 import com.lacklab.app.wallsplash.databinding.FragmentSearchBinding
+import com.lacklab.app.wallsplash.util.TAB_COLLECTIONS
+import com.lacklab.app.wallsplash.util.TAB_PHOTOS
+import com.lacklab.app.wallsplash.util.TAB_USERS
 import com.lacklab.app.wallsplash.viewadapter.PhotoPagingAdapter
+import com.lacklab.app.wallsplash.viewadapter.ViewPagerAdapter
 import com.lacklab.app.wallsplash.viewmodels.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -28,6 +33,8 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>() {
+
+    private lateinit var viewPagerAdapter: ViewPagerAdapter
 
     private val photoPagingAdapter by lazy {
         PhotoPagingAdapter(
@@ -68,20 +75,37 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
     }
 
     private fun initView() {
-        // Adapter
-        binding.recyclerViewItems.apply {
-//            layoutManager =
-//                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-            adapter = photoPagingAdapter
+        with(binding) {
+            // Adapter
+//            binding.recyclerViewItems.apply {
+//    //            layoutManager =
+//    //                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+//                adapter = photoPagingAdapter
+//            }
+            // SearchView
+//        val searchManager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
+            imageSearchView.apply {
+//            setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
+                setIconifiedByDefault(false)
+                suggestionsAdapter
+            }
+
+            viewPagerAdapter = ViewPagerAdapter(childFragmentManager, lifecycle, 3)
+            viewPagerGallery.apply {
+                adapter = viewPagerAdapter
+            }
+            // connect tab layout and view pager
+            TabLayoutMediator(tabsGallery, viewPagerGallery) { tab, position ->
+                when(position) {
+                    TAB_PHOTOS -> tab.text = getString(R.string.title_photos)
+                    TAB_COLLECTIONS -> tab.text = getString(R.string.title_collections)
+                    TAB_USERS -> tab.text = getString(R.string.title_users)
+                }
+            }.attach()
         }
 
-        // SearchView
-//        val searchManager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        binding.imageSearchView.apply {
-//            setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
-            setIconifiedByDefault(false)
-            suggestionsAdapter
-        }
+
+
     }
 
     private fun bindEvents(){

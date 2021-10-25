@@ -118,6 +118,7 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>() {
 
     private fun initObserve() {
         retrievePhotosJob?.cancel()
+        if(parentFragment is SearchFragment) return
         retrievePhotosJob = lifecycleScope.launch {
             photosViewModel.getAllUnsplashPhotosLiveData().observe(viewLifecycleOwner, {
                 photoPagingAdapter.submitData(lifecycle, it)

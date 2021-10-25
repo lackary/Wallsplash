@@ -2,7 +2,6 @@ package com.lacklab.app.wallsplash.view
 
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.lacklab.app.wallsplash.R
@@ -49,6 +48,7 @@ class CollectionsFragment : BaseFragment<FragmentCollectionsBinding>() {
 
     private fun initObserve() {
         retrieveCollectionsJob?.cancel()
+        if(parentFragment is SearchFragment) return
         retrieveCollectionsJob = lifecycleScope.launch {
             collectionsViewModel.getCollectionsLiveData().observe(viewLifecycleOwner, {
                 collectionPagingAdapter.submitData(lifecycle, it)

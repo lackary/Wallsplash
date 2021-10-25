@@ -17,10 +17,6 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>() {
 
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     override fun layout() = R.layout.fragment_gallery
 
     override fun init() {
@@ -45,7 +41,7 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>() {
 
     }
 
-    private fun initAction() {
+    private fun bindEvents() {
 
     }
 
