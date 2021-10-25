@@ -1,7 +1,7 @@
 package com.lacklab.app.wallsplash.api
 
-import androidx.lifecycle.LiveData
 import com.lacklab.app.wallsplash.BuildConfig
+import com.lacklab.app.wallsplash.data.UnsplashCollection
 import com.lacklab.app.wallsplash.data.UnsplashPhoto
 import com.lacklab.app.wallsplash.data.UnsplashSearchPhotos
 import com.lacklab.app.wallsplash.factory.DataCallAdapterFactory
@@ -24,12 +24,13 @@ interface UnsplashService {
         clientId: String = "Client-ID " + BuildConfig.UNSPLASH_ACCESS_KEY,
     ) : ApiResponse<List<UnsplashPhoto>>
 
-//    suspend fun getCollections(
-//        @Query("page") page: Int,
-//        @Query("per_page") prePage: Int = 10,
-//        @Header("Authorization")
-//        clientId: String = "Client-ID " + BuildConfig.UNSPLASH_ACCESS_KEY,
-//    ) : ApiResponse<List<U>>
+    @GET("collections")
+    suspend fun getCollections(
+        @Query("page") page: Int,
+        @Query("per_page") prePage: Int = 10,
+        @Header("Authorization")
+        clientId: String = "Client-ID " + BuildConfig.UNSPLASH_ACCESS_KEY,
+    ) : ApiResponse<List<UnsplashCollection>>
 
     @GET("search/photos")
     suspend fun searchPhotos(
