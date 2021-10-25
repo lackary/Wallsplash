@@ -19,18 +19,14 @@ class CollectionsFragment : BaseFragment<FragmentCollectionsBinding>() {
 
     private val collectionsViewModel: CollectionsViewModel by viewModels()
     private var retrieveCollectionsJob: Job? = null
-    private val collectionPagingAdapter by lazy {
-        CollectionPagingAdapter(
-            photoClickListener = { photoItem, view ->
-                Timber.d("click photo")
-            },
-            nameClickListener = { photoItem, view ->
-                Timber.d("click name")
-            }
-        )
-    }
+    private var collectionPagingAdapter: CollectionPagingAdapter? = null
 
     override fun layout(): Int = R.layout.fragment_collections
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        collectionPagingAdapter = null
+    }
 
     override fun init() {
         initView()
@@ -39,11 +35,29 @@ class CollectionsFragment : BaseFragment<FragmentCollectionsBinding>() {
     }
 
     private fun initView() {
-        with(binding){
+        collectionPagingAdapter = CollectionPagingAdapter(
+            photoClickListener = { photoItem, view ->
+                Timber.d("click photo")
+            },
+            nameClickListener = { photoItem, view ->
+                Timber.d("click name")
+            }
+        )
+        with(binding!!){
             recyclerViewItems.apply{
                 adapter = collectionPagingAdapter
             }
         }
+    }
+
+    override fun clear() {
+        with(binding!!) {
+            recyclerViewItems.adapter = null
+        }
+        binding = null
+        collectionPagingAdapter = null
+        retrieveCollectionsJob?.cancel()
+        retrieveCollectionsJob = null
     }
 
     private fun initObserve() {
@@ -51,20 +65,21 @@ class CollectionsFragment : BaseFragment<FragmentCollectionsBinding>() {
         if(parentFragment is SearchFragment) return
         retrieveCollectionsJob = lifecycleScope.launch {
             collectionsViewModel.getCollectionsLiveData().observe(viewLifecycleOwner, {
-                collectionPagingAdapter.submitData(lifecycle, it)
+                collectionPagingAdapter?.submitData(lifecycle, it)
             })
         }
     }
 
     private fun bindEvents() {
-        with(binding) {
+        with(binding!!) {
             swipeRefresh.setOnRefreshListener {
-                collectionPagingAdapter.refresh()
+                collectionPagingAdapter?.refresh()
             }
 
-            collectionPagingAdapter.addLoadStateListener { loadStates ->
+            collectionPagingAdapter?.addLoadStateListener { loadStates ->
                 val isItemEmpty =
-                    loadStates.refresh is LoadState.NotLoading && collectionPagingAdapter.itemCount == 0
+                    loadStates.refresh is LoadState.NotLoading
+                            && collectionPagingAdapter?.itemCount == 0
                 textViewNoResults.isVisible = isItemEmpty
 
                 recyclerViewItems.isVisible = loadStates.source.refresh is LoadState.NotLoading
@@ -90,7 +105,7 @@ class CollectionsFragment : BaseFragment<FragmentCollectionsBinding>() {
     }
 
     private fun handleLoading(loading: Boolean) {
-        with(binding) {
+        with(binding!!) {
             swipeRefresh.isRefreshing = loading == true
         }
     }

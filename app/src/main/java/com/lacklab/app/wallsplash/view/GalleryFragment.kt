@@ -15,7 +15,8 @@ import timber.log.Timber
 @AndroidEntryPoint
 class GalleryFragment : BaseFragment<FragmentGalleryBinding>() {
 
-    private lateinit var viewPagerAdapter: ViewPagerAdapter
+    private var viewPagerAdapter: ViewPagerAdapter? = null
+    private var tabLayoutMediator: TabLayoutMediator? = null
 
     override fun layout() = R.layout.fragment_gallery
 
@@ -23,20 +24,33 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>() {
         initView()
     }
 
+    override fun clear() {
+        tabLayoutMediator?.detach()
+        tabLayoutMediator = null
+        with(binding!!) {
+            viewPagerGallery.adapter = null
+        }
+        binding = null
+        viewPagerAdapter = null
+
+
+    }
+
     private fun initView() {
-        with(binding) {
+        with(binding!!) {
             // init view pager
             viewPagerAdapter = ViewPagerAdapter(childFragmentManager, lifecycle, 2)
             viewPagerGallery.apply {
                 adapter = viewPagerAdapter
             }
             // connect tab layout and view pager
-            TabLayoutMediator(tabsGallery, viewPagerGallery) { tab, position ->
+            tabLayoutMediator = TabLayoutMediator(tabsGallery, viewPagerGallery) { tab, position ->
                 when(position) {
                     TAB_PHOTOS -> tab.text = getString(R.string.title_photos)
                     TAB_COLLECTIONS -> tab.text = getString(R.string.title_collections)
                 }
-            }.attach()
+            }
+            tabLayoutMediator!!.attach()
         }
 
     }

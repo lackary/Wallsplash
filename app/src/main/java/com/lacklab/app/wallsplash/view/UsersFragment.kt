@@ -10,4 +10,8 @@ class UsersFragment : BaseFragment<FragmentUsersBinding>() {
     override fun init() {
 
     }
+
+    override fun clear() {
+        binding = null
+    }
 }
