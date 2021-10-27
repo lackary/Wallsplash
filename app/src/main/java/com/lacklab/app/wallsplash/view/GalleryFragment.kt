@@ -1,131 +1,63 @@
 package com.lacklab.app.wallsplash.view
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.FragmentNavigatorExtras
+import com.google.android.material.tabs.TabLayoutMediator
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
 import com.lacklab.app.wallsplash.databinding.FragmentGalleryBinding
-import com.lacklab.app.wallsplash.viewadapter.ImageAdapter
-import com.lacklab.app.wallsplash.viewmodels.GalleryViewModel
+import com.lacklab.app.wallsplash.util.TAB_COLLECTIONS
+import com.lacklab.app.wallsplash.util.TAB_PHOTOS
+import com.lacklab.app.wallsplash.viewadapter.ViewPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
 @AndroidEntryPoint
 class GalleryFragment : BaseFragment<FragmentGalleryBinding>() {
 
-    private val imageAdapter by lazy {
-        ImageAdapter(
-            photoClickListener = { photoItem, view ->
-                val direction =
-                    GalleryFragmentDirections.actionNavigationPhotoLibraryToNavigationPhoto(photoItem)
-                val extras = FragmentNavigatorExtras(view to photoItem.id )
-                view.findNavController()
-                    .navigate(direction, extras)
-            },
-            nameClickListener = { photoItem, view ->
-                Timber.d("click name")
-            }
-        )
-    }
-
-
-
-    private val galleryViewModel: GalleryViewModel by viewModels()
-
-    private var retrievePhotoJob: Job? = null
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-//        getPhotos()
-//        testRunBlocking()
-    }
-
-    override fun onStart() {
-        super.onStart()
-    }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onStop() {
-        super.onStop()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-    }
-
-    override fun init() {
-        initView()
-        initObserve()
-        initPageDataAdapter()
-    }
+    private var viewPagerAdapter: ViewPagerAdapter? = null
+    private var tabLayoutMediator: TabLayoutMediator? = null
 
     override fun layout() = R.layout.fragment_gallery
 
+    override fun init() {
+        initView()
+    }
+
+    override fun clear() {
+        viewPagerAdapter = null
+    }
+
+    override fun clearView() {
+        tabLayoutMediator?.detach()
+        tabLayoutMediator = null
+        with(binding!!) {
+            viewPagerGallery.adapter = null
+        }
+        binding = null
+    }
+
     private fun initView() {
-        binding.recyclerViewPhoto.adapter = imageAdapter
-    }
-
-    private fun initObserve() {
-        retrievePhotoJob = lifecycleScope.launch {
-            galleryViewModel.getAllUnsplashPhotosLiveData().observe(viewLifecycleOwner, {
-                imageAdapter.submitData(lifecycle, it)
-            })
-        }
-    }
-
-    private fun initPageDataAdapter() {
-//        imageAdapter.addLoadStateListener {
-//
-//        }
-    }
-
-    private fun getPhotos() {
-        retrievePhotoJob?.cancel()
-        // Flow
-        retrievePhotoJob = lifecycleScope.launch {
-            galleryViewModel.getAllUnsplashPhotos().collectLatest {
-                imageAdapter.submitData(it)
+        with(binding!!) {
+            // init view pager
+            viewPagerAdapter = ViewPagerAdapter(childFragmentManager, lifecycle, 2)
+            viewPagerGallery.apply {
+                adapter = viewPagerAdapter
             }
+            // connect tab layout and view pager
+            tabLayoutMediator = TabLayoutMediator(tabsGallery, viewPagerGallery) { tab, position ->
+                when(position) {
+                    TAB_PHOTOS -> tab.text = getString(R.string.title_photos)
+                    TAB_COLLECTIONS -> tab.text = getString(R.string.title_collections)
+                }
+            }
+            tabLayoutMediator!!.attach()
         }
-    }
-
-    private fun testRunBlocking() = runBlocking {
 
     }
+
+    private fun bindEvents() {
+
+    }
+
 }

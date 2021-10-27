@@ -1,5 +1,6 @@
 package com.lacklab.app.wallsplash.viewmodels
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,6 +18,9 @@ class SearchViewModel @Inject constructor(
     private val unsplashRepository: UnsplashRepository
 ) : ViewModel() {
     private var currentSearchResult: Flow<PagingData<UnsplashPhoto>>? = null
+    val queryString: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
 
     fun searchPhotos(queryString:String): Flow<PagingData<UnsplashPhoto>> {
         val newResult: Flow<PagingData<UnsplashPhoto>> =

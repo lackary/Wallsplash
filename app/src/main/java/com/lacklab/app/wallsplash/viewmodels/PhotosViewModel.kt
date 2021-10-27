@@ -10,11 +10,10 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel
-class GalleryViewModel @Inject constructor(
+class PhotosViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val unsplashRepository: UnsplashRepository
 ) : ViewModel() {
-
     private var allUnpslashPhotos: Flow<PagingData<UnsplashPhoto>>? =null
     private var unsplashPhotosLiveData = MutableLiveData<PagingData<UnsplashPhoto>>()
 
@@ -25,7 +24,7 @@ class GalleryViewModel @Inject constructor(
         return newResult
     }
 
-    suspend fun getAllUnsplashPhotosLiveData() : LiveData<PagingData<UnsplashPhoto>> {
+    fun getAllUnsplashPhotosLiveData() : LiveData<PagingData<UnsplashPhoto>> {
         val newResult: LiveData<PagingData<UnsplashPhoto>> =
             unsplashRepository.getPhotosLiveData().cachedIn(viewModelScope)
         unsplashPhotosLiveData.value = newResult.value

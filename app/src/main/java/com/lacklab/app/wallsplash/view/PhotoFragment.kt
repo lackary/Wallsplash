@@ -12,10 +12,13 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
+import com.lacklab.app.wallsplash.data.UnsplashPhoto
 import com.lacklab.app.wallsplash.databinding.FragmentPhotoBinding
 
 class PhotoFragment : BaseFragment<FragmentPhotoBinding>() {
-    private val args: PhotoFragmentArgs by navArgs()
+//    private val args: PhotoFragmentArgs by navArgs()
+    private var photoItemBundle: Bundle? = null
+    private var photo: UnsplashPhoto? = null
     override fun layout() = R.layout.fragment_photo
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,24 +32,30 @@ class PhotoFragment : BaseFragment<FragmentPhotoBinding>() {
             TransitionInflater
                 .from(context)
                 .inflateTransition(android.R.transition.move)
-
-//        sharedElementEnterTransition =
-//            TransitionInflater
-//                .from(context)
-//                .inflateTransition(R.transition.shared_element_transition)
-//        postponeEnterTransition()
     }
 
     override fun init() {
         initView()
+        bindEvents()
+    }
+
+    override fun clear() {
+        photoItemBundle = null
+        photo = null
+    }
+
+    override fun clearView() {
+        binding = null
     }
 
     private fun initView() {
-        binding.imageViewPhoto.transitionName = args.photo.id
-        val url = args.photo.urls.regular
-        Glide.with(binding.root)
-            .load(url)
-            .override(Target.SIZE_ORIGINAL)
+        photoItemBundle = requireActivity().intent.getBundleExtra("photoItemBundle")!!
+        photo = photoItemBundle!!.getParcelable<UnsplashPhoto>("photoItem")
+        with(binding!!) {
+            photoItem = photo
+            Glide.with(root)
+                .load(photo!!.urls!!.regular)
+                .override(Target.SIZE_ORIGINAL)
 //            .addListener(object: RequestListener<Drawable>{
 //                override fun onLoadFailed(
 //                    e: GlideException?,
@@ -70,6 +79,20 @@ class PhotoFragment : BaseFragment<FragmentPhotoBinding>() {
 //                }
 //
 //            })
-            .into(binding.imageViewPhoto)
+                .into(imageViewPhoto)
+        }
+
+    }
+
+    private fun bindEvents() {
+        with(binding!!) {
+            // set toolbar action
+            toolbarTop.setNavigationOnClickListener {
+                requireActivity().onBackPressed();
+            }
+
+            // set info action
+            imageViewInfo.setOnClickListener {  }
+        }
     }
 }
