@@ -23,6 +23,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>() {
@@ -30,33 +31,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
     private var searchJob: Job? = null
     private var viewPagerAdapter: ViewPagerAdapter? = null
     private var tabLayoutMediator: TabLayoutMediator? = null
-
-    private val photoPagingAdapter by lazy {
-        PhotoPagingAdapter(
-            photoClickListener = { photoItem, view ->
-//                val direction =
-//                    SearchFragmentDirections.actionNavigationImageSearchToNavigationPhoto(photoItem)
-//                val extras = FragmentNavigatorExtras(view to photoItem.id)
-//                view.findNavController()
-//                    .navigate(direction, extras)
-                val intent = Intent(requireActivity(), PhotoActivity::class.java)
-                val bundle = Bundle().apply {
-                    putParcelable("photoItem", photoItem)
-                }
-                intent.putExtra("photoItemBundle", bundle)
-                val activityOptionsCompat =
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        this@SearchFragment.requireActivity(),
-                        view,
-                        photoItem.id
-                    )
-                startActivity(intent, activityOptionsCompat.toBundle())
-            },
-            nameClickListener = { photoItem, view ->
-                Timber.d("click name")
-            }
-        )
-    }
+    @Inject
+    lateinit var photoPagingAdapter: PhotoPagingAdapter
 
     override fun layout() = R.layout.fragment_search
 
@@ -156,14 +132,14 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 
     }
 
-    private fun searchPhotos(query: String) {
-        searchJob?.cancel()
-        searchJob = lifecycleScope.launch {
-            searchViewModel.searchPhotos(query).collectLatest{
-                photoPagingAdapter.submitData(it)
-            }
-        }
-    }
+//    private fun searchPhotos(query: String) {
+//        searchJob?.cancel()
+//        searchJob = lifecycleScope.launch {
+//            searchViewModel.searchPhotos(query).collectLatest{
+//                photoPagingAdapter.submitData(it)
+//            }
+//        }
+//    }
 
     private fun saveCurrentData(query: String?) {
         if (query != null) {
