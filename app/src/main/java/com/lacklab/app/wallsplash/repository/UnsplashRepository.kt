@@ -7,7 +7,9 @@ import androidx.paging.PagingData
 import androidx.paging.liveData
 import com.lacklab.app.wallsplash.AppExecutors
 import com.lacklab.app.wallsplash.api.UnsplashService
+import com.lacklab.app.wallsplash.data.UnsplashCollection
 import com.lacklab.app.wallsplash.data.UnsplashPhoto
+import com.lacklab.app.wallsplash.pagingSource.UnsplashCollectionsPagingSource
 import com.lacklab.app.wallsplash.pagingSource.UnsplashPhotosPagingSource
 import com.lacklab.app.wallsplash.pagingSource.UnsplashSearchPhotosPagingSource
 import kotlinx.coroutines.flow.Flow
@@ -21,14 +23,22 @@ class UnsplashRepository @Inject constructor(
     fun getPhotosStream(): Flow<PagingData<UnsplashPhoto>> {
         return Pager(
             config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
-            pagingSourceFactory = { UnsplashPhotosPagingSource(appExecutors, service) }
+            pagingSourceFactory = { UnsplashPhotosPagingSource(service) }
         ).flow
     }
 
-    fun getPhotoStream(): LiveData<PagingData<UnsplashPhoto>> {
+    fun getPhotosLiveData(): LiveData<PagingData<UnsplashPhoto>> {
         return Pager(
             config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
-            pagingSourceFactory = { UnsplashPhotosPagingSource(appExecutors,service) }
+            pagingSourceFactory = { UnsplashPhotosPagingSource(service) }
+        ).liveData
+    }
+
+    fun getCollectionLiveData(): LiveData<PagingData<UnsplashCollection>> {
+        return Pager(
+            config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
+            pagingSourceFactory = {UnsplashCollectionsPagingSource(service)}
+
         ).liveData
     }
 
@@ -39,7 +49,7 @@ class UnsplashRepository @Inject constructor(
         ).flow
     }
 
-    fun getSearchPhotoStream(query: String): LiveData<PagingData<UnsplashPhoto>> {
+    fun getSearchPhotoLiveData(query: String): LiveData<PagingData<UnsplashPhoto>> {
         return Pager(
             config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
             pagingSourceFactory = { UnsplashSearchPhotosPagingSource(service, query)}

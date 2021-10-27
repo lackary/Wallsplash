@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -12,7 +13,7 @@ import timber.log.Timber
 
 abstract class BaseFragment<Binding: ViewDataBinding> : Fragment() {
 
-    protected lateinit var binding: Binding
+    protected var binding: Binding? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -34,8 +35,8 @@ abstract class BaseFragment<Binding: ViewDataBinding> : Fragment() {
         val funName = object{}.javaClass.enclosingMethod.name
         Timber.d(funName)
         binding = DataBindingUtil.inflate(inflater, layout(), container, false)
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
+        binding!!.lifecycleOwner = viewLifecycleOwner
+        return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -73,12 +74,14 @@ abstract class BaseFragment<Binding: ViewDataBinding> : Fragment() {
         super.onDestroyView()
         val funName = object{}.javaClass.enclosingMethod.name
         Timber.d(funName)
+        clearView()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         val funName = object{}.javaClass.enclosingMethod.name
         Timber.d(funName)
+        clear()
     }
 
     override fun onDetach() {
@@ -87,7 +90,16 @@ abstract class BaseFragment<Binding: ViewDataBinding> : Fragment() {
         Timber.d(funName)
     }
 
+
     abstract fun layout(): Int
 
     abstract fun init()
+
+    abstract fun clear()
+
+    abstract fun clearView()
+
+    protected open fun showToastMessage(message: String?) {
+        Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
+    }
 }

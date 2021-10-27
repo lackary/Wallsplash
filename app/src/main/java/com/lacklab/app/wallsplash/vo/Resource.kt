@@ -1,8 +1,9 @@
 package com.lacklab.app.wallsplash.vo
 
-import com.lacklab.app.wallsplash.vo.Status.SUCCESS
-import com.lacklab.app.wallsplash.vo.Status.ERROR
-import com.lacklab.app.wallsplash.vo.Status.LOADING
+import com.lacklab.app.wallsplash.util.enums.Status
+import com.lacklab.app.wallsplash.util.enums.Status.SUCCESS
+import com.lacklab.app.wallsplash.util.enums.Status.ERROR
+import com.lacklab.app.wallsplash.util.enums.Status.LOADING
 
 
 /**

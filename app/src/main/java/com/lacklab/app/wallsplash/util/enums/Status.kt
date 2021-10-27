@@ -1,4 +1,4 @@
-package com.lacklab.app.wallsplash.vo
+package com.lacklab.app.wallsplash.util.enums
 
 enum class Status {
     SUCCESS,
