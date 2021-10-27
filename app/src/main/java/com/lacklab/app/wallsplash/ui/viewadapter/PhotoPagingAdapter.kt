@@ -14,12 +14,13 @@ import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.data.UnsplashPhoto
 import com.lacklab.app.wallsplash.databinding.ItemPhotoBinding
 import timber.log.Timber
+import javax.inject.Inject
 
-class PhotoPagingAdapter(
-    private val photoClickListener: (photoItem: UnsplashPhoto, view: View) -> Unit,
-    private val nameClickListener: (photoItem: UnsplashPhoto, view: View) -> Unit
-) : PagingDataAdapter<UnsplashPhoto, PhotoPagingAdapter.PhotoViewHolder>(PhotoDiffCallback) {
-
+class PhotoPagingAdapter @Inject constructor()
+    : PagingDataAdapter<UnsplashPhoto, PhotoPagingAdapter.PhotoViewHolder>(PhotoDiffCallback) {
+//    val photoClickListener: (photoItem: UnsplashPhoto, view: View) -> Unit
+//    val nameClickListener: (photoItem: UnsplashPhoto, view: View) -> Unit
+    var photoClickListener: PhotoClickListener? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
         val binding =
             DataBindingUtil.inflate<ItemPhotoBinding>(
@@ -28,10 +29,6 @@ class PhotoPagingAdapter(
                 parent,
                 false
             )
-//        val viewBinding =
-//            ItemGalleryBinding.inflate(
-//                LayoutInflater.from(parent.context),
-//                parent, false)
         return PhotoViewHolder(binding)
     }
 
@@ -48,12 +45,14 @@ class PhotoPagingAdapter(
             with(binding) {
                 imageViewPhoto.setOnClickListener {
                     val photoItem = getItem(absoluteAdapterPosition)
-                    photoClickListener(photoItem!!, it)
+//                    photoClickListener(photoItem!!, it)
+                    photoClickListener?.onPhotoClicked(photoItem!!, it)
                 }
 
-                textViewName.setOnClickListener {
+                constraintLayoutUser.setOnClickListener {
                     val photoItem = getItem(absoluteAdapterPosition)
-                    nameClickListener(photoItem!!, it)
+//                    nameClickListener(photoItem!!, it)
+                    photoClickListener?.onUserClicked(photoItem!!, it)
                 }
             }
         }
@@ -85,6 +84,11 @@ class PhotoPagingAdapter(
 //            binding.cardViewItem.layoutParams = cardViewItemLayout
 
         }
+    }
+
+    interface PhotoClickListener {
+        fun onPhotoClicked(item: UnsplashPhoto, view: View)
+        fun onUserClicked(item: UnsplashPhoto, view: View)
     }
 }
 

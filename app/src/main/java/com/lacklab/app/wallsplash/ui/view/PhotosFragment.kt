@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.TintableBackgroundView
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
+import com.lacklab.app.wallsplash.data.UnsplashPhoto
 import com.lacklab.app.wallsplash.databinding.FragmentPhotosBinding
 import com.lacklab.app.wallsplash.ui.viewadapter.PhotoPagingAdapter
 import com.lacklab.app.wallsplash.ui.viewmodels.PhotosViewModel
@@ -22,15 +24,18 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class PhotosFragment : BaseFragment<FragmentPhotosBinding>() {
+class PhotosFragment : BaseFragment<FragmentPhotosBinding>(),
+    PhotoPagingAdapter.PhotoClickListener {
 
     private lateinit var searchViewModel: SearchViewModel
     private val photosViewModel: PhotosViewModel by viewModels()
     private var retrievePhotosJob: Job? = null
     private var searchPhotosJob: Job? = null
-    private var photoPagingAdapter: PhotoPagingAdapter? = null
+    @Inject
+    lateinit var photoPagingAdapter: PhotoPagingAdapter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -83,7 +88,7 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>() {
     }
 
     override fun clear() {
-        photoPagingAdapter = null
+//        photoPagingAdapter = null
         retrievePhotosJob?.cancel()
         retrievePhotosJob = null
         searchPhotosJob?.cancel()
@@ -100,31 +105,31 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>() {
 
     private fun initView() {
         searchViewModel = ViewModelProvider(requireActivity()).get(SearchViewModel::class.java)
-        photoPagingAdapter = PhotoPagingAdapter(
-            photoClickListener = { photoItem, view ->
-//                val direction =
-//                    GalleryFragmentDirections.actionNavigationPhotoLibraryToNavigationPhoto(photoItem)
-//                // use shareElement
-//                val extras = FragmentNavigatorExtras(view to photoItem.id )
-//                view.findNavController()
-//                    .navigate(direction, extras)
-                val intent = Intent(requireActivity(), PhotoActivity::class.java)
-                val bundle = Bundle().apply {
-                    putParcelable("photoItem", photoItem)
-                }
-                intent.putExtra("photoItemBundle", bundle)
-                val activityOptionsCompat =
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        requireActivity(),
-                        view,
-                        photoItem.id
-                    )
-                startActivity(intent, activityOptionsCompat.toBundle())
-            },
-            nameClickListener = { photoItem, view ->
-                Timber.d("click name")
-            }
-        )
+//        photoPagingAdapter = PhotoPagingAdapter(
+//            photoClickListener = { photoItem, view ->
+////                val direction =
+////                    GalleryFragmentDirections.actionNavigationPhotoLibraryToNavigationPhoto(photoItem)
+////                // use shareElement
+////                val extras = FragmentNavigatorExtras(view to photoItem.id )
+////                view.findNavController()
+////                    .navigate(direction, extras)
+//                val intent = Intent(requireActivity(), PhotoActivity::class.java)
+//                val bundle = Bundle().apply {
+//                    putParcelable("photoItem", photoItem)
+//                }
+//                intent.putExtra("photoItemBundle", bundle)
+//                val activityOptionsCompat =
+//                    ActivityOptionsCompat.makeSceneTransitionAnimation(
+//                        requireActivity(),
+//                        view,
+//                        photoItem.id
+//                    )
+//                startActivity(intent, activityOptionsCompat.toBundle())
+//            },
+//            nameClickListener = { photoItem, view ->
+//                Timber.d("click name")
+//            }
+//        )
         with(binding!!) {
             recyclerViewItems.apply {
                 adapter = photoPagingAdapter
@@ -157,31 +162,36 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>() {
     private fun bindEvents() {
         with(binding!!) {
             swipeRefresh.setOnRefreshListener {
-                photoPagingAdapter?.refresh()
+                photoPagingAdapter.refresh()
             }
 
-            // init photo paging adapter action
-            photoPagingAdapter?.addLoadStateListener { loadStates ->
-                val isItemEmpty =
-                    loadStates.refresh is LoadState.NotLoading && photoPagingAdapter?.itemCount == 0
-                textViewNoResults.isVisible = isItemEmpty
+            with(photoPagingAdapter) {
+                // bind photoClickListener event
+                photoClickListener = this@PhotosFragment
 
-                recyclerViewItems.isVisible = loadStates.source.refresh is LoadState.NotLoading
+                // bind load state event
+                addLoadStateListener { loadStates ->
+                    val isItemEmpty =
+                        loadStates.refresh is LoadState.NotLoading && photoPagingAdapter.itemCount == 0
+                    textViewNoResults.isVisible = isItemEmpty
 
-                // show the swiper during init
-                handleLoading(loadStates.source.refresh is LoadState.Loading)
+                    recyclerViewItems.isVisible = loadStates.source.refresh is LoadState.NotLoading
 
-                val test = loadStates.source.refresh is LoadState.Error
+                    // show the swiper during init
+                    handleLoading(loadStates.source.refresh is LoadState.Loading)
 
-                // If we have an error, show a toast
-                val errorState = when {
-                    loadStates.append is LoadState.Error -> loadStates.append as LoadState.Error
-                    loadStates.prepend is LoadState.Error -> loadStates.prepend as LoadState.Error
-                    loadStates.refresh is LoadState.Error -> loadStates.refresh as LoadState.Error
-                    else -> null
-                }
-                errorState?.let {
-                    showToastMessage(it.error.message.toString())
+                    val test = loadStates.source.refresh is LoadState.Error
+
+                    // If we have an error, show a toast
+                    val errorState = when {
+                        loadStates.append is LoadState.Error -> loadStates.append as LoadState.Error
+                        loadStates.prepend is LoadState.Error -> loadStates.prepend as LoadState.Error
+                        loadStates.refresh is LoadState.Error -> loadStates.refresh as LoadState.Error
+                        else -> null
+                    }
+                    errorState?.let {
+                        showToastMessage(it.error.message.toString())
+                    }
                 }
             }
         }
@@ -192,7 +202,7 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>() {
         // Flow
         retrievePhotosJob = lifecycleScope.launch {
             photosViewModel.getAllUnsplashPhotos().collectLatest {
-                photoPagingAdapter?.submitData(it)
+                photoPagingAdapter.submitData(it)
             }
         }
     }
@@ -205,5 +215,24 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>() {
         with(binding!!) {
             swipeRefresh.isRefreshing = loading == true
         }
+    }
+
+    override fun onPhotoClicked(item: UnsplashPhoto, view: View) {
+        val intent = Intent(requireActivity(), PhotoActivity::class.java)
+        val bundle = Bundle().apply {
+            putParcelable("photoItem", item)
+        }
+        intent.putExtra("photoItemBundle", bundle)
+        val activityOptionsCompat =
+            ActivityOptionsCompat.makeSceneTransitionAnimation(
+                requireActivity(),
+                view,
+                item.id
+            )
+        startActivity(intent, activityOptionsCompat.toBundle())
+    }
+
+    override fun onUserClicked(item: UnsplashPhoto, view: View) {
+        Timber.d("click user")
     }
 }
