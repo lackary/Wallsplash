@@ -12,7 +12,6 @@ import timber.log.Timber
 private const val UNSPLASH_STARTING_PAGE_INDEX = 1
 
 class UnsplashPhotosPagingSource (
-    private val appExecutors: AppExecutors,
     private val service: UnsplashService,
 ): PagingSource<Int, UnsplashPhoto>() {
     override fun getRefreshKey(state: PagingState<Int, UnsplashPhoto>): Int? {

@@ -141,6 +141,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
                         imageSearchView.clearFocus()
                         Timber.d("queryString: $it")
                         searchViewModel.queryString.value = it
+                        searchViewModel.queryString.postValue(it)
 //                        searchPhotos(it)
 
                         // set currentData

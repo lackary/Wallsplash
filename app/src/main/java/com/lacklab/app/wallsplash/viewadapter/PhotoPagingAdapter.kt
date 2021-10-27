@@ -18,7 +18,7 @@ import timber.log.Timber
 class PhotoPagingAdapter(
     private val photoClickListener: (photoItem: UnsplashPhoto, view: View) -> Unit,
     private val nameClickListener: (photoItem: UnsplashPhoto, view: View) -> Unit
-) : PagingDataAdapter<UnsplashPhoto, PhotoPagingAdapter.PhotoViewHolder>(PhotoDiffCallback()) {
+) : PagingDataAdapter<UnsplashPhoto, PhotoPagingAdapter.PhotoViewHolder>(PhotoDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
         val binding =
@@ -88,12 +88,14 @@ class PhotoPagingAdapter(
     }
 }
 
-private class PhotoDiffCallback : DiffUtil.ItemCallback<UnsplashPhoto>() {
+private object PhotoDiffCallback : DiffUtil.ItemCallback<UnsplashPhoto>() {
     override fun areItemsTheSame(oldItem: UnsplashPhoto, newItem: UnsplashPhoto): Boolean {
+        Timber.d("areItemsTheSame")
         return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem: UnsplashPhoto, newItem: UnsplashPhoto): Boolean {
+        Timber.d("areContentsTheSame")
         return oldItem == newItem
     }
 }
