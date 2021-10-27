@@ -1,21 +1,12 @@
-package com.lacklab.app.wallsplash.view
+package com.lacklab.app.wallsplash.ui.view
 
 import android.content.Intent
 import android.os.Bundle
 import android.provider.SearchRecentSuggestions
-import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityOptionsCompat
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.FragmentNavigatorExtras
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
-import androidx.recyclerview.widget.StaggeredGridLayoutManager.GAP_HANDLING_NONE
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lacklab.app.wallsplash.MySuggestionProvider
 import com.lacklab.app.wallsplash.R
@@ -24,9 +15,9 @@ import com.lacklab.app.wallsplash.databinding.FragmentSearchBinding
 import com.lacklab.app.wallsplash.util.TAB_COLLECTIONS
 import com.lacklab.app.wallsplash.util.TAB_PHOTOS
 import com.lacklab.app.wallsplash.util.TAB_USERS
-import com.lacklab.app.wallsplash.viewadapter.PhotoPagingAdapter
-import com.lacklab.app.wallsplash.viewadapter.ViewPagerAdapter
-import com.lacklab.app.wallsplash.viewmodels.SearchViewModel
+import com.lacklab.app.wallsplash.ui.viewadapter.PhotoPagingAdapter
+import com.lacklab.app.wallsplash.ui.viewadapter.ViewPagerAdapter
+import com.lacklab.app.wallsplash.ui.viewmodels.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest

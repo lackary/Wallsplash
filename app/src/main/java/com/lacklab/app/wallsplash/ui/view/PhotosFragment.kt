@@ -1,4 +1,4 @@
-package com.lacklab.app.wallsplash.view
+package com.lacklab.app.wallsplash.ui.view
 
 import android.content.Context
 import android.content.Intent
@@ -13,9 +13,9 @@ import androidx.paging.LoadState
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
 import com.lacklab.app.wallsplash.databinding.FragmentPhotosBinding
-import com.lacklab.app.wallsplash.viewadapter.PhotoPagingAdapter
-import com.lacklab.app.wallsplash.viewmodels.PhotosViewModel
-import com.lacklab.app.wallsplash.viewmodels.SearchViewModel
+import com.lacklab.app.wallsplash.ui.viewadapter.PhotoPagingAdapter
+import com.lacklab.app.wallsplash.ui.viewmodels.PhotosViewModel
+import com.lacklab.app.wallsplash.ui.viewmodels.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest

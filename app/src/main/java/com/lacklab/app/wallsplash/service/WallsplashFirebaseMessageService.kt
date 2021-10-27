@@ -11,7 +11,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.lacklab.app.wallsplash.view.MainActivity
+import com.lacklab.app.wallsplash.ui.view.MainActivity
 import com.lacklab.app.wallsplash.R
 import timber.log.Timber
 

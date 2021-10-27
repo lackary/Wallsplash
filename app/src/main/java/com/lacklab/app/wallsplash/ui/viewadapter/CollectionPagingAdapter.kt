@@ -1,4 +1,4 @@
-package com.lacklab.app.wallsplash.viewadapter
+package com.lacklab.app.wallsplash.ui.viewadapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.data.UnsplashCollection
 import com.lacklab.app.wallsplash.databinding.ItemCollectionBinding
@@ -66,13 +66,13 @@ class CollectionPagingAdapter(
                         .load(item.coverPhoto.urls!!.regular)
                         .centerCrop()
                         .fitCenter()
-                        .override(Target.SIZE_ORIGINAL)
+                        .override(SIZE_ORIGINAL)
                         .transition(DrawableTransitionOptions.withCrossFade())
                         .into(imageViewPhoto)
                     Glide.with(root)
                         .load(item.user!!.profileImage!!.large)
                         .circleCrop()
-                        .override(Target.SIZE_ORIGINAL)
+                        .override(SIZE_ORIGINAL)
                         .transition(DrawableTransitionOptions.withCrossFade())
                         .into(imageViewUser)
                 }

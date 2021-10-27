@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.lacklab.app.wallsplash.viewmodels.PhotosViewModel" />
+            type="com.lacklab.app.wallsplash.ui.viewmodels.PhotosViewModel" />
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"

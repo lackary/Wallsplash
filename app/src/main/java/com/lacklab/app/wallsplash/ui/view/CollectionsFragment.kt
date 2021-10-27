@@ -1,4 +1,4 @@
-package com.lacklab.app.wallsplash.view
+package com.lacklab.app.wallsplash.ui.view
 
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -8,9 +8,9 @@ import androidx.paging.LoadState
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
 import com.lacklab.app.wallsplash.databinding.FragmentCollectionsBinding
-import com.lacklab.app.wallsplash.viewadapter.CollectionPagingAdapter
-import com.lacklab.app.wallsplash.viewmodels.CollectionsViewModel
-import com.lacklab.app.wallsplash.viewmodels.SearchViewModel
+import com.lacklab.app.wallsplash.ui.viewadapter.CollectionPagingAdapter
+import com.lacklab.app.wallsplash.ui.viewmodels.CollectionsViewModel
+import com.lacklab.app.wallsplash.ui.viewmodels.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
