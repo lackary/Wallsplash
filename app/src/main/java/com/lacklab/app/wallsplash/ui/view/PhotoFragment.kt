@@ -1,15 +1,10 @@
-package com.lacklab.app.wallsplash.view
+package com.lacklab.app.wallsplash.ui.view
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
-import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
 import com.lacklab.app.wallsplash.data.UnsplashPhoto
@@ -55,7 +50,7 @@ class PhotoFragment : BaseFragment<FragmentPhotoBinding>() {
             photoItem = photo
             Glide.with(root)
                 .load(photo!!.urls!!.regular)
-                .override(Target.SIZE_ORIGINAL)
+                .override(SIZE_ORIGINAL)
 //            .addListener(object: RequestListener<Drawable>{
 //                override fun onLoadFailed(
 //                    e: GlideException?,

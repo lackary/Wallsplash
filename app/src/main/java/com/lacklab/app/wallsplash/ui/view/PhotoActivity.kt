@@ -1,4 +1,4 @@
-package com.lacklab.app.wallsplash.view
+package com.lacklab.app.wallsplash.ui.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

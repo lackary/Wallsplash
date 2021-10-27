@@ -1,16 +1,13 @@
-package com.lacklab.app.wallsplash.view
+package com.lacklab.app.wallsplash.ui.view
 
-import android.os.Bundle
-import android.view.View
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
 import com.lacklab.app.wallsplash.databinding.FragmentGalleryBinding
+import com.lacklab.app.wallsplash.ui.viewadapter.ViewPagerAdapter
 import com.lacklab.app.wallsplash.util.TAB_COLLECTIONS
 import com.lacklab.app.wallsplash.util.TAB_PHOTOS
-import com.lacklab.app.wallsplash.viewadapter.ViewPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class GalleryFragment : BaseFragment<FragmentGalleryBinding>() {

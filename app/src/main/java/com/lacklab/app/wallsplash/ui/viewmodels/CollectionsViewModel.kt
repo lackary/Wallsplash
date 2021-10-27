@@ -1,4 +1,4 @@
-package com.lacklab.app.wallsplash.viewmodels
+package com.lacklab.app.wallsplash.ui.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

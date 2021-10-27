@@ -1,4 +1,4 @@
-package com.lacklab.app.wallsplash.view
+package com.lacklab.app.wallsplash.ui.view
 
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment

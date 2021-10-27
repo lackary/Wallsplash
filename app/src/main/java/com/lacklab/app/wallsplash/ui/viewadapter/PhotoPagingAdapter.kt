@@ -1,4 +1,4 @@
-package com.lacklab.app.wallsplash.viewadapter
+package com.lacklab.app.wallsplash.ui.viewadapter
 
 import android.view.LayoutInflater
 import android.view.View
