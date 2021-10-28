@@ -2,37 +2,13 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_gallery"
-    app:startDestination="@id/menu_bottom_gallery">
+    android:id="@+id/menu_bottom_gallery"
+    app:startDestination="@id/galleryFragment">
 
     <fragment
-        android:id="@+id/menu_bottom_gallery"
+        android:id="@+id/galleryFragment"
         android:name="com.lacklab.app.wallsplash.ui.view.GalleryFragment"
         android:label="Gallery"
         tools:layout="@layout/fragment_gallery" >
-        <action
-            android:id="@+id/action_navigation_photo_library_to_navigation_photo"
-            app:destination="@id/navigation_photo" />
-        <action
-            android:id="@+id/action_navigation_photo_library_to_navigation_image_search"
-            app:destination="@id/menu_bottom_search"
-            />
-    </fragment>
-    <fragment
-        android:id="@+id/menu_bottom_search"
-        android:name="com.lacklab.app.wallsplash.ui.view.SearchFragment"
-        android:label="Search"
-        tools:layout="@layout/fragment_search" >
-        <action
-            android:id="@+id/action_navigation_image_search_to_navigation_photo"
-            app:destination="@id/navigation_photo" />
-    </fragment>
-    <fragment
-        android:id="@+id/navigation_photo"
-        android:name="com.lacklab.app.wallsplash.ui.view.PhotoFragment"
-        android:label="Photo" >
-        <argument
-            android:name="photo"
-            app:argType="com.lacklab.app.wallsplash.data.UnsplashPhoto"/>
     </fragment>
 </navigation>
