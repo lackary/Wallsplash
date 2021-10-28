@@ -2,11 +2,14 @@ package com.lacklab.app.wallsplash.ui.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.LiveData
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.databinding.ActivityMainBinding
+import com.lacklab.app.wallsplash.ext.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -14,6 +17,7 @@ import timber.log.Timber
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewBinding: ActivityMainBinding
+    private var currentNavController: LiveData<NavController>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,16 +84,41 @@ class MainActivity : AppCompatActivity() {
 
     private fun initView() {
         // init Bottom Navigation bar
-        val navController = findNavController(R.id.nav_host_main)
+//        val navController = findNavController(R.id.nav_host_main)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(R.id.menu_bottom_gallery, R.id.menu_bottom_search)
         )
+        val navGraphIds = listOf(
+            R.navigation.nav_gallery,
+            R.navigation.nav_search
+        )
+        with(viewBinding) {
+//            bottomNavBar.setupWithNavController(navController)
+            val controller =bottomNavBar.setupWithNavController(
+                navGraphIds = navGraphIds,
+                fragmentManager = supportFragmentManager,
+                containerId = R.id.nav_host_main,
+                intent = intent
+            )
+            currentNavController = controller
 
-        viewBinding.bottomNavBar.setupWithNavController(navController)
+        }
         // if we have the appbar, this will show the title of appbar
 //        setupActionBarWithNavController(navController, appBarConfiguration)
+    }
 
+    override fun onSupportNavigateUp(): Boolean =
+        currentNavController?.value?.navigateUp() ?: false
+
+    /**
+     * Overriding popBackStack is necessary in this case
+     * if the app is started from the deep link.
+     */
+    override fun onBackPressed() {
+        if (currentNavController?.value?.popBackStack() != true) {
+            super.onBackPressed()
+        }
     }
 }
