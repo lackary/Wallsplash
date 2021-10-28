@@ -149,12 +149,22 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>(),
                 }
             })
         } else {
-            retrievePhotosJob?.cancel()
-            retrievePhotosJob = lifecycleScope.launch {
-                photosViewModel.getAllUnsplashPhotosLiveData().observe(viewLifecycleOwner, {
-                    photoPagingAdapter?.submitData(lifecycle, it)
-                })
+//            retrievePhotosJob?.cancel()
+//            retrievePhotosJob = lifecycleScope.launch {
+//                photosViewModel.getAllUnsplashPhotosLiveData().observe(viewLifecycleOwner, {
+//                    photoPagingAdapter?.submitData(lifecycle, it)
+//                })
+//            }
+
+            with(photosViewModel) {
+                retrievePhotosJob?.cancel()
+                retrievePhotosJob = lifecycleScope.launch {
+                    photoFlow.collectLatest {
+                        photoPagingAdapter.submitData(it)
+                    }
+                }
             }
+
         }
 
     }
@@ -197,15 +207,15 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>(),
         }
     }
 
-    private fun getPhotos() {
-        retrievePhotosJob?.cancel()
-        // Flow
-        retrievePhotosJob = lifecycleScope.launch {
-            photosViewModel.getAllUnsplashPhotos().collectLatest {
-                photoPagingAdapter.submitData(it)
-            }
-        }
-    }
+//    private fun getPhotos() {
+//        retrievePhotosJob?.cancel()
+//        // Flow
+//        retrievePhotosJob = lifecycleScope.launch {
+//            photosViewModel.getAllUnsplashPhotos().collectLatest {
+//                photoPagingAdapter.submitData(it)
+//            }
+//        }
+//    }
 
     private fun testRunBlocking() = runBlocking {
 

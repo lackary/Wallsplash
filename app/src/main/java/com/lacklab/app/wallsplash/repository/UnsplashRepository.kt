@@ -20,7 +20,7 @@ class UnsplashRepository @Inject constructor(
     private val service: UnsplashService
 ) {
 
-    fun getPhotosStream(): Flow<PagingData<UnsplashPhoto>> {
+    suspend fun getPhotosStream(): Flow<PagingData<UnsplashPhoto>> {
         return Pager(
             config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
             pagingSourceFactory = { UnsplashPhotosPagingSource(service) }

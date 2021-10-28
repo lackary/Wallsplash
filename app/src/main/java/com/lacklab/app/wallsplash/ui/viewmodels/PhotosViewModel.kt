@@ -7,6 +7,7 @@ import com.lacklab.app.wallsplash.data.UnsplashPhoto
 import com.lacklab.app.wallsplash.repository.UnsplashRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,13 +17,24 @@ class PhotosViewModel @Inject constructor(
 ) : ViewModel() {
     private var allUnpslashPhotos: Flow<PagingData<UnsplashPhoto>>? =null
     private var unsplashPhotosLiveData = MutableLiveData<PagingData<UnsplashPhoto>>()
-
-    fun getAllUnsplashPhotos() : Flow<PagingData<UnsplashPhoto>> {
-        val newResult: Flow<PagingData<UnsplashPhoto>> =
-            unsplashRepository.getPhotosStream().cachedIn(viewModelScope)
-        allUnpslashPhotos = newResult
-        return newResult
+    private lateinit var _photoFlow: Flow<PagingData<UnsplashPhoto>>
+    val photoFlow: Flow<PagingData<UnsplashPhoto>>
+        get() = _photoFlow
+    init {
+        getPhotos()
     }
+
+    private fun getPhotos() = viewModelScope.launch {
+        val result = unsplashRepository.getPhotosStream().cachedIn(viewModelScope)
+        _photoFlow = result
+    }
+
+//    fun getAllUnsplashPhotos() : Flow<PagingData<UnsplashPhoto>> {
+//        val newResult: Flow<PagingData<UnsplashPhoto>> =
+//            unsplashRepository.getPhotosStream().cachedIn(viewModelScope)
+//        allUnpslashPhotos = newResult
+//        return newResult
+//    }
 
     fun getAllUnsplashPhotosLiveData() : LiveData<PagingData<UnsplashPhoto>> {
         val newResult: LiveData<PagingData<UnsplashPhoto>> =
