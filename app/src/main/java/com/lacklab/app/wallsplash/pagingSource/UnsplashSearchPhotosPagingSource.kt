@@ -13,7 +13,7 @@ class UnsplashSearchPhotosPagingSource(
     private val query: String
 ) : PagingSource<Int, UnsplashPhoto>() {
     override fun getRefreshKey(state: PagingState<Int, UnsplashPhoto>): Int? {
-        TODO("Not yet implemented")
+        return null
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UnsplashPhoto> {

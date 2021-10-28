@@ -18,12 +18,12 @@ class GalleryViewModel @Inject constructor(
     private var allUnpslashPhotos: Flow<PagingData<UnsplashPhoto>>? =null
     private var unsplashPhotosLiveData = MutableLiveData<PagingData<UnsplashPhoto>>()
 
-    fun getAllUnsplashPhotos() : Flow<PagingData<UnsplashPhoto>> {
-        val newResult: Flow<PagingData<UnsplashPhoto>> =
-            unsplashRepository.getPhotosStream().cachedIn(viewModelScope)
-        allUnpslashPhotos = newResult
-        return newResult
-    }
+//    fun getAllUnsplashPhotos() : Flow<PagingData<UnsplashPhoto>> {
+//        val newResult: Flow<PagingData<UnsplashPhoto>> =
+//            unsplashRepository.getPhotosStream().cachedIn(viewModelScope)
+//        allUnpslashPhotos = newResult
+//        return newResult
+//    }
 
     suspend fun getAllUnsplashPhotosLiveData() : LiveData<PagingData<UnsplashPhoto>> {
         val newResult: LiveData<PagingData<UnsplashPhoto>> =
