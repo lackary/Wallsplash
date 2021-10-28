@@ -1,15 +1,15 @@
-package com.lacklab.app.wallsplash.pagingSource
+package com.lacklab.app.wallsplash.data.pagingSource
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.lacklab.app.wallsplash.api.UnsplashService
-import com.lacklab.app.wallsplash.data.UnsplashPhoto
-import com.lacklab.app.wallsplash.repository.UnsplashRepository.Companion.NETWORK_PAGE_SIZE
+import com.lacklab.app.wallsplash.data.api.UnsplashApi
+import com.lacklab.app.wallsplash.data.model.UnsplashPhoto
+import com.lacklab.app.wallsplash.data.repository.UnsplashRepository.Companion.NETWORK_PAGE_SIZE
 
 private const val UNSPLASH_STARTING_PAGE_INDEX = 1
 
 class UnsplashSearchPhotosPagingSource(
-    private val service: UnsplashService,
+    private val api: UnsplashApi,
     private val query: String
 ) : PagingSource<Int, UnsplashPhoto>() {
     override fun getRefreshKey(state: PagingState<Int, UnsplashPhoto>): Int? {
@@ -19,7 +19,7 @@ class UnsplashSearchPhotosPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UnsplashPhoto> {
         val page = params.key ?: UNSPLASH_STARTING_PAGE_INDEX
         return try {
-            val response = service.searchPhotos(query, page, params.loadSize)
+            val response = api.searchPhotos(query, page, params.loadSize)
             val photos = response.results
 
             // by default, init loadSize is 3 x NETWORK_PAGE_SIZE

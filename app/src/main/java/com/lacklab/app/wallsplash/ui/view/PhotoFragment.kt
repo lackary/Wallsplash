@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
-import com.lacklab.app.wallsplash.data.UnsplashPhoto
+import com.lacklab.app.wallsplash.data.model.UnsplashPhoto
 import com.lacklab.app.wallsplash.databinding.FragmentPhotoBinding
 
 class PhotoFragment : BaseFragment<FragmentPhotoBinding>() {

@@ -1,7 +1,6 @@
 package com.lacklab.app.wallsplash.factory
 
-import androidx.lifecycle.LiveData
-import com.lacklab.app.wallsplash.api.ApiResponse
+import com.lacklab.app.wallsplash.data.api.ApiResponse
 import com.lacklab.app.wallsplash.util.DataCallAdapter
 import retrofit2.Call
 import retrofit2.CallAdapter

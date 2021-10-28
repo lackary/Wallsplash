@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.app.ActivityOptionsCompat
-import androidx.core.view.TintableBackgroundView
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -13,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
-import com.lacklab.app.wallsplash.data.UnsplashPhoto
+import com.lacklab.app.wallsplash.data.model.UnsplashPhoto
 import com.lacklab.app.wallsplash.databinding.FragmentPhotosBinding
 import com.lacklab.app.wallsplash.ui.viewadapter.PhotoPagingAdapter
 import com.lacklab.app.wallsplash.ui.viewmodels.PhotosViewModel

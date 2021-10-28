@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lacklab.app.wallsplash.api
+package com.lacklab.app.wallsplash.data.api
 
 import android.util.Log
 import retrofit2.Response

@@ -1,18 +1,17 @@
-package com.lacklab.app.wallsplash.pagingSource
+package com.lacklab.app.wallsplash.data.pagingSource
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.lacklab.app.wallsplash.AppExecutors
-import com.lacklab.app.wallsplash.api.*
-import com.lacklab.app.wallsplash.data.UnsplashPhoto
-import com.lacklab.app.wallsplash.data.UnsplashPhotos
-import com.lacklab.app.wallsplash.repository.UnsplashRepository.Companion.NETWORK_PAGE_SIZE
+import com.lacklab.app.wallsplash.data.api.*
+import com.lacklab.app.wallsplash.data.model.UnsplashPhoto
+import com.lacklab.app.wallsplash.data.model.UnsplashPhotos
+import com.lacklab.app.wallsplash.data.repository.UnsplashRepository.Companion.NETWORK_PAGE_SIZE
 import timber.log.Timber
 
 private const val UNSPLASH_STARTING_PAGE_INDEX = 1
 
 class UnsplashPhotosPagingSource (
-    private val service: UnsplashService,
+    private val api: UnsplashApi,
 ): PagingSource<Int, UnsplashPhoto>() {
     override fun getRefreshKey(state: PagingState<Int, UnsplashPhoto>): Int? {
         return null
@@ -26,7 +25,7 @@ class UnsplashPhotosPagingSource (
 //                object: UnsplashMediator<List<UnsplashPhoto>, List<UnsplashPhoto>>(appExecutors) {
 //                    override suspend fun createCall() = service.getPhotos(page, params.loadSize)
 //                }.getData()
-            val response = service.getPhotos(page, params.loadSize)
+            val response = api.getPhotos(page, params.loadSize)
             when(response) {
                 is ApiSuccessResponse -> {
                     val apiSuccessResponse = response as ApiSuccessResponse

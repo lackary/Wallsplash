@@ -1,7 +1,7 @@
-package com.lacklab.app.wallsplash.dao
+package com.lacklab.app.wallsplash.data.dao
 
 import androidx.room.*
-import com.lacklab.app.wallsplash.data.UnsplashPhoto
+import com.lacklab.app.wallsplash.data.model.UnsplashPhoto
 
 @Dao
 interface UnsplashDao {

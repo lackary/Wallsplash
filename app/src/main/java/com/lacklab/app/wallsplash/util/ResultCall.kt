@@ -1,6 +1,6 @@
 package com.lacklab.app.wallsplash.util
 
-import com.lacklab.app.wallsplash.api.ResultResponse
+import com.lacklab.app.wallsplash.data.api.ResultResponse
 import okhttp3.Request
 import okio.Timeout
 import retrofit2.Call

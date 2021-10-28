@@ -1,6 +1,4 @@
-package com.lacklab.app.wallsplash.data
-
-import com.google.gson.annotations.SerializedName
+package com.lacklab.app.wallsplash.data.model
 
 data class UnsplashPhotos(
     val totalPages: Int,
