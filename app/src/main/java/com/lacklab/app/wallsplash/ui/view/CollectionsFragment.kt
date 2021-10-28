@@ -1,5 +1,6 @@
 package com.lacklab.app.wallsplash.ui.view
 
+import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -7,29 +8,34 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
+import com.lacklab.app.wallsplash.data.model.UnsplashCollection
 import com.lacklab.app.wallsplash.databinding.FragmentCollectionsBinding
 import com.lacklab.app.wallsplash.ui.viewadapter.CollectionPagingAdapter
 import com.lacklab.app.wallsplash.ui.viewmodels.CollectionsViewModel
 import com.lacklab.app.wallsplash.ui.viewmodels.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class CollectionsFragment : BaseFragment<FragmentCollectionsBinding>() {
+class CollectionsFragment : BaseFragment<FragmentCollectionsBinding>(),
+CollectionPagingAdapter.CollectionClickListener{
 
     private lateinit var searchViewModel: SearchViewModel
     private val collectionsViewModel: CollectionsViewModel by viewModels()
     private var retrieveCollectionsJob: Job? = null
     private var searchCollectionJob: Job? = null
-    private var collectionPagingAdapter: CollectionPagingAdapter? = null
+    @Inject
+    lateinit var collectionPagingAdapter: CollectionPagingAdapter
 
     override fun layout(): Int = R.layout.fragment_collections
 
     override fun onDestroyView() {
         super.onDestroyView()
-        collectionPagingAdapter = null
+//        collectionPagingAdapter = null
     }
 
     override fun init() {
@@ -39,7 +45,7 @@ class CollectionsFragment : BaseFragment<FragmentCollectionsBinding>() {
     }
 
     override fun clear() {
-        collectionPagingAdapter = null
+//        collectionPagingAdapter = null
         retrieveCollectionsJob?.cancel()
         retrieveCollectionsJob = null
     }
@@ -53,14 +59,14 @@ class CollectionsFragment : BaseFragment<FragmentCollectionsBinding>() {
 
     private fun initView() {
         searchViewModel = ViewModelProvider(requireActivity()).get(SearchViewModel::class.java)
-        collectionPagingAdapter = CollectionPagingAdapter(
-            photoClickListener = { photoItem, view ->
-                Timber.d("click photo")
-            },
-            nameClickListener = { photoItem, view ->
-                Timber.d("click name")
-            }
-        )
+//        collectionPagingAdapter = CollectionPagingAdapter(
+//            photoClickListener = { photoItem, view ->
+//                Timber.d("click photo")
+//            },
+//            nameClickListener = { photoItem, view ->
+//                Timber.d("click name")
+//            }
+//        )
         with(binding!!){
             recyclerViewItems.apply{
                 adapter = collectionPagingAdapter
@@ -82,6 +88,14 @@ class CollectionsFragment : BaseFragment<FragmentCollectionsBinding>() {
                 collectionsViewModel.getCollectionsLiveData().observe(viewLifecycleOwner, {
                     collectionPagingAdapter?.submitData(lifecycle, it)
                 })
+            }
+            with(collectionsViewModel) {
+                retrieveCollectionsJob?.cancel()
+                retrieveCollectionsJob = lifecycleScope.launch {
+                    collectionFlow.collectLatest {
+                        collectionPagingAdapter?.submitData(it)
+                    }
+                }
             }
         }
     }
@@ -124,5 +138,13 @@ class CollectionsFragment : BaseFragment<FragmentCollectionsBinding>() {
         with(binding!!) {
             swipeRefresh.isRefreshing = loading == true
         }
+    }
+
+    override fun onPhotoClicked(item: UnsplashCollection, view: View) {
+        Timber.d("photo clicked")
+    }
+
+    override fun onUserClicked(item: UnsplashCollection, view: View) {
+        Timber.d("user clicked")
     }
 }

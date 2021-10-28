@@ -33,7 +33,6 @@ class PhotoPagingAdapter @Inject constructor()
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-        Timber.d("position: $position")
         getItem(position)?.let {
             holder.bind(it)
         }

@@ -27,6 +27,13 @@ class UnsplashRepository @Inject constructor(
         ).flow
     }
 
+    fun getCollectionStream(): Flow<PagingData<UnsplashCollection>> {
+       return Pager(
+           config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
+           pagingSourceFactory = {UnsplashCollectionsPagingSource(api)}
+       ).flow
+    }
+
     fun getPhotosLiveData(): LiveData<PagingData<UnsplashPhoto>> {
         return Pager(
             config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),

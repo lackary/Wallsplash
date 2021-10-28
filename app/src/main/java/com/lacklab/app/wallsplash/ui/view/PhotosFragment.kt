@@ -148,13 +148,6 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>(),
                 }
             })
         } else {
-//            retrievePhotosJob?.cancel()
-//            retrievePhotosJob = lifecycleScope.launch {
-//                photosViewModel.getAllUnsplashPhotosLiveData().observe(viewLifecycleOwner, {
-//                    photoPagingAdapter?.submitData(lifecycle, it)
-//                })
-//            }
-
             with(photosViewModel) {
                 retrievePhotosJob?.cancel()
                 retrievePhotosJob = lifecycleScope.launch {
