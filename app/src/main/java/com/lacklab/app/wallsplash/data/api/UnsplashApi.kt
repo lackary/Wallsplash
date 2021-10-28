@@ -1,7 +1,7 @@
-package com.lacklab.app.wallsplash.api
+package com.lacklab.app.wallsplash.data.api
 
 import com.lacklab.app.wallsplash.BuildConfig
-import com.lacklab.app.wallsplash.data.*
+import com.lacklab.app.wallsplash.data.model.*
 import com.lacklab.app.wallsplash.factory.DataCallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
-interface UnsplashService {
+interface UnsplashApi {
 
     @GET("photos")
     suspend fun getPhotos(
@@ -81,7 +81,7 @@ interface UnsplashService {
     companion object {
         private const val BASE_URL = "https://api.unsplash.com/"
 
-        fun create(): UnsplashService {
+        fun create(): UnsplashApi {
             val logger = HttpLoggingInterceptor().apply { level = Level.BASIC }
 
             val client = OkHttpClient.Builder()
@@ -94,7 +94,7 @@ interface UnsplashService {
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(DataCallAdapterFactory())
                 .build()
-                .create(UnsplashService::class.java)
+                .create(UnsplashApi::class.java)
         }
     }
 }

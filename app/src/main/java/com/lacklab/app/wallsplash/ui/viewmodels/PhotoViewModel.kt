@@ -2,7 +2,7 @@ package com.lacklab.app.wallsplash.ui.viewmodels
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.lacklab.app.wallsplash.repository.UnsplashRepository
+import com.lacklab.app.wallsplash.data.repository.UnsplashRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

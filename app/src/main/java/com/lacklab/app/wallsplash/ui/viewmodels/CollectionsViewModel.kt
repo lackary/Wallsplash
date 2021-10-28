@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagingData
-import com.lacklab.app.wallsplash.data.UnsplashCollection
-import com.lacklab.app.wallsplash.repository.UnsplashRepository
+import com.lacklab.app.wallsplash.data.model.UnsplashCollection
+import com.lacklab.app.wallsplash.data.repository.UnsplashRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

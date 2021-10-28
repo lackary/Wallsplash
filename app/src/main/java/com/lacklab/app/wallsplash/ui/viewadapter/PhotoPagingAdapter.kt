@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.lacklab.app.wallsplash.R
-import com.lacklab.app.wallsplash.data.UnsplashPhoto
+import com.lacklab.app.wallsplash.data.model.UnsplashPhoto
 import com.lacklab.app.wallsplash.databinding.ItemPhotoBinding
 import timber.log.Timber
 import javax.inject.Inject
@@ -57,7 +57,7 @@ class PhotoPagingAdapter @Inject constructor()
             }
         }
 
-        fun bind(item:UnsplashPhoto) {
+        fun bind(item: UnsplashPhoto) {
             with(binding) {
                 photoItem = item
 

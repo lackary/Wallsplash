@@ -1,4 +1,4 @@
-package com.lacklab.app.wallsplash.data
+package com.lacklab.app.wallsplash.data.model
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,14 +1,13 @@
-package com.lacklab.app.wallsplash.repository
+package com.lacklab.app.wallsplash.data.repository
 
 import androidx.annotation.MainThread
-import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.lacklab.app.wallsplash.AppExecutors
-import com.lacklab.app.wallsplash.api.ApiEmptyResponse
-import com.lacklab.app.wallsplash.api.ApiErrorResponse
-import com.lacklab.app.wallsplash.api.ApiResponse
-import com.lacklab.app.wallsplash.api.ApiSuccessResponse
+import com.lacklab.app.wallsplash.data.api.ApiEmptyResponse
+import com.lacklab.app.wallsplash.data.api.ApiErrorResponse
+import com.lacklab.app.wallsplash.data.api.ApiResponse
+import com.lacklab.app.wallsplash.data.api.ApiSuccessResponse
 import com.lacklab.app.wallsplash.vo.Resource
 
 /**

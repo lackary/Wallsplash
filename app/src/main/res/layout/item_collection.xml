@@ -5,7 +5,7 @@
     <data>
         <variable
             name="collectionItem"
-            type="com.lacklab.app.wallsplash.data.UnsplashCollection" />
+            type="com.lacklab.app.wallsplash.data.model.UnsplashCollection" />
     </data>
     <!--
     Fix the bug that the scrolling did not smoothing for StaggeredGridLayoutManager
