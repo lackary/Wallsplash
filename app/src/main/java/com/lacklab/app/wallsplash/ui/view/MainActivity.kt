@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.navigation_gallery, R.id.navigation_search)
+            setOf(R.id.menu_bottom_gallery, R.id.menu_bottom_search)
         )
 
         viewBinding.bottomNavBar.setupWithNavController(navController)
