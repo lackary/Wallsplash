@@ -26,7 +26,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PhotosFragment : BaseFragment<FragmentPhotosBinding>(),
+class PhotosFragment : BaseFragment<FragmentPhotosBinding, PhotosViewModel>(),
     PhotoPagingAdapter.PhotoClickListener {
 
     private lateinit var searchViewModel: SearchViewModel
@@ -36,55 +36,54 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>(),
     @Inject
     lateinit var photoPagingAdapter: PhotoPagingAdapter
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        searchViewModel = ViewModelProvider(requireActivity()).get(SearchViewModel::class.java)
         super.onCreate(savedInstanceState)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override val layoutId: Int
+        get() = R.layout.fragment_photos
+
+    override fun getVM() = photosViewModel
+
+    override fun bindVM(binding: FragmentPhotosBinding, vm: PhotosViewModel) {
+        with(binding) {
+            with(photoPagingAdapter) {
+                photoClickListener = this@PhotosFragment
+                recyclerViewItems.adapter = this
+                swipeRefresh.setOnRefreshListener { refresh() }
+                with(vm) {
+                    if(parentFragment is SearchFragment) {
+                        searchViewModel.queryString.observe(viewLifecycleOwner, {
+                            searchPhotosJob?.cancel()
+                            searchPhotosJob = lifecycleScope.launch {
+                                Timber.d("queryString: $it")
+                                searchViewModel.searchPhotos(it).collectLatest {
+                                    submitData(it)
+                                }
+                            }
+                        })
+                    } else {
+                        launchOnLifecycleScope {
+                            photoFlow.collectLatest { submitData(it) }
+                        }
+                    }
+
+                    launchOnLifecycleScope {
+                        loadStateFlow.collectLatest {
+                            swipeRefresh.isRefreshing = it.refresh is LoadState.Loading
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    override fun onStart() {
-        super.onStart()
-    }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onStop() {
-        super.onStop()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-    }
-
-    override fun init() {
-        initView()
-        initObserve()
-        bindEvents()
-    }
+//    override fun init() {
+//        initView()
+//        initObserve()
+//        bindEvents()
+//    }
 
     override fun clear() {
 //        photoPagingAdapter = null
@@ -94,13 +93,13 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>(),
     }
 
     override fun clearView() {
-        with(binding!!) {
-            recyclerViewItems.adapter = null
-        }
-        binding = null
+//        with(binding!!) {
+//            recyclerViewItems.adapter = null
+//        }
+//        binding = null
     }
 
-    override fun layout() = R.layout.fragment_photos
+//    override fun layout() = R.layout.fragment_photos
 
     private fun initView() {
         searchViewModel = ViewModelProvider(requireActivity()).get(SearchViewModel::class.java)
@@ -129,75 +128,75 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>(),
 //                Timber.d("click name")
 //            }
 //        )
-        with(binding!!) {
-            recyclerViewItems.apply {
-                adapter = photoPagingAdapter
-            }
-        }
+//        with(binding!!) {
+//            recyclerViewItems.apply {
+//                adapter = photoPagingAdapter
+//            }
+//        }
     }
 
-    private fun initObserve() {
-        if(parentFragment is SearchFragment) {
-            searchViewModel.queryString.observe(viewLifecycleOwner, {
-                searchPhotosJob?.cancel()
-                searchPhotosJob = lifecycleScope.launch {
-                    Timber.d("queryString: $it")
-                    searchViewModel.searchPhotos(it).collectLatest {
-                        photoPagingAdapter?.submitData(it)
-                    }
-                }
-            })
-        } else {
-            with(photosViewModel) {
-                retrievePhotosJob?.cancel()
-                retrievePhotosJob = lifecycleScope.launch {
-                    photoFlow.collectLatest {
-                        photoPagingAdapter.submitData(it)
-                    }
-                }
-            }
+//    private fun initObserve() {
+//        if(parentFragment is SearchFragment) {
+//            searchViewModel.queryString.observe(viewLifecycleOwner, {
+//                searchPhotosJob?.cancel()
+//                searchPhotosJob = lifecycleScope.launch {
+//                    Timber.d("queryString: $it")
+//                    searchViewModel.searchPhotos(it).collectLatest {
+//                        photoPagingAdapter?.submitData(it)
+//                    }
+//                }
+//            })
+//        } else {
+//            with(photosViewModel) {
+//                retrievePhotosJob?.cancel()
+//                retrievePhotosJob = lifecycleScope.launch {
+//                    photoFlow.collectLatest {
+//                        photoPagingAdapter.submitData(it)
+//                    }
+//                }
+//            }
+//
+//        }
+//
+//    }
 
-        }
-
-    }
-
-    private fun bindEvents() {
-        with(binding!!) {
-            swipeRefresh.setOnRefreshListener {
-                photoPagingAdapter.refresh()
-            }
-
-            with(photoPagingAdapter) {
-                // bind photoClickListener event
-                photoClickListener = this@PhotosFragment
-
-                // bind load state event
-                addLoadStateListener { loadStates ->
-                    val isItemEmpty =
-                        loadStates.refresh is LoadState.NotLoading && photoPagingAdapter.itemCount == 0
-                    textViewNoResults.isVisible = isItemEmpty
-
-                    recyclerViewItems.isVisible = loadStates.source.refresh is LoadState.NotLoading
-
-                    // show the swiper during init
-                    handleLoading(loadStates.source.refresh is LoadState.Loading)
-
-                    val test = loadStates.source.refresh is LoadState.Error
-
-                    // If we have an error, show a toast
-                    val errorState = when {
-                        loadStates.append is LoadState.Error -> loadStates.append as LoadState.Error
-                        loadStates.prepend is LoadState.Error -> loadStates.prepend as LoadState.Error
-                        loadStates.refresh is LoadState.Error -> loadStates.refresh as LoadState.Error
-                        else -> null
-                    }
-                    errorState?.let {
-                        showToastMessage(it.error.message.toString())
-                    }
-                }
-            }
-        }
-    }
+//    private fun bindEvents() {
+//        with(binding!!) {
+//            swipeRefresh.setOnRefreshListener {
+//                photoPagingAdapter.refresh()
+//            }
+//
+//            with(photoPagingAdapter) {
+//                // bind photoClickListener event
+//                photoClickListener = this@PhotosFragment
+//
+//                // bind load state event
+//                addLoadStateListener { loadStates ->
+//                    val isItemEmpty =
+//                        loadStates.refresh is LoadState.NotLoading && photoPagingAdapter.itemCount == 0
+//                    textViewNoResults.isVisible = isItemEmpty
+//
+//                    recyclerViewItems.isVisible = loadStates.source.refresh is LoadState.NotLoading
+//
+//                    // show the swiper during init
+//                    handleLoading(loadStates.source.refresh is LoadState.Loading)
+//
+//                    val test = loadStates.source.refresh is LoadState.Error
+//
+//                    // If we have an error, show a toast
+//                    val errorState = when {
+//                        loadStates.append is LoadState.Error -> loadStates.append as LoadState.Error
+//                        loadStates.prepend is LoadState.Error -> loadStates.prepend as LoadState.Error
+//                        loadStates.refresh is LoadState.Error -> loadStates.refresh as LoadState.Error
+//                        else -> null
+//                    }
+//                    errorState?.let {
+//                        showToastMessage(it.error.message.toString())
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 //    private fun getPhotos() {
 //        retrievePhotosJob?.cancel()
@@ -214,9 +213,9 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>(),
     }
 
     private fun handleLoading(loading: Boolean) {
-        with(binding!!) {
-            swipeRefresh.isRefreshing = loading == true
-        }
+//        with(binding!!) {
+//            swipeRefresh.isRefreshing = loading == true
+//        }
     }
 
     override fun onPhotoClicked(item: UnsplashPhoto, view: View) {

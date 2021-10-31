@@ -21,7 +21,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CollectionsFragment : BaseFragment<FragmentCollectionsBinding>(),
+class CollectionsFragment : BaseFragment<FragmentCollectionsBinding, CollectionsViewModel>(),
 CollectionPagingAdapter.CollectionClickListener{
 
     private lateinit var searchViewModel: SearchViewModel
@@ -30,19 +30,37 @@ CollectionPagingAdapter.CollectionClickListener{
     private var searchCollectionJob: Job? = null
     @Inject
     lateinit var collectionPagingAdapter: CollectionPagingAdapter
+    override val layoutId: Int
+        get() = R.layout.fragment_collections
 
-    override fun layout(): Int = R.layout.fragment_collections
+    override fun getVM() = collectionsViewModel
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-//        collectionPagingAdapter = null
+    override fun bindVM(binding: FragmentCollectionsBinding, vm: CollectionsViewModel) {
+        with(binding) {
+            with(collectionPagingAdapter) {
+                collectionClickListener = this@CollectionsFragment
+                recyclerViewItems.adapter = this
+                swipeRefresh.setOnRefreshListener { refresh() }
+                with(vm) {
+                    launchOnLifecycleScope {
+                        collectionFlow.collectLatest { submitData(it) }
+                    }
+                    launchOnLifecycleScope {
+                        loadStateFlow.collectLatest {
+                            swipeRefresh.isRefreshing = it.refresh is LoadState.Loading
+                        }
+                    }
+                }
+            }
+        }
     }
-
-    override fun init() {
-        initView()
-        initObserve()
-        bindEvents()
-    }
+//    override fun layout(): Int = R.layout.fragment_collections
+//
+//    override fun init() {
+//        initView()
+//        initObserve()
+//        bindEvents()
+//    }
 
     override fun clear() {
 //        collectionPagingAdapter = null
@@ -51,10 +69,10 @@ CollectionPagingAdapter.CollectionClickListener{
     }
 
     override fun clearView() {
-        with(binding!!) {
-            recyclerViewItems.adapter = null
-        }
-        binding = null
+//        with(binding!!) {
+//            recyclerViewItems.adapter = null
+//        }
+//        binding = null
     }
 
     private fun initView() {
@@ -67,78 +85,78 @@ CollectionPagingAdapter.CollectionClickListener{
 //                Timber.d("click name")
 //            }
 //        )
-        with(binding!!){
-            recyclerViewItems.apply{
-                adapter = collectionPagingAdapter
-            }
-        }
+//        with(binding!!){
+//            recyclerViewItems.apply{
+//                adapter = collectionPagingAdapter
+//            }
+//        }
     }
 
-    private fun initObserve() {
-        if(parentFragment is SearchFragment) {
-            searchViewModel.queryString.observe(viewLifecycleOwner, {
-                searchCollectionJob?.cancel()
-                searchCollectionJob = lifecycleScope.launch {
+//    private fun initObserve() {
+//        if(parentFragment is SearchFragment) {
+//            searchViewModel.queryString.observe(viewLifecycleOwner, {
+//                searchCollectionJob?.cancel()
+//                searchCollectionJob = lifecycleScope.launch {
+//
+//                }
+//            })
+//        } else {
+//            retrieveCollectionsJob?.cancel()
+//            retrieveCollectionsJob = lifecycleScope.launch {
+//                collectionsViewModel.getCollectionsLiveData().observe(viewLifecycleOwner, {
+//                    collectionPagingAdapter?.submitData(lifecycle, it)
+//                })
+//            }
+//            with(collectionsViewModel) {
+//                retrieveCollectionsJob?.cancel()
+//                retrieveCollectionsJob = lifecycleScope.launch {
+//                    collectionFlow.collectLatest {
+//                        collectionPagingAdapter?.submitData(it)
+//                    }
+//                }
+//            }
+//        }
+//    }
 
-                }
-            })
-        } else {
-            retrieveCollectionsJob?.cancel()
-            retrieveCollectionsJob = lifecycleScope.launch {
-                collectionsViewModel.getCollectionsLiveData().observe(viewLifecycleOwner, {
-                    collectionPagingAdapter?.submitData(lifecycle, it)
-                })
-            }
-            with(collectionsViewModel) {
-                retrieveCollectionsJob?.cancel()
-                retrieveCollectionsJob = lifecycleScope.launch {
-                    collectionFlow.collectLatest {
-                        collectionPagingAdapter?.submitData(it)
-                    }
-                }
-            }
-        }
-    }
+//    private fun bindEvents() {
+//        with(binding!!) {
+//            swipeRefresh.setOnRefreshListener {
+//                collectionPagingAdapter?.refresh()
+//            }
+//
+//            collectionPagingAdapter?.addLoadStateListener { loadStates ->
+//                val isItemEmpty =
+//                    loadStates.refresh is LoadState.NotLoading
+//                            && collectionPagingAdapter?.itemCount == 0
+//                textViewNoResults.isVisible = isItemEmpty
+//
+//                recyclerViewItems.isVisible = loadStates.source.refresh is LoadState.NotLoading
+//
+//                // show the swiper during init
+//                handleLoading(loadStates.source.refresh is LoadState.Loading)
+//
+//                val test = loadStates.source.refresh is LoadState.Error
+//
+//                // If we have an error, show a toast
+//                val errorState = when {
+//                    loadStates.append is LoadState.Error -> loadStates.append as LoadState.Error
+//                    loadStates.prepend is LoadState.Error -> loadStates.prepend as LoadState.Error
+//                    loadStates.refresh is LoadState.Error -> loadStates.refresh as LoadState.Error
+//                    else -> null
+//                }
+//                errorState?.let {
+//                    showToastMessage(it.error.message.toString())
+//                }
+//            }
+//        }
+//
+//    }
 
-    private fun bindEvents() {
-        with(binding!!) {
-            swipeRefresh.setOnRefreshListener {
-                collectionPagingAdapter?.refresh()
-            }
-
-            collectionPagingAdapter?.addLoadStateListener { loadStates ->
-                val isItemEmpty =
-                    loadStates.refresh is LoadState.NotLoading
-                            && collectionPagingAdapter?.itemCount == 0
-                textViewNoResults.isVisible = isItemEmpty
-
-                recyclerViewItems.isVisible = loadStates.source.refresh is LoadState.NotLoading
-
-                // show the swiper during init
-                handleLoading(loadStates.source.refresh is LoadState.Loading)
-
-                val test = loadStates.source.refresh is LoadState.Error
-
-                // If we have an error, show a toast
-                val errorState = when {
-                    loadStates.append is LoadState.Error -> loadStates.append as LoadState.Error
-                    loadStates.prepend is LoadState.Error -> loadStates.prepend as LoadState.Error
-                    loadStates.refresh is LoadState.Error -> loadStates.refresh as LoadState.Error
-                    else -> null
-                }
-                errorState?.let {
-                    showToastMessage(it.error.message.toString())
-                }
-            }
-        }
-
-    }
-
-    private fun handleLoading(loading: Boolean) {
-        with(binding!!) {
-            swipeRefresh.isRefreshing = loading == true
-        }
-    }
+//    private fun handleLoading(loading: Boolean) {
+//        with(binding!!) {
+//            swipeRefresh.isRefreshing = loading == true
+//        }
+//    }
 
     override fun onPhotoClicked(item: UnsplashCollection, view: View) {
         Timber.d("photo clicked")

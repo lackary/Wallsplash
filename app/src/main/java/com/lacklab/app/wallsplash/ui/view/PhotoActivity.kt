@@ -3,9 +3,11 @@ package com.lacklab.app.wallsplash.ui.view
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.lacklab.app.wallsplash.databinding.ActivityPhotoBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 import timber.log.Timber
 
+@AndroidEntryPoint
 class PhotoActivity : AppCompatActivity() {
 
     private var viewBinding: ActivityPhotoBinding? = null
