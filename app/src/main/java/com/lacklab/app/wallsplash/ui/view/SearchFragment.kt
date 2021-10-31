@@ -31,8 +31,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
     private var searchJob: Job? = null
     private var viewPagerAdapter: ViewPagerAdapter? = null
     private var tabLayoutMediator: TabLayoutMediator? = null
-    @Inject
-    lateinit var photoPagingAdapter: PhotoPagingAdapter
+//    @Inject
+//    lateinit var photoPagingAdapter: PhotoPagingAdapter
 
     override fun layout() = R.layout.fragment_search
 
@@ -107,7 +107,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
                         // Hide search keyboard
                         imageSearchView.clearFocus()
                         Timber.d("queryString: $it")
-                        searchViewModel.queryString.value = it
                         searchViewModel.queryString.postValue(it)
 //                        searchPhotos(it)
 
