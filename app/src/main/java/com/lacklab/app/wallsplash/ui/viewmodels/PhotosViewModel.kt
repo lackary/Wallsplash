@@ -3,6 +3,7 @@ package com.lacklab.app.wallsplash.ui.viewmodels
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.lacklab.app.wallsplash.base.BaseViewModel
 import com.lacklab.app.wallsplash.data.model.UnsplashPhoto
 import com.lacklab.app.wallsplash.data.repository.UnsplashRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +15,7 @@ import javax.inject.Inject
 class PhotosViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val unsplashRepository: UnsplashRepository
-) : ViewModel() {
+) : BaseViewModel() {
     private var allUnpslashPhotos: Flow<PagingData<UnsplashPhoto>>? =null
     private var unsplashPhotosLiveData = MutableLiveData<PagingData<UnsplashPhoto>>()
     private lateinit var _photoFlow: Flow<PagingData<UnsplashPhoto>>
@@ -24,10 +25,16 @@ class PhotosViewModel @Inject constructor(
         getPhotos()
     }
 
-    private fun getPhotos() = viewModelScope.launch {
-        val result = unsplashRepository.getPhotosStream().cachedIn(viewModelScope)
-        _photoFlow = result
-    }
+    private fun getPhotos() = launchPaging({
+        unsplashRepository.getPhotosStream().cachedIn(viewModelScope)
+    }, {
+        _photoFlow = it
+    })
+
+//    private fun getPhotos() = viewModelScope.launch {
+//        val result = unsplashRepository.getPhotosStream().cachedIn(viewModelScope)
+//        _photoFlow = result
+//    }
 
 //    fun getAllUnsplashPhotos() : Flow<PagingData<UnsplashPhoto>> {
 //        val newResult: Flow<PagingData<UnsplashPhoto>> =

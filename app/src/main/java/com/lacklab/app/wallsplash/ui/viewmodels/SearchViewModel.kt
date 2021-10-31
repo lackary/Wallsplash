@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.lacklab.app.wallsplash.base.BaseViewModel
 import com.lacklab.app.wallsplash.data.model.UnsplashPhoto
 import com.lacklab.app.wallsplash.data.repository.UnsplashRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +17,7 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val unsplashRepository: UnsplashRepository
-) : ViewModel() {
+) : BaseViewModel() {
     private var currentSearchResult: Flow<PagingData<UnsplashPhoto>>? = null
     val queryString: MutableLiveData<String> by lazy {
         MutableLiveData<String>()
