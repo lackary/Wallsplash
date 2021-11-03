@@ -31,8 +31,8 @@ abstract class BaseFragment<DB: ViewDataBinding, VM: BaseViewModel > : Fragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val funName = object{}.javaClass.enclosingMethod.name
-        Timber.d(funName)
+//        val funName = object{}.javaClass.enclosingMethod.name
+//        Timber.d(funName)
         binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
 //        binding!!.lifecycleOwner = viewLifecycleOwner
         return binding!!.root
@@ -40,8 +40,8 @@ abstract class BaseFragment<DB: ViewDataBinding, VM: BaseViewModel > : Fragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val funName = object{}.javaClass.enclosingMethod.name
-        Timber.d(funName)
+//        val funName = object{}.javaClass.enclosingMethod.name
+//        Timber.d(funName)
         bindVM(binding, viewModel)
         with(viewModel) {
 //            observe(errorMessage) { msg ->
@@ -51,48 +51,18 @@ abstract class BaseFragment<DB: ViewDataBinding, VM: BaseViewModel > : Fragment(
 //        init()
     }
 
-    override fun onStart() {
-        super.onStart()
-        val funName = object{}.javaClass.enclosingMethod.name
-        Timber.d(funName)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val funName = object{}.javaClass.enclosingMethod.name
-        Timber.d(funName)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        val funName = object{}.javaClass.enclosingMethod.name
-        Timber.d(funName)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        val funName = object{}.javaClass.enclosingMethod.name
-        Timber.d(funName)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
-        val funName = object{}.javaClass.enclosingMethod.name
-        Timber.d(funName)
+//        val funName = object{}.javaClass.enclosingMethod.name
+//        Timber.d(funName)
         clearView()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        val funName = object{}.javaClass.enclosingMethod.name
-        Timber.d(funName)
+//        val funName = object{}.javaClass.enclosingMethod.name
+//        Timber.d(funName)
         clear()
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        val funName = object{}.javaClass.enclosingMethod.name
-        Timber.d(funName)
     }
 
     @get:LayoutRes

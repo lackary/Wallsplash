@@ -28,13 +28,20 @@ class UnsplashPhotosPagingSource (
             val response = api.getPhotos(page, params.loadSize)
             when(response) {
                 is ApiSuccessResponse -> {
-                    val apiSuccessResponse = response as ApiSuccessResponse
-                    data = apiSuccessResponse.totalPages?.let {
+//                    val apiSuccessResponse = response
+                    data = response.totalPages?.let {
                         UnsplashPhotos(
-                            results = apiSuccessResponse.body, totalPages = it
+                            results = response.body, totalPages = it
                         )
                     }
                     Timber.d("ApiSuccessResponse")
+                }
+                is ApiErrorResponse -> {
+                    Timber.d("ApiErrorResponse: ${response.errorMessage}")
+                    throw Exception(response.errorMessage)
+                }
+                is ApiEmptyResponse -> {
+                    Timber.d("ApiEmptyResponse")
                 }
             }
 
@@ -48,6 +55,7 @@ class UnsplashPhotosPagingSource (
                 nextKey = if (page == data.totalPages) null else nextPage
             )
         } catch (e: Exception) {
+            Timber.d("exception: ${e.message}")
             LoadResult.Error(e)
         }
     }
