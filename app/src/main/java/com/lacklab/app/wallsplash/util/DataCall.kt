@@ -15,11 +15,11 @@ class DataCall<T>constructor(
         call.enqueue(object: Callback<T>{
             override fun onResponse(call: Call<T>, response: Response<T>) {
                 val apiResponse = ApiResponse.create(response)
-                Timber.d("ApiResponse")
                 callback.onResponse(this@DataCall, Response.success(apiResponse))
             }
 
             override fun onFailure(call: Call<T>, throwable: Throwable) {
+                Timber.d("onFailure: message ${throwable.message}")
 //                ApiResponse.create(throwable)
             }
 
@@ -38,7 +38,7 @@ class DataCall<T>constructor(
     }
 
     override fun cancel() {
-        TODO("Not yet implemented")
+        call.cancel()
     }
 
     override fun isCanceled(): Boolean {
