@@ -11,6 +11,7 @@ import com.lacklab.app.wallsplash.data.model.UnsplashCollection
 import com.lacklab.app.wallsplash.data.model.UnsplashPhoto
 import com.lacklab.app.wallsplash.data.pagingSource.UnsplashCollectionsPagingSource
 import com.lacklab.app.wallsplash.data.pagingSource.UnsplashPhotosPagingSource
+import com.lacklab.app.wallsplash.data.pagingSource.UnsplashSearchCollectionsPagingSource
 import com.lacklab.app.wallsplash.data.pagingSource.UnsplashSearchPhotosPagingSource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -20,16 +21,16 @@ class UnsplashRepository @Inject constructor(
     private val api: UnsplashApi
 ) {
 
-    suspend fun getPhotosStream(): Flow<PagingData<UnsplashPhoto>> {
+    fun getPhotosStream(): Flow<PagingData<UnsplashPhoto>> {
         return Pager(
-            config = PagingConfig(pageSize = NETWORK_PAGE_SIZE, prefetchDistance = 2),
+            config = PagingConfig(pageSize = NETWORK_PAGE_SIZE, prefetchDistance = 3),
             pagingSourceFactory = { UnsplashPhotosPagingSource(api) }
         ).flow
     }
 
     fun getCollectionStream(): Flow<PagingData<UnsplashCollection>> {
        return Pager(
-           config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
+           config = PagingConfig(pageSize = NETWORK_PAGE_SIZE, prefetchDistance = 3),
            pagingSourceFactory = {UnsplashCollectionsPagingSource(api)}
        ).flow
     }
@@ -51,8 +52,15 @@ class UnsplashRepository @Inject constructor(
 
     fun getSearchPhotosStream(query: String): Flow<PagingData<UnsplashPhoto>> {
         return Pager(
-            config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
+            config = PagingConfig(pageSize = NETWORK_PAGE_SIZE, ),
             pagingSourceFactory = { UnsplashSearchPhotosPagingSource(api, query) }
+        ).flow
+    }
+
+    fun getSearchCollectionsStream(query: String): Flow<PagingData<UnsplashCollection>> {
+        return Pager(
+            config = PagingConfig(pageSize = NETWORK_PAGE_SIZE),
+            pagingSourceFactory = {UnsplashSearchCollectionsPagingSource(api, query)}
         ).flow
     }
 

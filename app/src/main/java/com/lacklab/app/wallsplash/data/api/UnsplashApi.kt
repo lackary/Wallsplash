@@ -58,7 +58,7 @@ interface UnsplashApi {
         @Query("per_page") perPage: Int,
         @Header("Authorization")
         clientId: String = "Client-ID " + BuildConfig.UNSPLASH_ACCESS_KEY,
-    ) : UnsplashSearchPhotos
+    ) : ApiResponse<UnsplashSearchPhotos>
 
     @GET("search/collections")
     suspend fun searchCollections(
@@ -67,7 +67,7 @@ interface UnsplashApi {
         @Query("per_page") perPage: Int,
         @Header("Authorization")
         clientId: String = "Client-ID " + BuildConfig.UNSPLASH_ACCESS_KEY,
-    ) : UnsplashSearchCollections
+    ) : ApiResponse<UnsplashSearchCollections>
 
     @GET("search/users")
     suspend fun searchUsers(
@@ -76,7 +76,7 @@ interface UnsplashApi {
         @Query("per_page") perPage: Int,
         @Header("Authorization")
         clientId: String = "Client-ID " + BuildConfig.UNSPLASH_ACCESS_KEY,
-    ) : UnsplashSearchUsers
+    ) : ApiResponse<UnsplashSearchUsers>
 
     companion object {
         private const val BASE_URL = "https://api.unsplash.com/"

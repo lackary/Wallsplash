@@ -8,8 +8,6 @@ import com.lacklab.app.wallsplash.data.model.UnsplashPhotos
 import com.lacklab.app.wallsplash.data.repository.UnsplashRepository.Companion.NETWORK_PAGE_SIZE
 import timber.log.Timber
 
-private const val UNSPLASH_STARTING_PAGE_INDEX = 1
-
 class UnsplashPhotosPagingSource (
     private val api: UnsplashApi,
 ): PagingSource<Int, UnsplashPhoto>() {
@@ -18,7 +16,7 @@ class UnsplashPhotosPagingSource (
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UnsplashPhoto> {
-        val page = params.key ?: UNSPLASH_STARTING_PAGE_INDEX
+        val page = params.key ?: com.lacklab.app.wallsplash.util.UNSPLASH_STARTING_PAGE_INDEX
         var data: UnsplashPhotos? = null
         return try {
 //            val response =
@@ -34,10 +32,8 @@ class UnsplashPhotosPagingSource (
                             results = response.body, totalPages = it
                         )
                     }
-                    Timber.d("ApiSuccessResponse")
                 }
                 is ApiErrorResponse -> {
-                    Timber.d("ApiErrorResponse: ${response.errorMessage}")
                     throw Exception(response.errorMessage)
                 }
                 is ApiEmptyResponse -> {
