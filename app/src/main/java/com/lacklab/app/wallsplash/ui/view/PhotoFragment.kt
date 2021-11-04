@@ -17,39 +17,39 @@ import com.lacklab.app.wallsplash.databinding.FragmentPhotoBinding
 import com.lacklab.app.wallsplash.ui.viewmodels.PhotoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
-class PhotoFragment : Fragment() { //BaseFragment<FragmentPhotoBinding, PhotoViewModel>() {
+@AndroidEntryPoint
+class PhotoFragment : BaseFragment<FragmentPhotoBinding, PhotoViewModel>() {
 //    private val args: PhotoFragmentArgs by navArgs()
-//    private val photoViewModel: PhotoViewModel
+    private val photoViewModel: PhotoViewModel by viewModels()
     private var photoItemBundle: Bundle? = null
     private var photo: UnsplashPhoto? = null
     private lateinit var binding:FragmentPhotoBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_photo, container, false)
-        return binding.root
-//        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-//    override val layoutId: Int
-//        get() = R.layout.fragment_photo
-//
-//    override fun getVM() = photoViewModel
-//
-//    override fun bindVM(binding: FragmentPhotoBinding, vm: PhotoViewModel) {
-//        photoItemBundle = requireActivity().intent.getBundleExtra("photoItemBundle")!!
-//        photo = photoItemBundle!!.getParcelable<UnsplashPhoto>("photoItem")
-//        with(binding) {
-//            viewModel = photo
-//            Glide.with(root)
-//                .load(photo!!.urls!!.regular)
-//                .override(SIZE_ORIGINAL)
-//                .into(imageViewPhoto)
-//        }
+//    override fun onCreateView(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View? {
+//        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_photo, container, false)
+//        return binding.root
 //    }
+
+    override val layoutId: Int
+        get() = R.layout.fragment_photo
+
+    override fun getVM() = photoViewModel
+
+    override fun bindVM(binding: FragmentPhotoBinding, vm: PhotoViewModel) {
+        photoItemBundle = requireActivity().intent.getBundleExtra("photoItemBundle")!!
+        photo = photoItemBundle!!.getParcelable<UnsplashPhoto>("photoItem")
+        with(binding) {
+            photoItem = photo
+            Glide.with(root)
+                .load(photo!!.urls!!.regular)
+                .override(SIZE_ORIGINAL)
+                .into(imageViewPhoto)
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -58,8 +58,8 @@ class PhotoFragment : Fragment() { //BaseFragment<FragmentPhotoBinding, PhotoVie
                 .from(context)
                 .inflateTransition(android.R.transition.move)
 
-        initView()
-        bindEvents()
+//        initView()
+//        bindEvents()
     }
 
 //    override fun init() {
@@ -122,5 +122,13 @@ class PhotoFragment : Fragment() { //BaseFragment<FragmentPhotoBinding, PhotoVie
             // set info action
             imageViewInfo.setOnClickListener {  }
         }
+    }
+
+    override fun clear() {
+
+    }
+
+    override fun clearView() {
+
     }
 }
