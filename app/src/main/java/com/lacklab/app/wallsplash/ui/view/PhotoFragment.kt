@@ -23,16 +23,6 @@ class PhotoFragment : BaseFragment<FragmentPhotoBinding, PhotoViewModel>() {
     private val photoViewModel: PhotoViewModel by viewModels()
     private var photoItemBundle: Bundle? = null
     private var photo: UnsplashPhoto? = null
-    private lateinit var binding:FragmentPhotoBinding
-
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_photo, container, false)
-//        return binding.root
-//    }
 
     override val layoutId: Int
         get() = R.layout.fragment_photo
@@ -57,9 +47,6 @@ class PhotoFragment : BaseFragment<FragmentPhotoBinding, PhotoViewModel>() {
             TransitionInflater
                 .from(context)
                 .inflateTransition(android.R.transition.move)
-
-//        initView()
-//        bindEvents()
     }
 
 //    override fun init() {
@@ -76,53 +63,53 @@ class PhotoFragment : BaseFragment<FragmentPhotoBinding, PhotoViewModel>() {
 ////        binding = null
 //    }
 
-    private fun initView() {
-        photoItemBundle = requireActivity().intent.getBundleExtra("photoItemBundle")!!
-        photo = photoItemBundle!!.getParcelable<UnsplashPhoto>("photoItem")
-        with(binding!!) {
-            photoItem = photo
-            Glide.with(root)
-                .load(photo!!.urls!!.regular)
-                .override(SIZE_ORIGINAL)
-//            .addListener(object: RequestListener<Drawable>{
-//                override fun onLoadFailed(
-//                    e: GlideException?,
-//                    model: Any?,
-//                    target: Target<Drawable>?,
-//                    isFirstResource: Boolean
-//                ): Boolean {
-//                    startPostponedEnterTransition()
-//                    return false
-//                }
+//    private fun initView() {
+//        photoItemBundle = requireActivity().intent.getBundleExtra("photoItemBundle")!!
+//        photo = photoItemBundle!!.getParcelable<UnsplashPhoto>("photoItem")
+//        with(binding) {
+//            photoItem = photo
+//            Glide.with(root)
+//                .load(photo!!.urls!!.regular)
+//                .override(SIZE_ORIGINAL)
+////            .addListener(object: RequestListener<Drawable>{
+////                override fun onLoadFailed(
+////                    e: GlideException?,
+////                    model: Any?,
+////                    target: Target<Drawable>?,
+////                    isFirstResource: Boolean
+////                ): Boolean {
+////                    startPostponedEnterTransition()
+////                    return false
+////                }
+////
+////                override fun onResourceReady(
+////                    resource: Drawable?,
+////                    model: Any?,
+////                    target: Target<Drawable>?,
+////                    dataSource: DataSource?,
+////                    isFirstResource: Boolean
+////                ): Boolean {
+////                    startPostponedEnterTransition()
+////                    return false
+////                }
+////
+////            })
+//                .into(imageViewPhoto)
+//        }
 //
-//                override fun onResourceReady(
-//                    resource: Drawable?,
-//                    model: Any?,
-//                    target: Target<Drawable>?,
-//                    dataSource: DataSource?,
-//                    isFirstResource: Boolean
-//                ): Boolean {
-//                    startPostponedEnterTransition()
-//                    return false
-//                }
+//    }
+
+//    private fun bindEvents() {
+//        with(binding) {
+//            // set toolbar action
+//            toolbarTop.setNavigationOnClickListener {
+//                requireActivity().onBackPressed();
+//            }
 //
-//            })
-                .into(imageViewPhoto)
-        }
-
-    }
-
-    private fun bindEvents() {
-        with(binding!!) {
-            // set toolbar action
-            toolbarTop.setNavigationOnClickListener {
-                requireActivity().onBackPressed();
-            }
-
-            // set info action
-            imageViewInfo.setOnClickListener {  }
-        }
-    }
+//            // set info action
+//            imageViewInfo.setOnClickListener {  }
+//        }
+//    }
 
     override fun clear() {
 

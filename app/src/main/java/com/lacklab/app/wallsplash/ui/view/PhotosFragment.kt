@@ -16,6 +16,7 @@ import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
 import com.lacklab.app.wallsplash.data.model.UnsplashPhoto
 import com.lacklab.app.wallsplash.databinding.FragmentPhotosBinding
+import com.lacklab.app.wallsplash.ui.viewadapter.PagingLoadStateAdapter
 import com.lacklab.app.wallsplash.ui.viewadapter.PhotoPagingAdapter
 import com.lacklab.app.wallsplash.ui.viewmodels.PhotosViewModel
 import com.lacklab.app.wallsplash.ui.viewmodels.SearchViewModel
@@ -33,7 +34,6 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding, PhotosViewModel>(),
 
     private lateinit var searchViewModel: SearchViewModel
     private val photosViewModel: PhotosViewModel by viewModels()
-    private var retrievePhotosJob: Job? = null
     private var searchPhotosJob: Job? = null
     @Inject
     lateinit var photoPagingAdapter: PhotoPagingAdapter
@@ -52,7 +52,9 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding, PhotosViewModel>(),
         with(binding) {
             with(photoPagingAdapter) {
                 photoClickListener = this@PhotosFragment
-                recyclerViewItems.adapter = this
+                recyclerViewItems.adapter = withLoadStateFooter(
+                    footer = PagingLoadStateAdapter(this)
+                )
                 swipeRefresh.setOnRefreshListener { refresh() }
                 with(vm) {
                     if(parentFragment is SearchFragment) {
@@ -72,7 +74,7 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding, PhotosViewModel>(),
                     }
 
                     launchOnLifecycleScope {
-                        loadStateFlow.collectLatest {
+                        loadStateFlow.collectLatest { it ->
                             swipeRefresh.isRefreshing = it.refresh is LoadState.Loading
 
                             val isItemEmpty =
@@ -100,16 +102,12 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding, PhotosViewModel>(),
 
     override fun clear() {
 //        photoPagingAdapter = null
-        retrievePhotosJob?.cancel()
-        retrievePhotosJob = null
         searchPhotosJob?.cancel()
+        searchPhotosJob = null
     }
 
     override fun clearView() {
-//        with(binding!!) {
-//            recyclerViewItems.adapter = null
-//        }
-//        binding = null
+
     }
 
 //    override fun layout() = R.layout.fragment_photos

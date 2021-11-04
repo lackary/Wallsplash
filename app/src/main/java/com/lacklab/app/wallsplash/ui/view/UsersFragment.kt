@@ -5,7 +5,9 @@ import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
 import com.lacklab.app.wallsplash.databinding.FragmentUsersBinding
 import com.lacklab.app.wallsplash.ui.viewmodels.UsersViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>() {
 
     private val usersViewModel: UsersViewModel by viewModels()
