@@ -20,7 +20,8 @@ class DataCall<T>constructor(
 
             override fun onFailure(call: Call<T>, throwable: Throwable) {
                 Timber.d("onFailure: message ${throwable.message}")
-//                ApiResponse.create(throwable)
+                val apiResponse = ApiResponse.create<T>(throwable)
+                callback.onResponse(this@DataCall, Response.success(apiResponse))
             }
 
         })
