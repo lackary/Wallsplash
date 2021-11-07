@@ -1,37 +1,45 @@
-package com.lacklab.app.wallsplash.pagingSource
+package com.lacklab.app.wallsplash.data.pagingSource
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.lacklab.app.wallsplash.api.ApiSuccessResponse
-import com.lacklab.app.wallsplash.api.UnsplashService
-import com.lacklab.app.wallsplash.data.UnsplashCollection
-import com.lacklab.app.wallsplash.data.UnsplashCollections
-import com.lacklab.app.wallsplash.repository.UnsplashRepository
+import com.lacklab.app.wallsplash.data.api.ApiEmptyResponse
+import com.lacklab.app.wallsplash.data.api.ApiErrorResponse
+import com.lacklab.app.wallsplash.data.api.ApiSuccessResponse
+import com.lacklab.app.wallsplash.data.api.UnsplashApi
+import com.lacklab.app.wallsplash.data.model.UnsplashCollection
+import com.lacklab.app.wallsplash.data.model.UnsplashCollections
+import com.lacklab.app.wallsplash.data.model.UnsplashPhotos
+import com.lacklab.app.wallsplash.data.repository.UnsplashRepository
 import timber.log.Timber
 
-
-private const val UNSPLASH_STARTING_PAGE_INDEX = 1
 class UnsplashCollectionsPagingSource(
-    private val service: UnsplashService,
+    private val api: UnsplashApi,
 ) : PagingSource<Int, UnsplashCollection>() {
     override fun getRefreshKey(state: PagingState<Int, UnsplashCollection>): Int? {
         return null
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UnsplashCollection> {
-        val page = params.key ?: UNSPLASH_STARTING_PAGE_INDEX
+        val page = params.key ?: com.lacklab.app.wallsplash.util.UNSPLASH_STARTING_PAGE_INDEX
         var data: UnsplashCollections? = null
         return try {
-            val response = service.getCollections(page, params.loadSize)
+            val response = api.getCollections(page, params.loadSize)
             when(response) {
                 is ApiSuccessResponse -> {
-                    val apiSuccessResponse = response as ApiSuccessResponse
-                    data = apiSuccessResponse.totalPages?.let {
+//                    val apiSuccessResponse = response
+                    data = response.totalPages?.let {
                         UnsplashCollections(
-                            results = apiSuccessResponse.body, totalPages = it
+                            results = response.body, totalPages = it
                         )
                     }
                     Timber.d("ApiSuccessResponse")
+                }
+                is ApiErrorResponse -> {
+                    Timber.d("ApiErrorResponse: ${response.errorMessage}")
+                    throw Exception(response.errorMessage)
+                }
+                is ApiEmptyResponse -> {
+                    Timber.d("ApiEmptyResponse")
                 }
             }
 

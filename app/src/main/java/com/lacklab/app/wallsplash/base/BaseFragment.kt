@@ -6,25 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.lacklab.app.wallsplash.ext.observe
 import timber.log.Timber
 
-abstract class BaseFragment<Binding: ViewDataBinding> : Fragment() {
+abstract class BaseFragment<DB: ViewDataBinding, VM: BaseViewModel > : Fragment() {
 
-    protected var binding: Binding? = null
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        val funName = object{}.javaClass.enclosingMethod.name
-        Timber.d(funName)
-    }
+    private lateinit var viewModel: VM
+    private lateinit var binding: DB
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val funName = object{}.javaClass.enclosingMethod.name
         Timber.d(funName)
+        viewModel = getVM()
     }
 
     override fun onCreateView(
@@ -32,68 +31,50 @@ abstract class BaseFragment<Binding: ViewDataBinding> : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val funName = object{}.javaClass.enclosingMethod.name
-        Timber.d(funName)
-        binding = DataBindingUtil.inflate(inflater, layout(), container, false)
-        binding!!.lifecycleOwner = viewLifecycleOwner
-        return binding!!.root
+//        val funName = object{}.javaClass.enclosingMethod.name
+//        Timber.d(funName)
+        binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+//        binding!!.lifecycleOwner = viewLifecycleOwner
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val funName = object{}.javaClass.enclosingMethod.name
-        Timber.d(funName)
-        init()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        val funName = object{}.javaClass.enclosingMethod.name
-        Timber.d(funName)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val funName = object{}.javaClass.enclosingMethod.name
-        Timber.d(funName)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        val funName = object{}.javaClass.enclosingMethod.name
-        Timber.d(funName)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        val funName = object{}.javaClass.enclosingMethod.name
-        Timber.d(funName)
+//        val funName = object{}.javaClass.enclosingMethod.name
+//        Timber.d(funName)
+        bindVM(binding, viewModel)
+        with(viewModel) {
+//            observe(errorMessage) { msg ->
+//                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+//            }
+        }
+//        init()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        val funName = object{}.javaClass.enclosingMethod.name
-        Timber.d(funName)
+//        val funName = object{}.javaClass.enclosingMethod.name
+//        Timber.d(funName)
         clearView()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        val funName = object{}.javaClass.enclosingMethod.name
-        Timber.d(funName)
+//        val funName = object{}.javaClass.enclosingMethod.name
+//        Timber.d(funName)
         clear()
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        val funName = object{}.javaClass.enclosingMethod.name
-        Timber.d(funName)
-    }
+    @get:LayoutRes
+    abstract val layoutId: Int
 
+    abstract fun getVM(): VM
 
-    abstract fun layout(): Int
+    abstract fun bindVM(binding: DB, vm: VM)
 
-    abstract fun init()
+//    abstract fun layout(): Int
+//
+//    abstract fun init()
 
     abstract fun clear()
 
@@ -101,5 +82,11 @@ abstract class BaseFragment<Binding: ViewDataBinding> : Fragment() {
 
     protected open fun showToastMessage(message: String?) {
         Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
+    }
+
+    fun launchOnLifecycleScope(execute: suspend () -> Unit) {
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            execute()
+        }
     }
 }

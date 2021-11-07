@@ -1,41 +1,43 @@
-package com.lacklab.app.wallsplash.pagingSource
+package com.lacklab.app.wallsplash.data.pagingSource
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.lacklab.app.wallsplash.AppExecutors
-import com.lacklab.app.wallsplash.api.*
-import com.lacklab.app.wallsplash.data.UnsplashPhoto
-import com.lacklab.app.wallsplash.data.UnsplashPhotos
-import com.lacklab.app.wallsplash.repository.UnsplashRepository.Companion.NETWORK_PAGE_SIZE
+import com.lacklab.app.wallsplash.data.api.*
+import com.lacklab.app.wallsplash.data.model.UnsplashPhoto
+import com.lacklab.app.wallsplash.data.model.UnsplashPhotos
+import com.lacklab.app.wallsplash.data.repository.UnsplashRepository.Companion.NETWORK_PAGE_SIZE
 import timber.log.Timber
 
-private const val UNSPLASH_STARTING_PAGE_INDEX = 1
-
 class UnsplashPhotosPagingSource (
-    private val service: UnsplashService,
+    private val api: UnsplashApi,
 ): PagingSource<Int, UnsplashPhoto>() {
     override fun getRefreshKey(state: PagingState<Int, UnsplashPhoto>): Int? {
         return null
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UnsplashPhoto> {
-        val page = params.key ?: UNSPLASH_STARTING_PAGE_INDEX
+        val page = params.key ?: com.lacklab.app.wallsplash.util.UNSPLASH_STARTING_PAGE_INDEX
         var data: UnsplashPhotos? = null
         return try {
 //            val response =
 //                object: UnsplashMediator<List<UnsplashPhoto>, List<UnsplashPhoto>>(appExecutors) {
 //                    override suspend fun createCall() = service.getPhotos(page, params.loadSize)
 //                }.getData()
-            val response = service.getPhotos(page, params.loadSize)
+            val response = api.getPhotos(page, params.loadSize)
             when(response) {
                 is ApiSuccessResponse -> {
-                    val apiSuccessResponse = response as ApiSuccessResponse
-                    data = apiSuccessResponse.totalPages?.let {
+//                    val apiSuccessResponse = response
+                    data = response.totalPages?.let {
                         UnsplashPhotos(
-                            results = apiSuccessResponse.body, totalPages = it
+                            results = response.body, totalPages = it
                         )
                     }
-                    Timber.d("ApiSuccessResponse")
+                }
+                is ApiErrorResponse -> {
+                    throw Exception(response.errorMessage)
+                }
+                is ApiEmptyResponse -> {
+                    Timber.d("ApiEmptyResponse")
                 }
             }
 
@@ -49,6 +51,7 @@ class UnsplashPhotosPagingSource (
                 nextKey = if (page == data.totalPages) null else nextPage
             )
         } catch (e: Exception) {
+            Timber.d("exception: ${e.message}")
             LoadResult.Error(e)
         }
     }

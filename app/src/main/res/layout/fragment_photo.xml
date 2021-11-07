@@ -5,7 +5,7 @@
     <data>
         <variable
             name="photoItem"
-            type="com.lacklab.app.wallsplash.data.UnsplashPhoto" />
+            type="com.lacklab.app.wallsplash.data.model.UnsplashPhoto" />
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"

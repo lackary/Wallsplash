@@ -1,6 +1,5 @@
-package com.lacklab.app.wallsplash.data
+package com.lacklab.app.wallsplash.data.model
 
-import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize

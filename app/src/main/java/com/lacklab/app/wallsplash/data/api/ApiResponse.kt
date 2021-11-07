@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lacklab.app.wallsplash.api
+package com.lacklab.app.wallsplash.data.api
 
 import android.util.Log
 import retrofit2.Response
@@ -80,7 +80,6 @@ data class ApiSuccessResponse<T>(
                     Integer.parseInt(matcher.group(1)!!)
                 } catch (ex: NumberFormatException) {
                     Timber.w("cannot parse next page from $value")
-                    Log.w("ApiResponse","cannot parse last page from $value", )
                     null
                 }
             }
@@ -96,7 +95,6 @@ data class ApiSuccessResponse<T>(
                     Integer.parseInt(matcher.group(1)!!)
                 } catch (ex: NumberFormatException) {
                     Timber.w("cannot parse next page from %s", next)
-                    Log.w("ApiResponse","cannot parse next page from $next", )
                     null
                 }
             }

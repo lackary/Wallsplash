@@ -1,6 +1,6 @@
 package com.lacklab.app.wallsplash.di
 
-import com.lacklab.app.wallsplash.api.UnsplashService
+import com.lacklab.app.wallsplash.data.api.UnsplashApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,7 +13,7 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideUnsplashService():UnsplashService {
-        return UnsplashService.create()
+    fun provideUnsplashService():UnsplashApi {
+        return UnsplashApi.create()
     }
 }

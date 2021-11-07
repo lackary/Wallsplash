@@ -1,7 +1,6 @@
 package com.lacklab.app.wallsplash.util
 
-import android.util.Log
-import com.lacklab.app.wallsplash.api.ApiResponse
+import com.lacklab.app.wallsplash.data.api.ApiResponse
 import okhttp3.Request
 import okio.Timeout
 import retrofit2.Call
@@ -16,12 +15,13 @@ class DataCall<T>constructor(
         call.enqueue(object: Callback<T>{
             override fun onResponse(call: Call<T>, response: Response<T>) {
                 val apiResponse = ApiResponse.create(response)
-                Timber.d("ApiResponse")
                 callback.onResponse(this@DataCall, Response.success(apiResponse))
             }
 
             override fun onFailure(call: Call<T>, throwable: Throwable) {
-//                ApiResponse.create(throwable)
+                Timber.d("onFailure: message ${throwable.message}")
+                val apiResponse = ApiResponse.create<T>(throwable)
+                callback.onResponse(this@DataCall, Response.success(apiResponse))
             }
 
         })
@@ -39,7 +39,7 @@ class DataCall<T>constructor(
     }
 
     override fun cancel() {
-        TODO("Not yet implemented")
+        call.cancel()
     }
 
     override fun isCanceled(): Boolean {
