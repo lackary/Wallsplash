@@ -35,7 +35,7 @@ abstract class BaseFragment<DB: ViewDataBinding, VM: BaseViewModel > : Fragment(
 //        Timber.d(funName)
         binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
 //        binding!!.lifecycleOwner = viewLifecycleOwner
-        return binding!!.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

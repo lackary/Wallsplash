@@ -80,7 +80,6 @@ data class ApiSuccessResponse<T>(
                     Integer.parseInt(matcher.group(1)!!)
                 } catch (ex: NumberFormatException) {
                     Timber.w("cannot parse next page from $value")
-                    Log.w("ApiResponse","cannot parse last page from $value", )
                     null
                 }
             }
@@ -96,7 +95,6 @@ data class ApiSuccessResponse<T>(
                     Integer.parseInt(matcher.group(1)!!)
                 } catch (ex: NumberFormatException) {
                     Timber.w("cannot parse next page from %s", next)
-                    Log.w("ApiResponse","cannot parse next page from $next", )
                     null
                 }
             }
