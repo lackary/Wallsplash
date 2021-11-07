@@ -21,8 +21,6 @@ abstract class BaseFragment<DB: ViewDataBinding, VM: BaseViewModel > : Fragment(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val funName = object{}.javaClass.enclosingMethod.name
-        Timber.d(funName)
         viewModel = getVM()
     }
 
@@ -31,37 +29,24 @@ abstract class BaseFragment<DB: ViewDataBinding, VM: BaseViewModel > : Fragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        val funName = object{}.javaClass.enclosingMethod.name
-//        Timber.d(funName)
         binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
-//        binding!!.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        val funName = object{}.javaClass.enclosingMethod.name
-//        Timber.d(funName)
         bindVM(binding, viewModel)
         with(viewModel) {
-//            observe(errorMessage) { msg ->
-//                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
-//            }
         }
-//        init()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-//        val funName = object{}.javaClass.enclosingMethod.name
-//        Timber.d(funName)
         clearView()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-//        val funName = object{}.javaClass.enclosingMethod.name
-//        Timber.d(funName)
         clear()
     }
 
@@ -71,10 +56,6 @@ abstract class BaseFragment<DB: ViewDataBinding, VM: BaseViewModel > : Fragment(
     abstract fun getVM(): VM
 
     abstract fun bindVM(binding: DB, vm: VM)
-
-//    abstract fun layout(): Int
-//
-//    abstract fun init()
 
     abstract fun clear()
 

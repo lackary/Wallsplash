@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- For  -->
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/menu_bottom_gallery">
+
+    <fragment
+        android:id="@+id/menu_bottom_gallery"
+        android:name="com.lacklab.app.wallsplash.ui.view.GalleryFragment"
+        android:label="GalleryFragment" />
+    <fragment
+        android:id="@+id/menu_bottom_search"
+        android:name="com.lacklab.app.wallsplash.ui.view.SearchFragment"
+        android:label="SearchFragment" />
+</navigation>
