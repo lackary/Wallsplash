@@ -39,6 +39,7 @@ class PhotoFragment : BaseFragment<FragmentPhotoBinding, PhotoViewModel>() {
                 .override(SIZE_ORIGINAL)
                 .into(imageViewPhoto)
         }
+        bindEvents(binding)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -99,17 +100,17 @@ class PhotoFragment : BaseFragment<FragmentPhotoBinding, PhotoViewModel>() {
 //
 //    }
 
-//    private fun bindEvents() {
-//        with(binding) {
-//            // set toolbar action
-//            toolbarTop.setNavigationOnClickListener {
-//                requireActivity().onBackPressed();
-//            }
-//
-//            // set info action
-//            imageViewInfo.setOnClickListener {  }
-//        }
-//    }
+    private fun bindEvents(binding: FragmentPhotoBinding) {
+        with(binding) {
+            // set toolbar action
+            toolbarTop.setNavigationOnClickListener {
+                requireActivity().onBackPressed();
+            }
+
+            // set info action
+            imageViewInfo.setOnClickListener {  }
+        }
+    }
 
     override fun clear() {
 
