@@ -1,4 +1,4 @@
-package com.lacklab.app.wallsplash.api
+package com.lacklab.app.wallsplash.data.api
 
 sealed interface ResultResponse <T> {
     class Success<T>(val data: T, val code: Int) : ResultResponse<T>

@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.lacklab.app.wallsplash.data.UnsplashPhoto
-import com.lacklab.app.wallsplash.repository.UnsplashRepository
+import com.lacklab.app.wallsplash.base.BaseViewModel
+import com.lacklab.app.wallsplash.data.model.UnsplashCollection
+import com.lacklab.app.wallsplash.data.model.UnsplashPhoto
+import com.lacklab.app.wallsplash.data.repository.UnsplashRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -16,8 +18,9 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val unsplashRepository: UnsplashRepository
-) : ViewModel() {
-    private var currentSearchResult: Flow<PagingData<UnsplashPhoto>>? = null
+) : BaseViewModel() {
+    private var currentSearchPhotos: Flow<PagingData<UnsplashPhoto>>? = null
+    private var currentSearchCollection: Flow<PagingData<UnsplashCollection>>? = null
     val queryString: MutableLiveData<String> by lazy {
         MutableLiveData<String>()
     }
@@ -25,7 +28,16 @@ class SearchViewModel @Inject constructor(
     fun searchPhotos(queryString:String): Flow<PagingData<UnsplashPhoto>> {
         val newResult: Flow<PagingData<UnsplashPhoto>> =
             unsplashRepository.getSearchPhotosStream(queryString).cachedIn(viewModelScope)
-        currentSearchResult = newResult
+        currentSearchPhotos = newResult
         return newResult
     }
+
+    fun searchCollections(queryString: String): Flow<PagingData<UnsplashCollection>>{
+        val newResult: Flow<PagingData<UnsplashCollection>> =
+            unsplashRepository.getSearchCollectionsStream(queryString).cachedIn(viewModelScope)
+        currentSearchCollection = newResult
+        return newResult
+    }
+
+
 }

@@ -11,17 +11,20 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.lacklab.app.wallsplash.R
-import com.lacklab.app.wallsplash.data.UnsplashCollection
+import com.lacklab.app.wallsplash.data.model.UnsplashCollection
+import com.lacklab.app.wallsplash.data.model.UnsplashPhoto
 import com.lacklab.app.wallsplash.databinding.ItemCollectionBinding
 import timber.log.Timber
+import javax.inject.Inject
 
-class CollectionPagingAdapter(
-    private val photoClickListener: (photoItem: UnsplashCollection, view: View) -> Unit,
-    private val nameClickListener: (photoItem: UnsplashCollection, view: View) -> Unit
-) : PagingDataAdapter<
+class CollectionPagingAdapter @Inject constructor()
+    : PagingDataAdapter<
         UnsplashCollection,
         CollectionPagingAdapter.CollectionViewHolder
-    >(CollectionDiffCallback()) {
+    >(CollectionDiffCallback) {
+//    private val photoClickListener: (photoItem: UnsplashCollection, view: View) -> Unit
+//    private val nameClickListener: (photoItem: UnsplashCollection, view: View) -> Uni
+    var collectionClickListener: CollectionClickListener? = null
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -36,7 +39,6 @@ class CollectionPagingAdapter(
     }
 
     override fun onBindViewHolder(holder: CollectionViewHolder, position: Int) {
-        Timber.d("position: $position")
         getItem(position)?.let {
             holder.bind(it)
         }
@@ -47,13 +49,15 @@ class CollectionPagingAdapter(
             init {
                 with(binding) {
                     imageViewPhoto.setOnClickListener {
-                        val photoItem = getItem(absoluteAdapterPosition)
-                        photoClickListener(photoItem!!, it)
+                        val collectionItem = getItem(absoluteAdapterPosition)
+                        collectionClickListener?.onPhotoClicked(collectionItem!!, it)
+//                        photoClickListener(photoItem!!, it)
                     }
 
-                    binding.textViewName.setOnClickListener {
-                        val photoItem = getItem(absoluteAdapterPosition)
-                        nameClickListener(photoItem!!, it)
+                    constraintLayoutUser.setOnClickListener {
+                        val collectionItem = getItem(absoluteAdapterPosition)
+                        collectionClickListener?.onPhotoClicked(collectionItem!!, it)
+//                        nameClickListener(photoItem!!, it)
                     }
                 }
             }
@@ -78,9 +82,14 @@ class CollectionPagingAdapter(
                 }
             }
         }
+
+    interface CollectionClickListener {
+        fun onPhotoClicked(item: UnsplashCollection, view: View)
+        fun onUserClicked(item: UnsplashCollection, view: View)
+    }
 }
 
-private class CollectionDiffCallback : DiffUtil.ItemCallback<UnsplashCollection>() {
+private object CollectionDiffCallback : DiffUtil.ItemCallback<UnsplashCollection>() {
     override fun areItemsTheSame(oldItem: UnsplashCollection, newItem: UnsplashCollection): Boolean {
         return oldItem.id == newItem.id
     }
