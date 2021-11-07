@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val funName = object{}.javaClass.enclosingMethod.name
+        val funName = object{}.javaClass.enclosingMethod?.name
         Timber.d(funName)
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
@@ -47,49 +47,52 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        val funName = object{}.javaClass.enclosingMethod.name
+        val funName = object{}.javaClass.enclosingMethod?.name
         Timber.d(funName)
         initView()
     }
 
     override fun onResume() {
         super.onResume()
-        val funName = object{}.javaClass.enclosingMethod.name
+        val funName = object{}.javaClass.enclosingMethod?.name
         Timber.d(funName)
     }
 
     override fun onPause() {
         super.onPause()
-        val funName = object{}.javaClass.enclosingMethod.name
+        val funName = object{}.javaClass.enclosingMethod?.name
         Timber.d(funName)
     }
 
     override fun onStop() {
         super.onStop()
-        val funName = object{}.javaClass.enclosingMethod.name
+        val funName = object{}.javaClass.enclosingMethod?.name
         Timber.d(funName)
+        currentNavController = null
     }
 
     override fun onRestart() {
         super.onRestart()
-        val funName = object{}.javaClass.enclosingMethod.name
+        val funName = object{}.javaClass.enclosingMethod?.name
         Timber.d(funName)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        val funName = object{}.javaClass.enclosingMethod.name
+        val funName = object{}.javaClass.enclosingMethod?.name
         Timber.d(funName)
     }
 
     private fun initView() {
         // init Bottom Navigation bar
 //        val navController = findNavController(R.id.nav_host_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.menu_bottom_gallery, R.id.menu_bottom_search)
-        )
+//        // Passing each menu ID as a set of Ids because each
+//        // menu should be considered as top level destinations.
+//        val appBarConfiguration = AppBarConfiguration(
+//            setOf(R.id.menu_bottom_gallery, R.id.menu_bottom_search)
+//        )
+//        // if we have the appbar, this will show the title of appbar
+//        setupActionBarWithNavController(navController, appBarConfiguration)
         val navGraphIds = listOf(
             R.navigation.nav_gallery,
             R.navigation.nav_search
@@ -103,22 +106,19 @@ class MainActivity : AppCompatActivity() {
                 intent = intent
             )
             currentNavController = controller
-
-        }
-        // if we have the appbar, this will show the title of appbar
-//        setupActionBarWithNavController(navController, appBarConfiguration)
-    }
-
-    override fun onSupportNavigateUp(): Boolean =
-        currentNavController?.value?.navigateUp() ?: false
-
-    /**
-     * Overriding popBackStack is necessary in this case
-     * if the app is started from the deep link.
-     */
-    override fun onBackPressed() {
-        if (currentNavController?.value?.popBackStack() != true) {
-            super.onBackPressed()
         }
     }
+
+//    override fun onSupportNavigateUp(): Boolean =
+//        currentNavController?.value?.navigateUp() ?: false
+//
+//    /**
+//     * Overriding popBackStack is necessary in this case
+//     * if the app is started from the deep link.
+//     */
+//    override fun onBackPressed() {
+//        if (currentNavController?.value?.popBackStack() != true) {
+//            super.onBackPressed()
+//        }
+//    }
 }
