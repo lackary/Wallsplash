@@ -1,5 +1,6 @@
 package com.lacklab.app.wallsplash
 
+import com.google.common.truth.Truth
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -13,5 +14,12 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
+    }
+
+    @Test
+    fun addTest() {
+        val actual = 3
+        val expected = 3
+        Truth.assertThat(actual).isEqualTo(expected)
     }
 }
