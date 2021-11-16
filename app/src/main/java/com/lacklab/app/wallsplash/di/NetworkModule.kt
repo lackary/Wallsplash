@@ -1,6 +1,6 @@
 package com.lacklab.app.wallsplash.di
 
-import com.lacklab.app.wallsplash.data.api.UnsplashApi
+import com.lacklab.app.wallsplash.data.remote.api.UnsplashApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
