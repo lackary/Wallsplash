@@ -7,8 +7,7 @@ import com.lacklab.app.wallsplash.data.api.ApiErrorResponse
 import com.lacklab.app.wallsplash.data.api.ApiSuccessResponse
 import com.lacklab.app.wallsplash.data.api.UnsplashApi
 import com.lacklab.app.wallsplash.data.model.*
-import com.lacklab.app.wallsplash.data.repository.UnsplashRepository.Companion.NETWORK_PAGE_SIZE
-import timber.log.Timber
+import com.lacklab.app.wallsplash.data.repo.UnsplashRepository.Companion.NETWORK_PAGE_SIZE
 
 private const val UNSPLASH_STARTING_PAGE_INDEX = 1
 

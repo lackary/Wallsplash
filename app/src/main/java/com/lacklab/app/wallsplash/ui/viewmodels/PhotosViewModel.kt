@@ -5,10 +5,9 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.lacklab.app.wallsplash.base.BaseViewModel
 import com.lacklab.app.wallsplash.data.model.UnsplashPhoto
-import com.lacklab.app.wallsplash.data.repository.UnsplashRepository
+import com.lacklab.app.wallsplash.data.repo.UnsplashRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel

@@ -7,7 +7,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.lacklab.app.wallsplash.ui.view.MainActivity
 import org.junit.Rule
 import org.junit.Test
@@ -22,7 +21,7 @@ class MainActivityTest {
     @Test
     fun clickBottomNavigationItem() {
         activityRule.scenario.onActivity {
-            Espresso.onView(withId(R.id.nav_host_main))
+            Espresso.onView(withId(R.id.menu_bottom_search))
         }
     }
 

@@ -5,7 +5,7 @@ import androidx.paging.PagingState
 import com.lacklab.app.wallsplash.data.api.*
 import com.lacklab.app.wallsplash.data.model.UnsplashPhoto
 import com.lacklab.app.wallsplash.data.model.UnsplashPhotos
-import com.lacklab.app.wallsplash.data.repository.UnsplashRepository.Companion.NETWORK_PAGE_SIZE
+import com.lacklab.app.wallsplash.data.repo.UnsplashRepository.Companion.NETWORK_PAGE_SIZE
 import timber.log.Timber
 
 class UnsplashPhotosPagingSource (
@@ -16,6 +16,7 @@ class UnsplashPhotosPagingSource (
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UnsplashPhoto> {
+        Timber.d("load")
         val page = params.key ?: com.lacklab.app.wallsplash.util.UNSPLASH_STARTING_PAGE_INDEX
         var data: UnsplashPhotos? = null
         return try {
