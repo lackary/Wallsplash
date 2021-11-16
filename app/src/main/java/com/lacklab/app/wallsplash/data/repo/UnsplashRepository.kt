@@ -6,13 +6,13 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
 import com.lacklab.app.wallsplash.AppExecutors
-import com.lacklab.app.wallsplash.data.api.UnsplashApi
+import com.lacklab.app.wallsplash.data.remote.api.UnsplashApi
 import com.lacklab.app.wallsplash.data.model.UnsplashCollection
 import com.lacklab.app.wallsplash.data.model.UnsplashPhoto
-import com.lacklab.app.wallsplash.data.pagingSource.UnsplashCollectionsPagingSource
-import com.lacklab.app.wallsplash.data.pagingSource.UnsplashPhotosPagingSource
-import com.lacklab.app.wallsplash.data.pagingSource.UnsplashSearchCollectionsPagingSource
-import com.lacklab.app.wallsplash.data.pagingSource.UnsplashSearchPhotosPagingSource
+import com.lacklab.app.wallsplash.data.repo.source.UnsplashCollectionsPagingSource
+import com.lacklab.app.wallsplash.data.repo.source.UnsplashPhotosPagingSource
+import com.lacklab.app.wallsplash.data.repo.source.UnsplashSearchCollectionsPagingSource
+import com.lacklab.app.wallsplash.data.repo.source.UnsplashSearchPhotosPagingSource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

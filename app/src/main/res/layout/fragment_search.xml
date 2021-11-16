@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.lacklab.app.wallsplash.ui.viewmodels.SearchViewModel" />
+            type="com.lacklab.app.wallsplash.ui.view.search.SearchViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
