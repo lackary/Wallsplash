@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initView() {
         // init Bottom Navigation bar
-//        val navController = findNavController(R.id.nav_host_main)
+        val navController = findNavController(R.id.nav_host_main)
 //        // Passing each menu ID as a set of Ids because each
 //        // menu should be considered as top level destinations.
 //        val appBarConfiguration = AppBarConfiguration(
@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
         )
         with(viewBinding) {
 //            bottomNavBar.setupWithNavController(navController)
-            val controller =bottomNavBar.setupWithNavController(
+            val controller = bottomNavBar.setupWithNavController(
                 navGraphIds = navGraphIds,
                 fragmentManager = supportFragmentManager,
                 containerId = R.id.nav_host_main,

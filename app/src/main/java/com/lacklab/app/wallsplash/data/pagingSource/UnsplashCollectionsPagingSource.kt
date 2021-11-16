@@ -8,8 +8,7 @@ import com.lacklab.app.wallsplash.data.api.ApiSuccessResponse
 import com.lacklab.app.wallsplash.data.api.UnsplashApi
 import com.lacklab.app.wallsplash.data.model.UnsplashCollection
 import com.lacklab.app.wallsplash.data.model.UnsplashCollections
-import com.lacklab.app.wallsplash.data.model.UnsplashPhotos
-import com.lacklab.app.wallsplash.data.repository.UnsplashRepository
+import com.lacklab.app.wallsplash.data.repo.UnsplashRepository
 import timber.log.Timber
 
 class UnsplashCollectionsPagingSource(

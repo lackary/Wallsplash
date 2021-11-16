@@ -1,4 +1,4 @@
-package com.lacklab.app.wallsplash.data.repository
+package com.lacklab.app.wallsplash.data.repo
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData

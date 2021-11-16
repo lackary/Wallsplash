@@ -1,4 +1,4 @@
-package com.lacklab.app.wallsplash.data.repository
+package com.lacklab.app.wallsplash.data.repo
 
 import androidx.lifecycle.LiveData
 import androidx.paging.Pager
@@ -26,6 +26,10 @@ class UnsplashRepository @Inject constructor(
             config = PagingConfig(pageSize = NETWORK_PAGE_SIZE, prefetchDistance = 3),
             pagingSourceFactory = { UnsplashPhotosPagingSource(api) }
         ).flow
+    }
+
+    suspend fun getPhoto(id: String): UnsplashPhoto {
+       return api.getPhoto(id)
     }
 
     fun getCollectionStream(): Flow<PagingData<UnsplashCollection>> {

@@ -25,7 +25,7 @@ interface UnsplashApi {
         @Path(value = "photo_id", encoded = true) photoId: String,
         @Header("Authorization")
         clientId: String = "Client-ID " + BuildConfig.UNSPLASH_ACCESS_KEY,
-    ) : ApiResponse<UnsplashPhoto>
+    ) : UnsplashPhoto
 
     @GET("collections")
     suspend fun getCollections(

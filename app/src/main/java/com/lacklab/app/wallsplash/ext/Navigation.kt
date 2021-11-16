@@ -1,13 +1,17 @@
 package com.lacklab.app.wallsplash.ext
 
+import android.app.Activity
 import android.content.Intent
 import android.util.SparseArray
+import androidx.annotation.IdRes
 import androidx.core.util.forEach
 import androidx.core.util.set
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lacklab.app.wallsplash.R
