@@ -72,7 +72,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
                         // Hide search keyboard
                         imageSearchView.clearFocus()
                         Timber.d("queryString: $it")
-                        searchViewModel.queryString.postValue(it)
+                        searchViewModel.queryString.value = it
 //                        searchPhotos(it)
 
                         // set currentData

@@ -93,12 +93,10 @@ class PhotoPagingAdapter @Inject constructor()
 
 private object PhotoDiffCallback : DiffUtil.ItemCallback<UnsplashPhoto>() {
     override fun areItemsTheSame(oldItem: UnsplashPhoto, newItem: UnsplashPhoto): Boolean {
-        Timber.d("areItemsTheSame")
         return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem: UnsplashPhoto, newItem: UnsplashPhoto): Boolean {
-        Timber.d("areContentsTheSame")
         return oldItem == newItem
     }
 }
