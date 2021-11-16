@@ -34,7 +34,6 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding, PhotosViewModel>(),
 
     private lateinit var searchViewModel: SearchViewModel
     private val photosViewModel: PhotosViewModel by viewModels()
-    private var searchPhotosJob: Job? = null
     @Inject
     lateinit var photoPagingAdapter: PhotoPagingAdapter
 
@@ -59,8 +58,7 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding, PhotosViewModel>(),
                 with(vm) {
                     if(parentFragment is SearchFragment) {
                         searchViewModel.queryString.observe(viewLifecycleOwner, {
-                            searchPhotosJob?.cancel()
-                            searchPhotosJob = lifecycleScope.launch {
+                            launchOnLifecycleScope {
                                 Timber.d("queryString: $it")
                                 searchViewModel.searchPhotos(it).collectLatest {
                                     submitData(it)
@@ -102,8 +100,6 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding, PhotosViewModel>(),
 
     override fun clear() {
 //        photoPagingAdapter = null
-        searchPhotosJob?.cancel()
-        searchPhotosJob = null
     }
 
     override fun clearView() {

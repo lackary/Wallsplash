@@ -28,7 +28,6 @@ CollectionPagingAdapter.CollectionClickListener{
 
     private lateinit var searchViewModel: SearchViewModel
     private val collectionsViewModel: CollectionsViewModel by viewModels()
-    private var searchCollectionsJob: Job? = null
     @Inject
     lateinit var collectionPagingAdapter: CollectionPagingAdapter
 
@@ -52,8 +51,7 @@ CollectionPagingAdapter.CollectionClickListener{
                 with(vm) {
                     if(parentFragment is SearchFragment) {
                         searchViewModel.queryString.observe(viewLifecycleOwner, {
-                            searchCollectionsJob?.cancel()
-                            searchCollectionsJob = lifecycleScope.launch {
+                            launchOnLifecycleScope{
                                 Timber.d("queryString: $it")
                                 searchViewModel.searchCollections(it).collectLatest {
                                     submitData(it)
@@ -93,8 +91,6 @@ CollectionPagingAdapter.CollectionClickListener{
     }
 
     override fun clear() {
-        searchCollectionsJob?.cancel()
-        searchCollectionsJob = null
     }
 
     override fun clearView() {
