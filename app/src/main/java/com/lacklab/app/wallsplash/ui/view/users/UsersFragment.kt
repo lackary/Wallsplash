@@ -24,9 +24,9 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>() {
 
 //    override fun layout() = R.layout.fragment_users
 //
-//    override fun init() {
-//
-//    }
+    override fun init() {
+
+    }
 
     override fun clear() {
 

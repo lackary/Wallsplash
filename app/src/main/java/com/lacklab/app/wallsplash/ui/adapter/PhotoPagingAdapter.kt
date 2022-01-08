@@ -16,11 +16,11 @@ import com.lacklab.app.wallsplash.databinding.ItemPhotoBinding
 import javax.inject.Inject
 
 class PhotoPagingAdapter @Inject constructor()
-    : PagingDataAdapter<UnsplashPhoto, PhotoPagingAdapter.PhotoViewHolder>(PhotoDiffCallback) {
+    : PagingDataAdapter<UnsplashPhoto, RecyclerView.ViewHolder>(PhotoDiffCallback) {
 //    val photoClickListener: (photoItem: UnsplashPhoto, view: View) -> Unit
 //    val nameClickListener: (photoItem: UnsplashPhoto, view: View) -> Unit
     var photoClickListener: PhotoClickListener? = null
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding =
             DataBindingUtil.inflate<ItemPhotoBinding>(
                 LayoutInflater.from(parent.context),
@@ -31,9 +31,9 @@ class PhotoPagingAdapter @Inject constructor()
         return PhotoViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         getItem(position)?.let {
-            holder.bind(it)
+            (holder as PhotoViewHolder).bind(it)
         }
     }
 

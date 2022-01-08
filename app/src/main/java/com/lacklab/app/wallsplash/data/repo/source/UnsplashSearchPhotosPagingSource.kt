@@ -43,7 +43,7 @@ class UnsplashSearchPhotosPagingSource(
             // Ensure we don't retrieve duplicating items at 2nd time request
             val nextPage = page + (params.loadSize / NETWORK_PAGE_SIZE)
             LoadResult.Page(
-                data = data.results,
+                data = data!!.results,
 //                prevKey = if (page == UNSPLASH_STARTING_PAGE_INDEX) null else page - 1,
                 prevKey = null,
                 nextKey = if (page == data.totalPages) null else nextPage

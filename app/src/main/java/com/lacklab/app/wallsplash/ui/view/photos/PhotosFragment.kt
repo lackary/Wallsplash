@@ -92,6 +92,10 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding, PhotosViewModel>(),
         }
     }
 
+    override fun init() {
+
+    }
+
     override fun clear() {
 //        photoPagingAdapter = null
     }

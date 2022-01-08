@@ -1,6 +1,5 @@
 package com.lacklab.app.wallsplash.base
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,17 +10,21 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.lacklab.app.wallsplash.ext.observe
 import timber.log.Timber
 
 abstract class BaseFragment<DB: ViewDataBinding, VM: BaseViewModel > : Fragment() {
 
-    private lateinit var viewModel: VM
-    private lateinit var binding: DB
+    private lateinit var _viewModel: VM
+    val viewModel: VM
+        get() = _viewModel
+    private lateinit var _binding: DB
+    val binding: DB
+        get() = _binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = getVM()
+        _viewModel = getVM()
+        init()
     }
 
     override fun onCreateView(
@@ -29,7 +32,7 @@ abstract class BaseFragment<DB: ViewDataBinding, VM: BaseViewModel > : Fragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        _binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
         return binding.root
     }
 
@@ -39,6 +42,13 @@ abstract class BaseFragment<DB: ViewDataBinding, VM: BaseViewModel > : Fragment(
         with(viewModel) {
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+
+    }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -57,6 +67,8 @@ abstract class BaseFragment<DB: ViewDataBinding, VM: BaseViewModel > : Fragment(
 
     abstract fun bindVM(binding: DB, vm: VM)
 
+    abstract fun init()
+
     abstract fun clear()
 
     abstract fun clearView()
@@ -67,6 +79,7 @@ abstract class BaseFragment<DB: ViewDataBinding, VM: BaseViewModel > : Fragment(
 
     fun launchOnLifecycleScope(execute: suspend () -> Unit) {
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            Timber.d("launchOnLifecycleScope")
             execute()
         }
     }
