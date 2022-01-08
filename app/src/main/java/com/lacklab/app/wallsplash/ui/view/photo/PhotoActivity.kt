@@ -1,27 +1,60 @@
 package com.lacklab.app.wallsplash.ui.view.photo
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.viewModels
+import com.lacklab.app.wallsplash.R
+import com.lacklab.app.wallsplash.base.BaseActivity
 import com.lacklab.app.wallsplash.databinding.ActivityPhotoBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 import timber.log.Timber
 
 @AndroidEntryPoint
-class PhotoActivity : AppCompatActivity() {
+class PhotoActivity : BaseActivity<ActivityPhotoBinding, PhotoViewModel>() {
 
-    private var viewBinding: ActivityPhotoBinding? = null
+    private val photoViewModel: PhotoViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val funName = object{}.javaClass.enclosingMethod.name
+    override val layoutId: Int
+        get() = R.layout.activity_photo
+
+    override fun getVM() = photoViewModel
+
+    override fun bindVM(binding: ActivityPhotoBinding, viewModel: PhotoViewModel) {
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val funName = object{}.javaClass.enclosingMethod?.name
         Timber.d(funName)
-        viewBinding = ActivityPhotoBinding.inflate(layoutInflater)
-        setContentView(viewBinding!!.root)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val funName = object{}.javaClass.enclosingMethod?.name
+        Timber.d(funName)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val funName = object{}.javaClass.enclosingMethod?.name
+        Timber.d(funName)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        val funName = object{}.javaClass.enclosingMethod?.name
+        Timber.d(funName)
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        val funName = object{}.javaClass.enclosingMethod?.name
+        Timber.d(funName)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        viewBinding = null
+        val funName = object{}.javaClass.enclosingMethod?.name
+        Timber.d(funName)
     }
 }

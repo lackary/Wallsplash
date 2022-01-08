@@ -87,6 +87,10 @@ CollectionPagingAdapter.CollectionClickListener{
         }
     }
 
+    override fun init() {
+
+    }
+
     override fun clear() {
     }
 

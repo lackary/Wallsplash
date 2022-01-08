@@ -94,9 +94,9 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding, GalleryViewModel>()
         }
     }
 
-//    override fun init() {
-//        initView()
-//    }
+    override fun init() {
+
+    }
 
     override fun clear() {
         viewPagerAdapter = null

@@ -2,44 +2,29 @@ package com.lacklab.app.wallsplash.ui.view.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import com.lacklab.app.wallsplash.R
+import com.lacklab.app.wallsplash.base.BaseActivity
 import com.lacklab.app.wallsplash.databinding.ActivityMainBinding
 import com.lacklab.app.wallsplash.ext.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
-    private lateinit var viewBinding: ActivityMainBinding
+    private val mainViewModel: MainViewModel by viewModels()
+
     private var currentNavController: LiveData<NavController>? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val funName = object{}.javaClass.enclosingMethod?.name
-        Timber.d(funName)
-        viewBinding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(viewBinding.root)
+    override val layoutId: Int
+        get() = R.layout.activity_main
 
-//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-//            if (!task.isSuccessful) {
-//                Timber.w("Fetching FCM registration token failed %s", task.exception)
-//                return@OnCompleteListener
-//            }
-//
-//            // Get new FCM registration token
-//            val token = task.result
-//
-//            // Log and toast
-//            val msg = getString(R.string.msg_token_fmt, token)
-//            Timber.d("msg: $msg")
-//            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-//        })
+    override fun getVM() = mainViewModel
 
-//        setContentView(R.layout.activity_main)
-
+    override fun bindVM(binding: ActivityMainBinding, viewModel: MainViewModel) {
     }
 
     override fun onStart() {
@@ -94,7 +79,7 @@ class MainActivity : AppCompatActivity() {
             R.navigation.nav_gallery,
             R.navigation.nav_search
         )
-        with(viewBinding) {
+        with(binding) {
 //            bottomNavBar.setupWithNavController(navController)
             val controller = bottomNavBar.setupWithNavController(
                 navGraphIds = navGraphIds,

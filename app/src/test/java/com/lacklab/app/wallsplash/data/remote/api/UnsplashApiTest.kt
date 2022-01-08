@@ -1,4 +1,4 @@
-package com.lacklab.app.wallsplash.data.remote.api
+    package com.lacklab.app.wallsplash.data.remote.api
 
 import com.google.common.truth.Truth.assertThat
 import com.lacklab.app.wallsplash.factory.DataCallAdapterFactory

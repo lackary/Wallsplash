@@ -15,11 +15,12 @@ class PhotosViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val unsplashRepository: UnsplashRepository
 ) : BaseViewModel() {
-    private var allUnpslashPhotos: Flow<PagingData<UnsplashPhoto>>? =null
+    private var allUnslashPhotos: Flow<PagingData<UnsplashPhoto>>? =null
     private var unsplashPhotosLiveData = MutableLiveData<PagingData<UnsplashPhoto>>()
     private lateinit var _photoFlow: Flow<PagingData<UnsplashPhoto>>
     val photoFlow: Flow<PagingData<UnsplashPhoto>>
         get() = _photoFlow
+
     init {
         getPhotos()
     }
@@ -29,6 +30,10 @@ class PhotosViewModel @Inject constructor(
     }, {
         _photoFlow = it
     })
+
+    private fun getUnsplashData() {
+
+    }
 
 //    private fun getPhotos() = viewModelScope.launch {
 //        val result = unsplashRepository.getPhotosStream().cachedIn(viewModelScope)
