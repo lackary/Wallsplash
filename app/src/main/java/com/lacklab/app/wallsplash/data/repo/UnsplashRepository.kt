@@ -8,6 +8,7 @@ import androidx.paging.liveData
 import com.lacklab.app.wallsplash.AppExecutors
 import com.lacklab.app.wallsplash.data.remote.api.UnsplashApi
 import com.lacklab.app.wallsplash.data.model.UnsplashCollection
+import com.lacklab.app.wallsplash.util.UnsplashItem
 import com.lacklab.app.wallsplash.data.model.UnsplashPhoto
 import com.lacklab.app.wallsplash.data.repo.source.UnsplashCollectionsPagingSource
 import com.lacklab.app.wallsplash.data.repo.source.UnsplashPhotosPagingSource
@@ -22,8 +23,7 @@ class UnsplashRepository @Inject constructor(
     private val appExecutors: AppExecutors,
     private val api: UnsplashApi
 ) {
-
-    fun getPhotosStream(): Flow<PagingData<UnsplashPhoto>> {
+    fun getPhotos(): Flow<PagingData<UnsplashItem>> {
         return Pager(
             config = PagingConfig(pageSize = NETWORK_PAGE_SIZE, prefetchDistance = 3),
             pagingSourceFactory = { UnsplashPhotosPagingSource(api) }
@@ -40,7 +40,7 @@ class UnsplashRepository @Inject constructor(
         }
     }
 
-    fun getCollectionStream(): Flow<PagingData<UnsplashCollection>> {
+    fun getCollections(): Flow<PagingData<UnsplashItem>> {
        return Pager(
            config = PagingConfig(pageSize = NETWORK_PAGE_SIZE, prefetchDistance = 3),
            pagingSourceFactory = {UnsplashCollectionsPagingSource(api)}
@@ -51,40 +51,18 @@ class UnsplashRepository @Inject constructor(
         return api.getCollection(id)
     }
 
-    fun getPhotosLiveData(): LiveData<PagingData<UnsplashPhoto>> {
-        return Pager(
-            config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
-            pagingSourceFactory = { UnsplashPhotosPagingSource(api) }
-        ).liveData
-    }
-
-    fun getCollectionLiveData(): LiveData<PagingData<UnsplashCollection>> {
-        return Pager(
-            config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
-            pagingSourceFactory = {UnsplashCollectionsPagingSource(api)}
-
-        ).liveData
-    }
-
-    fun getSearchPhotosStream(query: String): Flow<PagingData<UnsplashPhoto>> {
+    fun getSearchPhotosStream(query: String): Flow<PagingData<UnsplashItem>> {
         return Pager(
             config = PagingConfig(pageSize = NETWORK_PAGE_SIZE, ),
             pagingSourceFactory = { UnsplashSearchPhotosPagingSource(api, query) }
         ).flow
     }
 
-    fun getSearchCollectionsStream(query: String): Flow<PagingData<UnsplashCollection>> {
+    fun getSearchCollectionsStream(query: String): Flow<PagingData<UnsplashItem>> {
         return Pager(
             config = PagingConfig(pageSize = NETWORK_PAGE_SIZE),
             pagingSourceFactory = {UnsplashSearchCollectionsPagingSource(api, query)}
         ).flow
-    }
-
-    fun getSearchPhotoLiveData(query: String): LiveData<PagingData<UnsplashPhoto>> {
-        return Pager(
-            config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
-            pagingSourceFactory = { UnsplashSearchPhotosPagingSource(api, query)}
-        ).liveData
     }
 
     companion object {

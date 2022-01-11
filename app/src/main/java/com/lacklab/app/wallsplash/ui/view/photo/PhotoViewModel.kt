@@ -3,11 +3,10 @@ package com.lacklab.app.wallsplash.ui.view.photo
 import androidx.lifecycle.*
 import com.lacklab.app.wallsplash.base.BaseViewModel
 import com.lacklab.app.wallsplash.data.model.UnsplashCollection
-import com.lacklab.app.wallsplash.data.model.UnsplashData
+import com.lacklab.app.wallsplash.util.UnsplashItem
 import com.lacklab.app.wallsplash.data.model.UnsplashPhoto
 import com.lacklab.app.wallsplash.data.repo.UnsplashRepository
 import com.lacklab.app.wallsplash.util.UiState
-import com.lacklab.app.wallsplash.vo.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
@@ -31,8 +30,8 @@ class PhotoViewModel @Inject constructor(
     private val _collection = MutableLiveData<UnsplashCollection>()
     val collection: LiveData<UnsplashCollection>
         get() = _collection
-    private val _result = MutableLiveData<List<UnsplashData>>()
-    val result: LiveData<List<UnsplashData>>
+    private val _result = MutableLiveData<List<UnsplashItem>>()
+    val result: LiveData<List<UnsplashItem>>
         get() = _result
 
     private val _uiStates = MutableStateFlow<UiState<UnsplashPhoto>>(UiState.Success(null))
@@ -56,18 +55,18 @@ class PhotoViewModel @Inject constructor(
                 }
                 _uiStates.value = it
             }
-//            val a = async { unsplashRepository.getPhoto(photoId) }
-//            _photo.value = a.await()
-            val data = b.await()
-            val unsplashData = UnsplashData(data, type = 3)
-            val temp = mutableListOf<UnsplashData>()
-            temp.add(unsplashData)
-            for (item in temp) {
-                if(item.type == 3) {
-                    val data = item.value as UnsplashCollection
-                    Timber.d("data: ${data.totalPhotos}, item type: ${item.type}")
-                }
-            }
+////            val a = async { unsplashRepository.getPhoto(photoId) }
+////            _photo.value = a.await()
+//            val data = b.await()
+//            val unsplashData = UnsplashData(data, type = 3)
+//            val temp = mutableListOf<UnsplashData>()
+//            temp.add(unsplashData)
+//            for (item in temp) {
+//                if(item.type == 3) {
+//                    val data = item.value as UnsplashCollection
+//                    Timber.d("data: ${data.totalPhotos}, item type: ${item.type}")
+//                }
+//            }
 //            todoA()
 //            todoB()
         }
