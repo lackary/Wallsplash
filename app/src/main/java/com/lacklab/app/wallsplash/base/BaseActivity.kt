@@ -20,6 +20,7 @@ abstract class BaseActivity<DB: ViewDataBinding, VM: BaseViewModel> : AppCompatA
         super.onCreate(savedInstanceState)
         _binding = DataBindingUtil.setContentView(this, layoutId)
         _viewModel = getVM()
+        bindVM(binding, viewModel)
     }
 
     @get:LayoutRes
