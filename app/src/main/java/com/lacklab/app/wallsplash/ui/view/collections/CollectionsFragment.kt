@@ -8,11 +8,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
-import com.lacklab.app.wallsplash.data.model.UnsplashCollection
+import com.lacklab.app.wallsplash.util.UnsplashItem
 import com.lacklab.app.wallsplash.databinding.FragmentCollectionsBinding
 import com.lacklab.app.wallsplash.ui.view.search.SearchFragment
-import com.lacklab.app.wallsplash.ui.adapter.CollectionPagingAdapter
 import com.lacklab.app.wallsplash.ui.adapter.PagingLoadStateAdapter
+import com.lacklab.app.wallsplash.ui.adapter.UnsplashPagingAdapter
 import com.lacklab.app.wallsplash.ui.view.search.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -21,12 +21,12 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class CollectionsFragment : BaseFragment<FragmentCollectionsBinding, CollectionsViewModel>(),
-CollectionPagingAdapter.CollectionClickListener{
+    UnsplashPagingAdapter.ItemClickListener{
 
     private lateinit var searchViewModel: SearchViewModel
     private val collectionsViewModel: CollectionsViewModel by viewModels()
     @Inject
-    lateinit var collectionPagingAdapter: CollectionPagingAdapter
+    lateinit var collectionPagingAdapter: UnsplashPagingAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +40,7 @@ CollectionPagingAdapter.CollectionClickListener{
     override fun bindVM(binding: FragmentCollectionsBinding, vm: CollectionsViewModel) {
         with(binding) {
             with(collectionPagingAdapter) {
-                collectionClickListener = this@CollectionsFragment
+                itemClickListener = this@CollectionsFragment
                 recyclerViewItems.adapter = withLoadStateFooter(
                     footer = PagingLoadStateAdapter(this)
                 )
@@ -57,7 +57,7 @@ CollectionPagingAdapter.CollectionClickListener{
                         })
                     } else {
                         launchOnLifecycleScope {
-                            collectionFlow.collectLatest { submitData(it) }
+                            itemsFlow.collectLatest { submitData(it) }
                         }
                     }
                     launchOnLifecycleScope {
@@ -98,11 +98,11 @@ CollectionPagingAdapter.CollectionClickListener{
 
     }
 
-    override fun onPhotoClicked(item: UnsplashCollection, view: View) {
+    override fun onPhotoClicked(item: UnsplashItem, view: View) {
         Timber.d("photo clicked")
     }
 
-    override fun onUserClicked(item: UnsplashCollection, view: View) {
+    override fun onUserClicked(item: UnsplashItem, view: View) {
         Timber.d("user clicked")
     }
 }

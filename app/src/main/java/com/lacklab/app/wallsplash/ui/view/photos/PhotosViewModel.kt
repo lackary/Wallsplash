@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.lacklab.app.wallsplash.base.BaseViewModel
+import com.lacklab.app.wallsplash.util.UnsplashItem
 import com.lacklab.app.wallsplash.data.model.UnsplashPhoto
 import com.lacklab.app.wallsplash.data.repo.UnsplashRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,42 +16,23 @@ class PhotosViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val unsplashRepository: UnsplashRepository
 ) : BaseViewModel() {
-    private var allUnslashPhotos: Flow<PagingData<UnsplashPhoto>>? =null
-    private var unsplashPhotosLiveData = MutableLiveData<PagingData<UnsplashPhoto>>()
-    private lateinit var _photoFlow: Flow<PagingData<UnsplashPhoto>>
-    val photoFlow: Flow<PagingData<UnsplashPhoto>>
-        get() = _photoFlow
+
+    private lateinit var _itemsFlow: Flow<PagingData<UnsplashItem>>
+    val itemsFlow: Flow<PagingData<UnsplashItem>>
+        get() = _itemsFlow
 
     init {
         getPhotos()
     }
 
-    private fun getPhotos() = launchPaging({
-        unsplashRepository.getPhotosStream().cachedIn(viewModelScope)
-    }, {
-        _photoFlow = it
-    })
-
-    private fun getUnsplashData() {
-
+    private fun getPhotos() {
+        _itemsFlow = unsplashRepository.getPhotos()
     }
 
-//    private fun getPhotos() = viewModelScope.launch {
-//        val result = unsplashRepository.getPhotosStream().cachedIn(viewModelScope)
-//        _photoFlow = result
-//    }
+//    private fun getPhotos() = launchPaging({
+//        unsplashRepository.getPhotosStream().cachedIn(viewModelScope)
+//    }, {
+//        _photoFlow = it
+//    })
 
-//    fun getAllUnsplashPhotos() : Flow<PagingData<UnsplashPhoto>> {
-//        val newResult: Flow<PagingData<UnsplashPhoto>> =
-//            unsplashRepository.getPhotosStream().cachedIn(viewModelScope)
-//        allUnpslashPhotos = newResult
-//        return newResult
-//    }
-
-    fun getAllUnsplashPhotosLiveData() : LiveData<PagingData<UnsplashPhoto>> {
-        val newResult: LiveData<PagingData<UnsplashPhoto>> =
-            unsplashRepository.getPhotosLiveData().cachedIn(viewModelScope)
-        unsplashPhotosLiveData.value = newResult.value
-        return newResult
-    }
 }

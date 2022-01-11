@@ -10,12 +10,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
-import com.lacklab.app.wallsplash.data.model.UnsplashPhoto
+import com.lacklab.app.wallsplash.util.UnsplashItem
 import com.lacklab.app.wallsplash.databinding.FragmentPhotosBinding
 import com.lacklab.app.wallsplash.ui.adapter.PagingLoadStateAdapter
 import com.lacklab.app.wallsplash.ui.view.photo.PhotoActivity
 import com.lacklab.app.wallsplash.ui.view.search.SearchFragment
-import com.lacklab.app.wallsplash.ui.adapter.PhotoPagingAdapter
+import com.lacklab.app.wallsplash.ui.adapter.UnsplashPagingAdapter
 import com.lacklab.app.wallsplash.ui.view.search.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -24,12 +24,12 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class PhotosFragment : BaseFragment<FragmentPhotosBinding, PhotosViewModel>(),
-    PhotoPagingAdapter.PhotoClickListener {
+    UnsplashPagingAdapter.ItemClickListener {
 
     private lateinit var searchViewModel: SearchViewModel
     private val photosViewModel: PhotosViewModel by viewModels()
     @Inject
-    lateinit var photoPagingAdapter: PhotoPagingAdapter
+    lateinit var photoPagingAdapter: UnsplashPagingAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         searchViewModel = ViewModelProvider(requireActivity()).get(SearchViewModel::class.java)
@@ -44,7 +44,7 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding, PhotosViewModel>(),
     override fun bindVM(binding: FragmentPhotosBinding, vm: PhotosViewModel) {
         with(binding) {
             with(photoPagingAdapter) {
-                photoClickListener = this@PhotosFragment
+                itemClickListener = this@PhotosFragment
                 recyclerViewItems.adapter = withLoadStateFooter(
                     footer = PagingLoadStateAdapter(this)
                 )
@@ -61,7 +61,7 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding, PhotosViewModel>(),
                         })
                     } else {
                         launchOnLifecycleScope {
-                            photoFlow.collectLatest { submitData(it) }
+                            itemsFlow.collectLatest { submitData(it) }
                         }
                     }
 
@@ -105,23 +105,22 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding, PhotosViewModel>(),
     }
 
 //    override fun layout() = R.layout.fragment_photos
-
-    override fun onPhotoClicked(item: UnsplashPhoto, view: View) {
+    override fun onPhotoClicked(item: UnsplashItem, view: View) {
         val intent = Intent(requireActivity(), PhotoActivity::class.java)
         val bundle = Bundle().apply {
-            putParcelable("photoItem", item)
+            putParcelable("photoItem", (item as UnsplashItem.Photo).data)
         }
         intent.putExtra("photoItemBundle", bundle)
         val activityOptionsCompat =
             ActivityOptionsCompat.makeSceneTransitionAnimation(
                 requireActivity(),
                 view,
-                item.id
+                (item as UnsplashItem.Photo).data.id
             )
         startActivity(intent, activityOptionsCompat.toBundle())
     }
 
-    override fun onUserClicked(item: UnsplashPhoto, view: View) {
+    override fun onUserClicked(item: UnsplashItem, view: View) {
         Timber.d("click user")
     }
 }
