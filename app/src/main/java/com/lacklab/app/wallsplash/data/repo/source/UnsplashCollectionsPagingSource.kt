@@ -6,7 +6,6 @@ import com.lacklab.app.wallsplash.data.remote.api.ApiEmptyResponse
 import com.lacklab.app.wallsplash.data.remote.api.ApiErrorResponse
 import com.lacklab.app.wallsplash.data.remote.api.ApiSuccessResponse
 import com.lacklab.app.wallsplash.data.remote.api.UnsplashApi
-import com.lacklab.app.wallsplash.data.model.UnsplashCollection
 import com.lacklab.app.wallsplash.data.model.UnsplashCollections
 import com.lacklab.app.wallsplash.util.UnsplashItem
 import com.lacklab.app.wallsplash.data.repo.UnsplashRepository
