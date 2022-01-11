@@ -2,9 +2,7 @@ package com.lacklab.app.wallsplash.ui.view.collections
 
 import androidx.lifecycle.*
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import com.lacklab.app.wallsplash.base.BaseViewModel
-import com.lacklab.app.wallsplash.data.model.UnsplashCollection
 import com.lacklab.app.wallsplash.util.UnsplashItem
 import com.lacklab.app.wallsplash.data.repo.UnsplashRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
