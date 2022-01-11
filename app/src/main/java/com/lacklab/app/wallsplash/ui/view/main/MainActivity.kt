@@ -1,7 +1,5 @@
 package com.lacklab.app.wallsplash.ui.view.main
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
