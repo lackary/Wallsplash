@@ -9,18 +9,22 @@ import androidx.databinding.ViewDataBinding
 
 abstract class BaseActivity<DB: ViewDataBinding, VM: BaseViewModel> : AppCompatActivity() {
 
-    private lateinit var _binding: DB
+    private var _binding: DB? = null
     val binding: DB
-        get() = _binding
-    private lateinit var _viewModel: VM
+        get() = _binding!!
+    private var _viewModel: VM? = null
     val viewModel: VM
-        get() = _viewModel
+        get() = _viewModel!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = DataBindingUtil.setContentView(this, layoutId)
         _viewModel = getVM()
         bindVM(binding, viewModel)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
     @get:LayoutRes
