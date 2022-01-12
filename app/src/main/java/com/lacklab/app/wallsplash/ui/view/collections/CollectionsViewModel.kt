@@ -2,6 +2,7 @@ package com.lacklab.app.wallsplash.ui.view.collections
 
 import androidx.lifecycle.*
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.lacklab.app.wallsplash.base.BaseViewModel
 import com.lacklab.app.wallsplash.util.UnsplashItem
 import com.lacklab.app.wallsplash.data.repo.UnsplashRepository
@@ -24,7 +25,7 @@ class CollectionsViewModel @Inject constructor(
     }
 
     private fun getCollections() {
-        _itemsFlow = unsplashRepository.getCollections()
+        _itemsFlow = unsplashRepository.getCollections().cachedIn(viewModelScope)
     }
 
 //    private fun getCollections() = launchPaging({
