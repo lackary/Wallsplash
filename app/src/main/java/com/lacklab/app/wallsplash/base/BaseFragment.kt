@@ -62,12 +62,13 @@ abstract class BaseFragment<DB: ViewDataBinding, VM: BaseViewModel > : Fragment(
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _viewModel
         _binding = null
+        clearView()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        _viewModel = null
         clear()
     }
 
