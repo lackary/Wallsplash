@@ -99,12 +99,13 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding, GalleryViewModel>()
     }
 
     override fun clear() {
-        viewPagerAdapter = null
+
     }
 
     override fun clearView() {
         tabLayoutMediator?.detach()
         tabLayoutMediator = null
+        viewPagerAdapter = null
 //        with(binding!!) {
 //            viewPagerGallery.adapter = null
 //        }

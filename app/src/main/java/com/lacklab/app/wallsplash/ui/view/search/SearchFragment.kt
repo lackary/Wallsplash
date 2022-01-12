@@ -94,12 +94,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
     }
 
     override fun clear() {
-        viewPagerAdapter = null
+
     }
 
     override fun clearView() {
         tabLayoutMediator?.detach()
         tabLayoutMediator = null
+        viewPagerAdapter = null
     }
 
 }

@@ -25,6 +25,8 @@ abstract class BaseActivity<DB: ViewDataBinding, VM: BaseViewModel> : AppCompatA
 
     override fun onDestroy() {
         super.onDestroy()
+        _binding = null
+        _viewModel = null
     }
 
     @get:LayoutRes
