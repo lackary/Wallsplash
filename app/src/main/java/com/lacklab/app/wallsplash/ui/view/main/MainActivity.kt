@@ -3,6 +3,10 @@ package com.lacklab.app.wallsplash.ui.view.main
 import androidx.activity.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseActivity
 import com.lacklab.app.wallsplash.databinding.ActivityMainBinding

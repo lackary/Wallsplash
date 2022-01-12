@@ -2,6 +2,7 @@ package com.lacklab.app.wallsplash.ui.view.photos
 
 import androidx.lifecycle.*
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.lacklab.app.wallsplash.base.BaseViewModel
 import com.lacklab.app.wallsplash.util.UnsplashItem
 import com.lacklab.app.wallsplash.data.repo.UnsplashRepository
@@ -24,7 +25,7 @@ class PhotosViewModel @Inject constructor(
     }
 
     private fun getPhotos() {
-        _itemsFlow = unsplashRepository.getPhotos()
+        _itemsFlow = unsplashRepository.getPhotos().cachedIn(viewModelScope)
     }
 
 //    private fun getPhotos() = launchPaging({
