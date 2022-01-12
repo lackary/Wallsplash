@@ -12,10 +12,11 @@
     if we don't have the app:layout_constraintDimensionRatio="1:1"
     by https://medium.com/mindorks/aspect-ratio-in-staggered-layoutmanager-using-constraint-layout-9845d04d1962
     -->
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_view_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -64,5 +65,5 @@
                     app:layout_constraintStart_toEndOf="@id/image_view_user" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </layout>
