@@ -12,10 +12,11 @@
     if we don't have the app:layout_constraintDimensionRatio="1:1"
     by https://medium.com/mindorks/aspect-ratio-in-staggered-layoutmanager-using-constraint-layout-9845d04d1962
     -->
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_view_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -48,6 +49,15 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:srcCompat="@drawable/ic_outline_collections_white_24"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/text_view_name"
                     android:layout_width="wrap_content"
@@ -62,6 +72,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toEndOf="@id/image_view_user" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_view_title"
@@ -88,5 +99,5 @@
                 app:layout_constraintBottom_toBottomOf="@id/image_view_photo"
                 app:layout_constraintStart_toStartOf="@id/image_view_photo"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </layout>
