@@ -14,12 +14,12 @@ import timber.log.Timber
 
 abstract class BaseFragment<DB: ViewDataBinding, VM: BaseViewModel > : Fragment() {
 
-    private lateinit var _viewModel: VM
-    val viewModel: VM
-        get() = _viewModel
-    private lateinit var _binding: DB
+    private var _binding: DB? = null
     val binding: DB
-        get() = _binding
+        get() = _binding!!
+    private var _viewModel: VM? = null
+    val viewModel: VM
+        get() = _viewModel!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,11 +48,22 @@ abstract class BaseFragment<DB: ViewDataBinding, VM: BaseViewModel > : Fragment(
 
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
 
+    override fun onPause() {
+        super.onPause()
+    }
+
+    override fun onStop() {
+        super.onStop()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        clearView()
+        _viewModel
+        _binding = null
     }
 
     override fun onDestroy() {
