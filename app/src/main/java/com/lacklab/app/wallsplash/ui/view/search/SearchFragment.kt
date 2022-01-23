@@ -1,11 +1,9 @@
 package com.lacklab.app.wallsplash.ui.view.search
 
 import android.os.Bundle
-import android.provider.SearchRecentSuggestions
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
-import com.lacklab.app.wallsplash.MySuggestionProvider
 import com.lacklab.app.wallsplash.R
 import com.lacklab.app.wallsplash.base.BaseFragment
 import com.lacklab.app.wallsplash.databinding.FragmentSearchBinding
@@ -23,8 +21,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
     private var searchJob: Job? = null
     private var viewPagerAdapter: ViewPagerAdapter? = null
     private var tabLayoutMediator: TabLayoutMediator? = null
-//    @Inject
-//    lateinit var photoPagingAdapter: PhotoPagingAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         searchViewModel = ViewModelProvider(requireActivity()).get(SearchViewModel::class.java)
