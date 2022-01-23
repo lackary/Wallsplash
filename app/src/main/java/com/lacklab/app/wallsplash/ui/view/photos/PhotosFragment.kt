@@ -3,6 +3,7 @@ package com.lacklab.app.wallsplash.ui.view.photos
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.Nullable
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -29,6 +30,7 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding, PhotosViewModel>(),
     private lateinit var searchViewModel: SearchViewModel
     private val photosViewModel: PhotosViewModel by viewModels()
     @Inject
+    @Nullable
     lateinit var photoPagingAdapter: UnsplashPagingAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,7 +99,7 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding, PhotosViewModel>(),
     }
 
     override fun clear() {
-//        photoPagingAdapter = null
+
     }
 
     override fun clearView() {
