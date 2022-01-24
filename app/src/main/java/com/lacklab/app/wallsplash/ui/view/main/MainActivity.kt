@@ -4,6 +4,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
@@ -19,7 +20,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     private val mainViewModel: MainViewModel by viewModels()
 
-    private var currentNavController: LiveData<NavController>? = null
+//    private var currentNavController: LiveData<NavController>? = null
+    private var navController: NavController? = null
 
     override val layoutId: Int
         get() = R.layout.activity_main
@@ -52,7 +54,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         super.onStop()
         val funName = object{}.javaClass.enclosingMethod?.name
         Timber.d(funName)
-        currentNavController = null
+        navController = null
+//        currentNavController = null
     }
 
     override fun onRestart() {
@@ -69,7 +72,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     private fun initView() {
         // init Bottom Navigation bar
-//        val navController = findNavController(R.id.nav_host_main)
+//        val navController = this.findNavController(R.id.nav_host_main)
 //        // Passing each menu ID as a set of Ids because each
 //        // menu should be considered as top level destinations.
 //        val appBarConfiguration = AppBarConfiguration(
@@ -77,32 +80,42 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 //        )
 //        // if we have the appbar, this will show the title of appbar
 //        setupActionBarWithNavController(navController, appBarConfiguration)
-        val navGraphIds = listOf(
-            R.navigation.nav_gallery,
-            R.navigation.nav_search
-        )
+//        // using kotlin extension
+//        val navGraphIds = listOf(
+//            R.navigation.nav_gallery,
+//            R.navigation.nav_search
+//        )
+        // keep fragment alive when using BottomNavigationView
+        val navHostFragment = supportFragmentManager.findFragmentById(
+            R.id.nav_host_main
+        ) as NavHostFragment
+        val navController = navHostFragment.navController
         with(binding) {
-//            bottomNavBar.setupWithNavController(navController)
-            val controller = bottomNavBar.setupWithNavController(
-                navGraphIds = navGraphIds,
-                fragmentManager = supportFragmentManager,
-                containerId = R.id.nav_host_main,
-                intent = intent
-            )
-            currentNavController = controller
+            bottomNavBar.setupWithNavController(navController)
+//            val controller = bottomNavBar.setupWithNavController(
+//                navGraphIds = navGraphIds,
+//                fragmentManager = supportFragmentManager,
+//                containerId = R.id.nav_host_main,
+//                intent = intent
+//            )
+//            currentNavController = controller
         }
     }
 
     override fun onSupportNavigateUp(): Boolean =
-        currentNavController?.value?.navigateUp() ?: false
+        navController?.navigateUp() ?: false
+//        currentNavController?.value?.navigateUp() ?: false
 
     /**
      * Overriding popBackStack is necessary in this case
      * if the app is started from the deep link.
      */
     override fun onBackPressed() {
-        if (currentNavController?.value?.popBackStack() != true) {
+        if (navController?.popBackStack() != true) {
             super.onBackPressed()
         }
+//        if (currentNavController?.value?.popBackStack() != true) {
+//            super.onBackPressed()
+//        }
     }
 }
