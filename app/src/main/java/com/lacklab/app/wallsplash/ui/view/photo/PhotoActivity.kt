@@ -2,6 +2,7 @@ package com.lacklab.app.wallsplash.ui.view.photo
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -12,6 +13,7 @@ import com.lacklab.app.wallsplash.base.BaseActivity
 import com.lacklab.app.wallsplash.data.model.UnsplashPhoto
 import com.lacklab.app.wallsplash.databinding.ActivityPhotoBinding
 import com.lacklab.app.wallsplash.util.UiState
+import com.lacklab.app.wallsplash.util.UnsplashItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -34,11 +36,9 @@ class PhotoActivity : BaseActivity<ActivityPhotoBinding, PhotoViewModel>() {
         photoItemBundle = intent.getBundleExtra("photoItemBundle")!!
         photo = photoItemBundle!!.getParcelable<UnsplashPhoto>("photoItem")
         with(binding) {
-            photoItem = photo
-            Glide.with(root)
-                .load(photo!!.urls!!.regular)
-                .override(Target.SIZE_ORIGINAL)
-                .into(imageViewPhoto)
+            // Set the name of the view's which will be transition
+            ViewCompat.setTransitionName(imageViewPhoto, photo!!.id)
+            showPhoto(this, photo!!)
         }
         bindEvents(binding)
         with(viewModel) {
@@ -60,6 +60,10 @@ class PhotoActivity : BaseActivity<ActivityPhotoBinding, PhotoViewModel>() {
                 }
             }
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
 
     override fun onStart() {
@@ -107,6 +111,16 @@ class PhotoActivity : BaseActivity<ActivityPhotoBinding, PhotoViewModel>() {
 
             // set info action
             imageViewInfo.setOnClickListener {  }
+        }
+    }
+
+    private fun showPhoto(binding: ActivityPhotoBinding, photo: UnsplashPhoto) {
+        with(binding) {
+            photoItem = photo
+            Glide.with(root)
+                .load(photo!!.urls!!.regular)
+                .override(Target.SIZE_ORIGINAL)
+                .into(imageViewPhoto)
         }
     }
 }
