@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.Nullable
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
@@ -25,7 +26,7 @@ class CollectionsFragment : BaseFragment<FragmentCollectionsBinding, Collections
     UnsplashPagingAdapter.ItemClickListener{
 
     private lateinit var searchViewModel: SearchViewModel
-    private val collectionsViewModel: CollectionsViewModel by viewModels()
+    private val collectionsViewModel: CollectionsViewModel by activityViewModels()
     @Inject
     @Nullable
     lateinit var collectionPagingAdapter: UnsplashPagingAdapter

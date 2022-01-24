@@ -6,6 +6,7 @@ import android.view.View
 import androidx.annotation.Nullable
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
@@ -28,7 +29,7 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding, PhotosViewModel>(),
     UnsplashPagingAdapter.ItemClickListener {
 
     private lateinit var searchViewModel: SearchViewModel
-    private val photosViewModel: PhotosViewModel by viewModels()
+    private val photosViewModel: PhotosViewModel by activityViewModels()
     @Inject
     @Nullable
     lateinit var photoPagingAdapter: UnsplashPagingAdapter

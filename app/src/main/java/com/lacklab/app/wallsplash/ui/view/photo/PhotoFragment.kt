@@ -146,7 +146,7 @@ class PhotoFragment : BaseFragment<FragmentPhotoBinding, PhotoViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         sharedElementEnterTransition =
             TransitionInflater
-                .from(context)
+                .from(context!!)
                 .inflateTransition(android.R.transition.move)
     }
 
