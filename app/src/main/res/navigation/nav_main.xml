@@ -2,18 +2,19 @@
 <!-- For  -->
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
-    app:startDestination="@id/menu_bottom_gallery">
+    app:startDestination="@+id/menu_bottom_gallery">
 
-    <fragment
-        android:id="@+id/menu_bottom_gallery"
-        android:name="com.lacklab.app.wallsplash.ui.view.gallery.GalleryFragment"
-        android:label="GalleryFragment"
-        tools:layout="@layout/fragment_gallery"/>
-    <fragment
-        android:id="@+id/menu_bottom_search"
-        android:name="com.lacklab.app.wallsplash.ui.view.search.SearchFragment"
-        android:label="SearchFragment"
-        tools:layout="@layout/fragment_search"/>
+    <include app:graph="@navigation/nav_gallery"/>
+    <include app:graph="@navigation/nav_search"/>
+<!--    <fragment-->
+<!--        android:id="@+id/menu_bottom_gallery"-->
+<!--        android:name="com.lacklab.app.wallsplash.ui.view.gallery.GalleryFragment"-->
+<!--        android:label="GalleryFragment"-->
+<!--        tools:layout="@layout/fragment_gallery"/>-->
+<!--    <fragment-->
+<!--        android:id="@+id/menu_bottom_search"-->
+<!--        android:name="com.lacklab.app.wallsplash.ui.view.search.SearchFragment"-->
+<!--        android:label="SearchFragment"-->
+<!--        tools:layout="@layout/fragment_search"/>-->
 </navigation>
