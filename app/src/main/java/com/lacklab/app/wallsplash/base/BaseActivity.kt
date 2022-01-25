@@ -18,15 +18,15 @@ abstract class BaseActivity<DB: ViewDataBinding, VM: BaseViewModel> : AppCompatA
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = DataBindingUtil.setContentView(this, layoutId)
         _viewModel = getVM()
+        _binding = DataBindingUtil.setContentView(this, layoutId)
         bindVM(binding, viewModel)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding = null
         _viewModel = null
+        _binding = null
     }
 
     @get:LayoutRes

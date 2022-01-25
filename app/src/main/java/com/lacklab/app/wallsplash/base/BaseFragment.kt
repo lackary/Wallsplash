@@ -86,7 +86,7 @@ abstract class BaseFragment<DB: ViewDataBinding, VM: BaseViewModel > : Fragment(
     abstract fun clearView()
 
     protected open fun showToastMessage(message: String?) {
-        Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
+        Toast.makeText(requireActivity().applicationContext, message, Toast.LENGTH_LONG).show()
     }
 
     fun launchOnLifecycleScope(execute: suspend () -> Unit) {
