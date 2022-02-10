@@ -19,8 +19,12 @@ import timber.log.Timber
 class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
     private lateinit var searchViewModel: SearchViewModel
     private var searchJob: Job? = null
-    private var viewPagerAdapter: ViewPagerAdapter? = null
-    private var tabLayoutMediator: TabLayoutMediator? = null
+    private var _viewPagerAdapter: ViewPagerAdapter? = null
+    private val viewPagerAdapter: ViewPagerAdapter
+        get() = _viewPagerAdapter!!
+    private var _tabLayoutMediator: TabLayoutMediator? = null
+    private val tabLayoutMediator: TabLayoutMediator
+        get() = _tabLayoutMediator!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         searchViewModel = ViewModelProvider(requireActivity()).get(SearchViewModel::class.java)
@@ -40,19 +44,19 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
                 suggestionsAdapter
             }
 
-            viewPagerAdapter = ViewPagerAdapter(childFragmentManager, lifecycle, 3)
+            _viewPagerAdapter = ViewPagerAdapter(childFragmentManager, lifecycle, 3)
             viewPagerGallery.apply {
                 adapter = viewPagerAdapter
             }
             // connect tab layout and view pager
-            tabLayoutMediator = TabLayoutMediator(tabsGallery, viewPagerGallery) { tab, position ->
+            _tabLayoutMediator = TabLayoutMediator(tabsGallery, viewPagerGallery) { tab, position ->
                 when(position) {
                     TAB_PHOTOS -> tab.text = getString(R.string.title_photos)
                     TAB_COLLECTIONS -> tab.text = getString(R.string.title_collections)
                     TAB_USERS -> tab.text = getString(R.string.title_users)
                 }
             }
-            tabLayoutMediator!!.attach()
+            tabLayoutMediator.attach()
 
             imageSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
                 override fun onQueryTextSubmit(query: String?): Boolean {
@@ -94,9 +98,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
     }
 
     override fun clearView() {
-        tabLayoutMediator?.detach()
-        tabLayoutMediator = null
-        viewPagerAdapter = null
+        _tabLayoutMediator!!.detach()
+        _tabLayoutMediator = null
+        _viewPagerAdapter = null
     }
 
 }
