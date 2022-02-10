@@ -20,8 +20,12 @@ import timber.log.Timber
 class GalleryFragment : BaseFragment<FragmentGalleryBinding, GalleryViewModel>() {
 
     private val galleryViewModel: GalleryViewModel by viewModels()
-    private var viewPagerAdapter: ViewPagerAdapter? = null
-    private var tabLayoutMediator: TabLayoutMediator? = null
+    private var _viewPagerAdapter: ViewPagerAdapter? = null
+    private val viewPagerAdapter: ViewPagerAdapter
+        get() = _viewPagerAdapter!!
+    private var _tabLayoutMediator: TabLayoutMediator? = null
+    private val tabLayoutMediator: TabLayoutMediator
+        get() = _tabLayoutMediator!!
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -79,18 +83,18 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding, GalleryViewModel>()
 
     override fun bindVM(binding: FragmentGalleryBinding, vm: GalleryViewModel) {
         with(binding) {
-            viewPagerAdapter = ViewPagerAdapter(childFragmentManager, lifecycle, 2)
+            _viewPagerAdapter = ViewPagerAdapter(childFragmentManager, lifecycle, 2)
             viewPagerGallery.apply {
                 adapter = viewPagerAdapter
             }
             // connect tab layout and view pager
-            tabLayoutMediator = TabLayoutMediator(tabsGallery, viewPagerGallery) { tab, position ->
+            _tabLayoutMediator = TabLayoutMediator(tabsGallery, viewPagerGallery) { tab, position ->
                 when(position) {
                     TAB_PHOTOS -> tab.text = getString(R.string.title_photos)
                     TAB_COLLECTIONS -> tab.text = getString(R.string.title_collections)
                 }
             }
-            tabLayoutMediator!!.attach()
+            tabLayoutMediator.attach()
         }
     }
 
@@ -103,9 +107,9 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding, GalleryViewModel>()
     }
 
     override fun clearView() {
-        tabLayoutMediator?.detach()
-        tabLayoutMediator = null
-        viewPagerAdapter = null
+        _tabLayoutMediator!!.detach()
+        _tabLayoutMediator = null
+        _viewPagerAdapter = null
 //        with(binding!!) {
 //            viewPagerGallery.adapter = null
 //        }
