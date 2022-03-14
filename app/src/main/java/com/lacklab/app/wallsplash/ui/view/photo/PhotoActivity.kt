@@ -52,9 +52,18 @@ class PhotoActivity : BaseActivity<ActivityPhotoBinding, PhotoViewModel>() {
                 this@PhotoActivity.repeatOnLifecycle(androidx.lifecycle.Lifecycle.State.STARTED) {
                     uiState.collect {
                         when(it) {
-                            is UiState.Loading -> timber.log.Timber.d("LOADING")
-                            is UiState.Success -> timber.log.Timber.d("SUCCESS")
-                            is UiState.Error -> timber.log.Timber.d("Error")
+                            is UiState.Loading -> {
+                                it as UiState.Loading
+                                timber.log.Timber.d("LOADING ${it.data}")
+                            }
+                            is UiState.Success -> {
+                                it as UiState.Success
+                                timber.log.Timber.d("SUCCESS ${it.data}")
+                            }
+                            is UiState.Error -> {
+                                it as UiState.Error
+                                timber.log.Timber.d("Error ${it.data} and ${it.message}")
+                            }
                         }
                     }
                 }
