@@ -42,7 +42,7 @@ Wallsplash used the Unsplash API for constructing the RESTful API https://unspla
 - Open gradle.properties
 - input the unsplash api key that you register like below
 ```
-
+REMOVED=${Key}
 ```
 
 
