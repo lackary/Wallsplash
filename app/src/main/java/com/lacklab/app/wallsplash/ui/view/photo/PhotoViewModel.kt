@@ -43,9 +43,9 @@ class PhotoViewModel @Inject constructor(
     private fun getPhoto(photoId: String, collectionId: String) {
         viewModelScope.launch {
             Timber.d("getPhoto")
-            val b = async {
-                Timber.d("async getCollection")
-                unsplashRepository.getCollection(collectionId) }
+//            val b = async {
+//                Timber.d("async getCollection")
+//                unsplashRepository.getCollection(collectionId) }
 //            val data = unsplashRepository.getCollection(collectionId)
             unsplashRepository.getPhoto(photoId).collect {
                 when(it) {
@@ -55,8 +55,8 @@ class PhotoViewModel @Inject constructor(
                 }
                 _uiStates.value = it
             }
-////            val a = async { unsplashRepository.getPhoto(photoId) }
-////            _photo.value = a.await()
+//            val a = async { unsplashRepository.getPhoto(photoId) }
+//            _photo.value = a.await()
 //            val data = b.await()
 //            val unsplashData = UnsplashData(data, type = 3)
 //            val temp = mutableListOf<UnsplashData>()

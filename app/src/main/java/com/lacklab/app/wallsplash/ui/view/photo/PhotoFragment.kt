@@ -163,10 +163,4 @@ class PhotoFragment : BaseFragment<FragmentPhotoBinding, PhotoViewModel>() {
         EventBus.getDefault().unregister(this)
 
     }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessage(eventBusTestData: EventBusTestData) {
-        Timber.d("message")
-        val temp = 1
-    }
 }

@@ -117,42 +117,42 @@ class UnsplashPagingAdapter @Inject constructor()
 
     inner class CollectionViewHolder(private val binding: ItemCollectionBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        init {
-            with(binding) {
-                imageViewPhoto.setOnClickListener {
-                    val collectionItem = this@UnsplashPagingAdapter.getItem(absoluteAdapterPosition)
-                    itemClickListener?.onPhotoClicked(collectionItem!!, it)
-    //                        photoClickListener(photoItem!!, it)
-                }
+            init {
+                with(binding) {
+                    imageViewPhoto.setOnClickListener {
+                        val collectionItem = this@UnsplashPagingAdapter.getItem(absoluteAdapterPosition)
+                        itemClickListener?.onPhotoClicked(collectionItem!!, it)
+        //                        photoClickListener(photoItem!!, it)
+                    }
 
-                constraintLayoutUser.setOnClickListener {
-                    val collectionItem = getItem(absoluteAdapterPosition)
-                    itemClickListener?.onPhotoClicked(collectionItem!!, it)
-    //                        nameClickListener(photoItem!!, it)
+                    constraintLayoutUser.setOnClickListener {
+                        val collectionItem = getItem(absoluteAdapterPosition)
+                        itemClickListener?.onPhotoClicked(collectionItem!!, it)
+        //                        nameClickListener(photoItem!!, it)
+                    }
                 }
             }
-        }
 
-        fun bind(item: UnsplashCollection) {
-            with(binding) {
-                collectionItem = item
+            fun bind(item: UnsplashCollection) {
+                with(binding) {
+                    collectionItem = item
 
+                    Glide.with(root)
+                        .load(item.coverPhoto.urls!!.regular)
+                        .centerCrop()
+                        .fitCenter()
+                        .override(SIZE_ORIGINAL)
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .into(imageViewPhoto)
                 Glide.with(root)
-                    .load(item.coverPhoto.urls!!.regular)
-                    .centerCrop()
-                    .fitCenter()
+                    .load(item.user!!.profileImage!!.large)
+                    .circleCrop()
                     .override(SIZE_ORIGINAL)
                     .transition(DrawableTransitionOptions.withCrossFade())
-                    .into(imageViewPhoto)
-            Glide.with(root)
-                .load(item.user!!.profileImage!!.large)
-                .circleCrop()
-                .override(SIZE_ORIGINAL)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(imageViewUser)
+                    .into(imageViewUser)
+            }
         }
     }
-}
 
     interface ItemClickListener {
         fun onPhotoClicked(item: UnsplashItem, view: View)

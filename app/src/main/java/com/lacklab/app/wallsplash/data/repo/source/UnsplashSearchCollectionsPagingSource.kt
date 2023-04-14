@@ -21,23 +21,27 @@ class UnsplashSearchCollectionsPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UnsplashItem> {
         val page = params.key ?: com.lacklab.app.wallsplash.util.UNSPLASH_STARTING_PAGE_INDEX
         return try {
-            val response = api.searchCollections(query, page, params.loadSize)
-            var data: UnsplashSearchCollections? = null
-            when(response) {
+            val data = when(val response = api.searchCollections(query, page, params.loadSize)) {
                 is ApiSuccessResponse -> {
-                    data = response.body
+                    response.body
                 }
                 is ApiErrorResponse -> {
                     throw Exception(response.errorMessage)
                 }
                 is ApiEmptyResponse -> {
-                    data = UnsplashSearchCollections(
+                    UnsplashSearchCollections(
+                        0,
+                        results = emptyList<UnsplashCollection>()
+                    )
+                }
+                else -> {
+                    UnsplashSearchCollections(
                         0,
                         results = emptyList<UnsplashCollection>()
                     )
                 }
             }
-            val items = data!!.results.map{item -> UnsplashItem.Collection(item)}
+            val items = data.results.map{item -> UnsplashItem.Collection(item)}
             // by default, init loadSize is 3 x NETWORK_PAGE_SIZE
             // Ensure we don't retrieve duplicating items at 2nd time request
             val nextPage = page + (params.loadSize / UnsplashRepository.NETWORK_PAGE_SIZE)
