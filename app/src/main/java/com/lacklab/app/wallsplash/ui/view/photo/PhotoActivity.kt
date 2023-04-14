@@ -127,7 +127,7 @@ class PhotoActivity : BaseActivity<ActivityPhotoBinding, PhotoViewModel>() {
         with(binding) {
             photoItem = photo
             Glide.with(root)
-                .load(photo!!.urls!!.regular)
+                .load(photo.urls?.regular)
                 .override(Target.SIZE_ORIGINAL)
                 .into(imageViewPhoto)
         }

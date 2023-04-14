@@ -110,6 +110,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
      * Overriding popBackStack is necessary in this case
      * if the app is started from the deep link.
      */
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (navController?.popBackStack() != true) {
             super.onBackPressed()

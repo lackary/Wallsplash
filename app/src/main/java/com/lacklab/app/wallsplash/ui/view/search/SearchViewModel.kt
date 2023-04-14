@@ -36,6 +36,4 @@ class SearchViewModel @Inject constructor(
         currentSearchCollection = newResult
         return newResult
     }
-
-
 }

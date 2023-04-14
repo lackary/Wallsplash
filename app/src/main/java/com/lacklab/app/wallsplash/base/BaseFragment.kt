@@ -9,7 +9,10 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 abstract class BaseFragment<DB: ViewDataBinding, VM: BaseViewModel > : Fragment() {
@@ -90,9 +93,11 @@ abstract class BaseFragment<DB: ViewDataBinding, VM: BaseViewModel > : Fragment(
     }
 
     fun launchOnLifecycleScope(execute: suspend () -> Unit) {
-        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            Timber.d("launchOnLifecycleScope")
-            execute()
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                Timber.d("launchOnLifecycleScope")
+                execute()
+            }
         }
     }
 }

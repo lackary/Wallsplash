@@ -7,7 +7,6 @@ import androidx.annotation.Nullable
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import com.lacklab.app.wallsplash.R
@@ -35,7 +34,7 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding, PhotosViewModel>(),
     lateinit var photoPagingAdapter: UnsplashPagingAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        searchViewModel = ViewModelProvider(requireActivity()).get(SearchViewModel::class.java)
+        searchViewModel = ViewModelProvider(requireActivity())[SearchViewModel::class.java]
         super.onCreate(savedInstanceState)
     }
 
@@ -54,14 +53,14 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding, PhotosViewModel>(),
                 swipeRefresh.setOnRefreshListener { refresh() }
                 with(vm) {
                     if(parentFragment is SearchFragment) {
-                        searchViewModel.queryString.observe(viewLifecycleOwner, {
+                        searchViewModel.queryString.observe(viewLifecycleOwner) {
                             launchOnLifecycleScope {
                                 Timber.d("queryString: $it")
                                 searchViewModel.searchPhotos(it).collectLatest {
                                     submitData(it)
                                 }
                             }
-                        })
+                        }
                     } else {
                         launchOnLifecycleScope {
                             itemsFlow.collectLatest { submitData(it) }
