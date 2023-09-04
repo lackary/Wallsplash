@@ -42,13 +42,13 @@ def getVersionName = { ->
 }
 
 android {
-    compileSdkVersion 33
-    buildToolsVersion "33.0.2"
+    compileSdkVersion 34
+    buildToolsVersion "34.0.0"
 
     defaultConfig {
         applicationId "com.lacklab.app.wallsplash"
         minSdkVersion 30
-        targetSdkVersion 33
+        targetSdkVersion 34
         versionCode getVersionCode()
         versionName getVersionName()
         setProperty("archivesBaseName", "wallsplash-$getVersionName")
@@ -96,8 +96,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
 
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.1'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.7.1'
     implementation 'android.arch.navigation:navigation-fragment-ktx:1.0.0'
     implementation 'android.arch.navigation:navigation-ui-ktx:1.0.0'
 
