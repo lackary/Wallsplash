@@ -30,7 +30,6 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding, PhotosViewModel>(),
     private lateinit var searchViewModel: SearchViewModel
     private val photosViewModel: PhotosViewModel by activityViewModels()
     @Inject
-    @Nullable
     lateinit var photoPagingAdapter: UnsplashPagingAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {

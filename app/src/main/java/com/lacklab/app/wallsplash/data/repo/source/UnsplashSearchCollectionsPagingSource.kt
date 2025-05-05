@@ -2,9 +2,9 @@ package com.lacklab.app.wallsplash.data.repo.source
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.lacklab.app.wallsplash.data.remote.api.ApiEmptyResponse
-import com.lacklab.app.wallsplash.data.remote.api.ApiErrorResponse
-import com.lacklab.app.wallsplash.data.remote.api.ApiSuccessResponse
+import com.lacklab.app.wallsplash.data.remote.ApiEmptyResponse
+import com.lacklab.app.wallsplash.data.remote.ApiErrorResponse
+import com.lacklab.app.wallsplash.data.remote.ApiSuccessResponse
 import com.lacklab.app.wallsplash.data.remote.api.UnsplashApi
 import com.lacklab.app.wallsplash.data.model.*
 import com.lacklab.app.wallsplash.data.repo.UnsplashRepository
@@ -29,12 +29,6 @@ class UnsplashSearchCollectionsPagingSource(
                     throw Exception(response.errorMessage)
                 }
                 is ApiEmptyResponse -> {
-                    UnsplashSearchCollections(
-                        0,
-                        results = emptyList<UnsplashCollection>()
-                    )
-                }
-                else -> {
                     UnsplashSearchCollections(
                         0,
                         results = emptyList<UnsplashCollection>()

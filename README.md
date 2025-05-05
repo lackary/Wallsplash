@@ -3,19 +3,21 @@
 Wallsplash is a simple demo application base on the Android MVVM architecture. This App Fetch data from network and render data via Paging3
 
 ## Screenshot
+
 <p align="center">
 <img src="/preview/preview.gif" width="40%"/>
 </p>
 
 ## MAD Score
+
 <p align="center">
 <img src="/MAD/summary.png"/>
 <img src="/MAD/jetpack.png"/>
 <img src="/MAD/kotlin.png"/>
 </p>
 
-
 ## Tech Stack and Open Source Libraries
+
 - Target SDK level 30
 - Minimum SDK level 28
 - Kotlin base
@@ -35,15 +37,15 @@ Wallsplash is a simple demo application base on the Android MVVM architecture. T
   - Timber
 
 ## Open API
+
 Wallsplash used the Unsplash API for constructing the RESTful API https://unsplash.com/developers
 
 ### How to run the api
+
 - Register the Unsplash Api
 - Open gradle.properties
 - input the unsplash api key that you register like below
-```
-REMOVED=${Key}
-```
 
-
-  
+```
+unsplash_access_key=${Key}
+```

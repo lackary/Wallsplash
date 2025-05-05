@@ -1,6 +1,5 @@
 package com.lacklab.app.wallsplash.data.remote
 
-import com.lacklab.app.wallsplash.data.remote.api.ApiResponse
 import retrofit2.Call
 import retrofit2.CallAdapter
 import java.lang.reflect.Type

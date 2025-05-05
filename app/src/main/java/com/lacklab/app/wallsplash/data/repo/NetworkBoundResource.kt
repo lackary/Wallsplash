@@ -4,10 +4,10 @@ import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.lacklab.app.wallsplash.AppExecutors
-import com.lacklab.app.wallsplash.data.remote.api.ApiEmptyResponse
-import com.lacklab.app.wallsplash.data.remote.api.ApiErrorResponse
-import com.lacklab.app.wallsplash.data.remote.api.ApiResponse
-import com.lacklab.app.wallsplash.data.remote.api.ApiSuccessResponse
+import com.lacklab.app.wallsplash.data.remote.ApiEmptyResponse
+import com.lacklab.app.wallsplash.data.remote.ApiErrorResponse
+import com.lacklab.app.wallsplash.data.remote.ApiResponse
+import com.lacklab.app.wallsplash.data.remote.ApiSuccessResponse
 import com.lacklab.app.wallsplash.vo.Resource
 
 /**

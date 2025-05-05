@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lacklab.app.wallsplash.data.remote.api
+package com.lacklab.app.wallsplash.data.remote
 
 import retrofit2.Response
 import timber.log.Timber
@@ -70,7 +70,7 @@ data class ApiSuccessResponse<T>(
         links = linkHeader?.extractLinks() ?: emptyMap()
     )
     val totalPages: Int? by lazy(LazyThreadSafetyMode.NONE) {
-        links[LAST_LINK]?.let {value->
+        links[LAST_LINK]?.let { value->
             val matcher = PAGE_PATTERN.matcher(value)
             if (!matcher.find() || matcher.groupCount() != 1) {
                 null

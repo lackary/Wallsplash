@@ -1,6 +1,6 @@
 package com.lacklab.app.wallsplash.factory
 
-import com.lacklab.app.wallsplash.data.remote.api.ApiResponse
+import com.lacklab.app.wallsplash.data.remote.ApiResponse
 import com.lacklab.app.wallsplash.data.remote.DataCallAdapter
 import retrofit2.Call
 import retrofit2.CallAdapter

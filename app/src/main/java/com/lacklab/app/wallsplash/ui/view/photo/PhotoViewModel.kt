@@ -55,7 +55,7 @@ class PhotoViewModel @Inject constructor(
                 }
                 _uiStates.value = it
             }
-//            val a = async { unsplashRepository.getPhoto(photoId) }
+            val a = async { unsplashRepository.getPhoto(photoId) }
 //            _photo.value = a.await()
 //            val data = b.await()
 //            val unsplashData = UnsplashData(data, type = 3)

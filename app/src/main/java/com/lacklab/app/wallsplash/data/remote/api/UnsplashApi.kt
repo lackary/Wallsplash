@@ -2,6 +2,7 @@ package com.lacklab.app.wallsplash.data.remote.api
 
 import com.lacklab.app.wallsplash.BuildConfig
 import com.lacklab.app.wallsplash.data.model.*
+import com.lacklab.app.wallsplash.data.remote.ApiResponse
 import com.lacklab.app.wallsplash.factory.DataCallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

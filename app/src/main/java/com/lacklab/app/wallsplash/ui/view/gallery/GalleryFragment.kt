@@ -47,7 +47,7 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding, GalleryViewModel>()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super   .onViewCreated(view, savedInstanceState)
+        super.onViewCreated(view, savedInstanceState)
         Timber.d("onViewCreated")
     }
 

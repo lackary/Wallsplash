@@ -1,6 +1,9 @@
-    package com.lacklab.app.wallsplash.data.remote.api
+package com.lacklab.app.wallsplash.data.remote.api
 
 import com.google.common.truth.Truth.assertThat
+import com.lacklab.app.wallsplash.data.remote.ApiEmptyResponse
+import com.lacklab.app.wallsplash.data.remote.ApiErrorResponse
+import com.lacklab.app.wallsplash.data.remote.ApiSuccessResponse
 import com.lacklab.app.wallsplash.factory.DataCallAdapterFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -54,6 +57,7 @@ class UnsplashApiTest {
                         is ApiEmptyResponse -> {
                             Timber.d("ApiEmptyResponse")
                         }
+                        null -> Timber.d("response null")
                     }
                 } catch (ex: Exception) {
                     Timber.d("ex: ${ex.message}")

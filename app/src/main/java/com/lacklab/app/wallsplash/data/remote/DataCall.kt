@@ -1,6 +1,5 @@
 package com.lacklab.app.wallsplash.data.remote
 
-import com.lacklab.app.wallsplash.data.remote.api.ApiResponse
 import okhttp3.Request
 import okio.Timeout
 import retrofit2.Call

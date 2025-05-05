@@ -5,6 +5,9 @@ import androidx.paging.PagingState
 import com.lacklab.app.wallsplash.util.UnsplashItem
 import com.lacklab.app.wallsplash.data.remote.api.*
 import com.lacklab.app.wallsplash.data.model.UnsplashPhotos
+import com.lacklab.app.wallsplash.data.remote.ApiEmptyResponse
+import com.lacklab.app.wallsplash.data.remote.ApiErrorResponse
+import com.lacklab.app.wallsplash.data.remote.ApiSuccessResponse
 import com.lacklab.app.wallsplash.data.repo.UnsplashRepository.Companion.NETWORK_PAGE_SIZE
 import timber.log.Timber
 
